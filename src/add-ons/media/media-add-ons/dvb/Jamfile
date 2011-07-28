@@ -1,0 +1,22 @@
+SubDir HAIKU_TOP src add-ons media media-add-ons dvb ;
+
+UsePrivateHeaders drivers ;
+
+
+SubDirHdrs [ FDirName $(SUBDIR) .. .. plugins ffmpeg ] ;
+SubDirHdrs [ FDirName $(SUBDIR) .. .. plugins ffmpeg libavcodec ] ;
+SubDirHdrs [ FDirName $(SUBDIR) .. .. plugins ffmpeg libavformat ] ;
+SubDirHdrs [ FDirName $(SUBDIR) .. .. plugins ffmpeg libavutil ] ;
+
+Addon dvb.media_addon :
+	DVBCard.cpp
+	DVBMediaAddon.cpp
+	DVBMediaNode.cpp
+	MediaFormat.cpp
+	MediaStreamDecoder.cpp
+	Packet.cpp
+	PacketQueue.cpp
+	pes.cpp
+	TransportStreamDemux.cpp
+	: be media $(TARGET_LIBSUPC++)
+;

@@ -1,0 +1,33 @@
+SubDir HAIKU_TOP src add-ons kernel drivers network bcm570x ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+SubDirCcFlags -w -DINCLUDE_TBI_SUPPORT=1 ;
+
+# For ether_driver.h
+UsePrivateHeaders net ;
+
+KernelAddon bcm570x :
+	autoneg.c
+	b57um.c
+	tigon3.c
+	mempool.c
+	;
+
+Package haiku-networkingkit-cvs :
+	bcm570x :
+	boot home config add-ons kernel drivers bin ;
+PackageDriverSymLink haiku-networkingkit-cvs : net bcm570x ;
+
+
+# Installation
+
+HaikuInstall install-networking : /boot/home/config/add-ons/kernel/drivers/bin : 
+ 	bcm570x 
+;
+
+HaikuInstallRelSymLink install-networking : /boot/home/config/add-ons/kernel/drivers/dev/net : 
+	<installed>bcm570x : 
+	installed-symlink 
+;
+

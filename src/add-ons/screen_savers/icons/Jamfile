@@ -1,0 +1,17 @@
+SubDir HAIKU_TOP src add-ons screen_savers icons ;
+
+UsePrivateHeaders screen_saver ;
+	# For BuildScreenSaverDefaultSettingsView
+
+AddResources Icons : Icons.rdef ;
+
+ScreenSaver Icons :
+	IconDisplay.cpp IconsSaver.cpp :
+	be libscreensaver.so $(HAIKU_LOCALE_LIBS) $(TARGET_LIBSUPC++)
+;
+
+DoCatalogs Icons :
+	x-vnd.Haiku-IconsScreensaver
+	:
+	IconsSaver.cpp	
+;

@@ -1,0 +1,24 @@
+1	belarusian	x-vnd.Haiku-Mouse	1033564338
+...by Andrew Edward McCall	MouseApplication		... распрацавана Andrew Edward McCall
+1-Button	SettingsView		Аднанопкавая
+2-Button	SettingsView		Дзвюхкнопкавая
+3-Button	SettingsView		Трохкнопкавая
+Accept first click	SettingsView		Успрымаць з першага кліку
+Click to focus	SettingsView		Фокус па націску
+Click to focus and raise	SettingsView		Клік факусіруе і падымае наверх
+Defaults	MouseWindow		Прадвызначаныя
+Dig Deal	MouseApplication		Так!
+Double-click speed	SettingsView		Хуткасць падвойнага кліку
+Double-click test area	SettingsView		Месца праверкі падвойнага кліка
+Fast	SettingsView		Хутка
+Focus follows mouse	SettingsView		Фокус суправаджае мыш
+Focus mode:	SettingsView		Рэжым фокуса:
+Instant warp	SettingsView		Імгненны заварот
+Mouse	System name		Мыш
+Mouse acceleration	SettingsView		Паскарэнне мышы
+Mouse speed	SettingsView		Хуткасць мышы
+Mouse type:	SettingsView		Тып мышы:
+Normal	SettingsView		Нармальна
+Revert	MouseWindow		Вярнуць
+Slow	SettingsView		Павольна
+Warp	SettingsView		Заварот

@@ -1,0 +1,137 @@
+1	hungarian	x-vnd.Be-MAIL	83857716
+%d - Date	Mail		%d - dátum
+%e - E-mail address	Mail		%e - e-mail cím
+%n - Full name	Mail		%n - teljes név
+Account from mail	Mail		Postafiók a levélből
+Account:	Mail		Fiók:
+Accounts…	Mail		Fiókok…
+Add	Mail		Hozzáad
+Add enclosure…	Mail		Melléklet hozzáadása…
+Add signature	Mail		Aláírás hozzáadása
+An error occurred trying to open this signature.	Mail		Hiba történt az aláírás megnyitása közben.
+An error occurred trying to save the attachment.	Mail		Hiba történt a mellékletek csatolása közben.
+An error occurred trying to save this signature.	Mail		Hiba történt az aláírás mentése közben.
+Attach attributes:	Mail		Attribútumok csatolása:
+Attachments:	Mail		Csatolmányok: 
+Auto signature:	Mail		Automata aláírás:
+Automatically mark mail as read:	Mail		Automatikusan olvasottként jelölés:
+Bcc:	Mail		Titkos másolat:
+Beginner	Mail		Kezdő
+Button bar:	Mail		Gombsor:
+Cancel	Mail		Mégsem
+Cc:	Mail		Másolat:
+Check spelling	Mail		Helyesírás ellenőrzése
+Close	Mail		Bezár
+Close and 	Mail		Bezárás, majd
+Colored quotes:	Mail		Színezett idézetek:
+Copy	Mail		Másol
+Copy link location	Mail		Hivatkozás címének másolása
+Copy to new	Mail		Másolás újba
+Couldn't open this signature. Sorry.	Mail		Sajnos nem lehet megnyitni az aláírást.
+Cut	Mail		Kivágás
+Decoding:	Mail		Dekódolás:
+Default account:	Mail		Alapértelmezett fiók:
+Delete	Mail		Töröl
+Discard	Mail		Elvet
+Do you wish to save this message as a draft before closing?	Mail		A bezárása előtt biztos, hogy piszkozatként menti ezt az üzenetet?
+Do you wish to send this message before closing?	Mail		El lehet küldeni az üzenetet a bezárása előtt?
+Don't save	Mail		Ne mentse
+E-mail draft could not be saved!	Mail		Az e-mail piszkozatát nem lehetett elmenteni!
+Edit	Mail		Szerkesztés
+Edit queries…	Mail		Lekérések módosítása…
+Edit signatures…	Mail		Aláírások szerkesztése…
+Encoding:	Mail		Kódolás:
+Expert	Mail		Haladó
+Find	Mail		Keresés
+Find again	Mail		Keresés ismétlése
+Find…	Mail		Keresés…
+Font:	Mail		Betűtípus:
+Forward	Mail		Továbbítás
+Forward without attachments	Mail		Továbbküldés csatolmány nélkül
+From:	Mail		Feladó:
+Hide	Mail		Elrejt
+Include file attributes in attachments	Mail		Fájlattribútumok mellékelése a csatolmányokban
+Inconsistency occurred in the undo/redo buffer.	Mail		Kavarodás történt a visszavon/újra tárolóban.
+Initial spell check mode:	Mail		Kezdeti helyesírás-ellenőrzés módja:
+Leave as '%s'	Mail		Meghagyni „%s” szerint
+Leave as New	Mail		Újként meghagyás
+Leave same	Mail		Változatlanul hagy
+Mail couldn't find its dictionary.	Mail		A levelező nem talált szótárakat.
+Mail preferences	Mail		Levelezés beállításai
+Mailing	Mail		Levelezés
+Message	Mail		Üzenet
+Move to trash	Mail		Szemétbe dobás
+Need Tracker to move items to trash	Mail		A szemetesbe dobáshoz szükség van a Trackerre
+New	Mail		Új
+New mail message	Mail		Új üzenet
+Next	Mail		Következő
+Next message	Mail		Következő üzenet
+No file attributes, just plain data	Mail		Fájlattibútumok nélkül, nyers adatként
+None	Mail		Nincs
+OK	Mail		Rendben
+Only files can be added as attachments.	Mail		Csak fájlokat lehet hozzáadni csatolmányként a levélhez!
+Open	Mail		Megnyit
+Open attachment	Mail		Csatolmány megnyitása
+Open draft	Mail		Piszkozat megnyitása
+Open this link	Mail		Link megnyitása
+Page setup…	Mail		Oldalbeállítás…
+Paste	Mail		Beillesztés
+Preferences…	Mail		Beállítások…
+Previous	Mail		Előző
+Previous message	Mail		Előző üzenet
+Print	Mail		Nyomtatás
+Print…	Mail		Nyomtatás…
+Queries	Mail		Lekérések
+Quit	Mail		Kilépés
+Quote	Mail		Idéz
+Random	Mail		Véletlenszerű
+Really delete this signature? This cannot be undone.	Mail		Biztosan törölni lehet ezt az aláírást? Nem lehet majd visszavonni!
+Redo	Mail		Újra
+Remove attachment	Mail		Csatolmányok eltávolítása
+Remove enclosure	Mail		Melléklet eltávolítása
+Remove quote	Mail		Idézet eltávolítása
+Removing attachments from a forwarded mail is not yet implemented!\nIt will not yet work correctly.	Mail		A továbbított levelekből még nem lehet eltávolítani a csatolmányokat ebben a programban.\nEz a funkció nem működik még helyesen.
+Reply	Mail		Válasz
+Reply account:	Mail		Válaszcím:
+Reply preamble:	Mail		Idézetre válaszolás:
+Reply to all	Mail		Válasz mindenkinek
+Reply to sender	Mail		Válasz a feladónak
+Resend	Mail		Újraküld
+Revert	Mail		Visszaállít
+Save	Mail		Mentés
+Save address	Mail		Cím mentése
+Save as draft	Mail		Mentés piszkozatként
+Save attachment…	Mail		Csatolmány mentése…
+Save changes to this signature?	Mail		El lehet menteni az aláírást?
+Select all	Mail		Mind kijelöl
+Send	Mail		Küldés
+Send message	Mail		Üzenet küldése
+Set to %s	Mail		Beállítás erre:  „%s”
+Set to Saved	Mail		Beállítás mentettként
+Set to…	Mail		Beállítás…
+Show header	Mail		Fejléc megjelenítése
+Show icons & labels	Mail		Ikonok és feliratok
+Show icons only	Mail		Csak ikonok mutatása
+Show raw message	Mail		RAW forrás megjelenítése
+Signature	Mail		Aláírás
+Signature:	Mail		Aláírás:
+Signatures	Mail		Aláírások
+Size:	Mail		Méret:
+Sorry	Mail		Sajnáljuk
+Sorry, could not find an application that supports the 'Person' data type.	Mail		Sajnos nincs olyan alkalmazás, mely támogatná a „Személy”-adattípust.
+Start now	Mail		Kezdés most
+Subject:	Mail		Tárgy:
+The mail_daemon could not be started:\n\t	Mail		A leveleződaemont (mail_daemon) nem lehetett elindítani:\n\t
+The mail_daemon is not running. The message is queued and will be sent when the mail_daemon is started.	Mail		A leveleződaemon (mail_daemon) nem fut. Az üzenet várólistára kerül és addig nem lesz elküldve, míg a daemon el nem indul.
+There is no installed handler for URL links.	Mail		Az URL-linkeket nem lehet mivel lekezelni.
+Title:	Mail		Cím:
+To:	Mail		Címzett:
+Trash	Mail		Szemetes
+Undo	Mail		Visszavon
+Unread	Mail		Olvasatlan
+Use default account	Mail		Alapértelmezett fiók használata
+User interface	Mail		Felhasználói felület
+View	Mail		Nézet
+Warn unencodable:	Mail		Figyelmeztetés a nem felismerhető karakterk esetén:
+Your main text contains %ld unencodable characters. Perhaps a different character set would work better? Hit Send to send it anyway (a substitute character will be used in place of the unencodable ones), or choose Cancel to go back and try fixing it up.	Mail		A begépelt szövegben %ld felismerhetetlen karakter található. Egy másik karakterkódolással lehet, helyre lehet hozni ezt a malőrt. Ha így kívánja elküldeni levelét (a nem felismerhető karakterek helyettesítő jelre lesznek cserélve), küldje el bátran, vagy kattintson a Mégsem gombra és próbálja meg kijavítani a problémát.
+\\n - Newline	Mail		\\n - Új sor

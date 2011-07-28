@@ -1,0 +1,35 @@
+SubDir HAIKU_TOP src apps packageinstaller ;
+
+UsePrivateHeaders shared interface ;
+SubDirHdrs $(HAIKU_TOP) headers libs zlib ;
+
+#SEARCH_SOURCE += [ FDirName $(HAIKU_TOP) src kits interface ] ;
+
+Application PackageInstaller :
+	main.cpp
+	PackageWindow.cpp
+	PackageView.cpp
+	PackageInfo.cpp
+	PackageItem.cpp
+	PackageInstall.cpp
+	PackageStatus.cpp
+	PackageTextViewer.cpp
+	PackageImageViewer.cpp
+	InstalledPackageInfo.cpp
+	: be $(HAIKU_LOCALE_LIBS) tracker translation z $(TARGET_LIBSUPC++)
+	: PackageInstaller.rdef
+;
+
+DoCatalogs PackageInstaller :
+	x-vnd.Haiku-PackageInstaller
+	:
+	main.cpp
+	PackageImageViewer.cpp
+	PackageInfo.cpp
+	PackageInstall.cpp
+	PackageItem.cpp
+	PackageStatus.cpp
+	PackageTextViewer.cpp
+	PackageView.cpp
+	PackageWindow.cpp
+;

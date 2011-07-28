@@ -1,0 +1,24 @@
+1	swedish	x-vnd.Haiku-Mouse	1033564338
+...by Andrew Edward McCall	MouseApplication		...av Andrew Edward McCall
+1-Button	SettingsView		1 knapp
+2-Button	SettingsView		2 knappar
+3-Button	SettingsView		3 knappar
+Accept first click	SettingsView		Agera på första klicket
+Click to focus	SettingsView		Klicka för att fokusera
+Click to focus and raise	SettingsView		Klicka för att fokusera och höja
+Defaults	MouseWindow		Förval
+Dig Deal	MouseApplication		Stor sak
+Double-click speed	SettingsView		Dubbelklickshastighet
+Double-click test area	SettingsView		Testa dubbelklick här.
+Fast	SettingsView		Snabb
+Focus follows mouse	SettingsView		Fokus följer muspekaren
+Focus mode:	SettingsView		Fokusbeteende:
+Instant warp	SettingsView		Omedelbar teleportering
+Mouse	System name		Mus
+Mouse acceleration	SettingsView		Musacceleration
+Mouse speed	SettingsView		Mushastighet
+Mouse type:	SettingsView		Mustyp:
+Normal	SettingsView		Normal
+Revert	MouseWindow		Återställ
+Slow	SettingsView		Långsam
+Warp	SettingsView		Teleportera

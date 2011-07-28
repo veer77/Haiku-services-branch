@@ -1,0 +1,31 @@
+SubDir HAIKU_TOP src apps stylededit ;
+
+UsePrivateHeaders textencoding ;
+
+local styled_edit_rsrc =
+	[ FGristFiles StyledEdit.rsrc ]
+	;
+ResComp $(styled_edit_rsrc) :
+	[ FGristFiles StyledEdit.rdef ]
+	;
+
+Application StyledEdit :
+	ColorMenuItem.cpp
+	FindWindow.cpp
+	ReplaceWindow.cpp
+	StyledEditApp.cpp
+	StyledEditView.cpp
+	StyledEditWindow.cpp
+	: be translation tracker libtextencoding.so $(HAIKU_LOCALE_LIBS)
+		$(TARGET_LIBSUPC++)
+	: $(styled_edit_rsrc)
+	;
+
+DoCatalogs StyledEdit :
+	x-vnd.Haiku-StyledEdit
+	:
+	FindWindow.cpp
+	ReplaceWindow.cpp
+	StyledEditApp.cpp
+	StyledEditWindow.cpp
+;

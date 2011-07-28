@@ -1,0 +1,20 @@
+SubDir HAIKU_TOP src preferences locale ;
+
+UsePrivateHeaders locale ;
+UsePrivateHeaders shared ;
+
+local sources =
+	LanguageListView.cpp
+	LocalePreflet.cpp
+	LocaleWindow.cpp
+	FormatSettingsView.cpp
+;
+
+Preference Locale
+	: $(sources)
+	: be $(TARGET_LIBSTDC++) $(TARGET_LIBSUPC++) libshared.a
+		$(HAIKU_LOCALE_LIBS)
+	: Locale.rdef
+;
+
+DoCatalogs Locale : x-vnd.Haiku-Locale : $(sources) ;

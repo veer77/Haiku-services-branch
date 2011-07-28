@@ -1,0 +1,6 @@
+1	polish	x-vnd.Haiku-ReadOnlyBootPrompt	1972532432
+Desktop (Live-CD)	BootPromptWindow		Pulpit (Live-CD)
+Keymap	BootPromptWindow		Układ klawiatury
+Language	BootPromptWindow		Język
+Run Installer	BootPromptWindow		Uruchom instalator
+Welcome to Haiku!	BootPromptWindow		Witaj w Haiku!

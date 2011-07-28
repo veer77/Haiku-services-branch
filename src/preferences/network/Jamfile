@@ -1,0 +1,26 @@
+SubDir HAIKU_TOP src preferences network ;
+SEARCH_SOURCE += [ FDirName $(HAIKU_TOP) src apps networkstatus ] ;
+
+UsePrivateHeaders net shared ;
+
+Preference Network :
+	NetworkApp.cpp
+	NetworkWindow.cpp
+	EthernetSettingsView.cpp
+	Settings.cpp
+
+	# from NetworkStatus
+	RadioView.cpp
+	WirelessNetworkMenuItem.cpp
+
+	: be $(HAIKU_NETWORK_LIBS) $(TARGET_LIBSUPC++) $(HAIKU_LOCALE_LIBS)
+		libbnetapi.so
+	: Network.rdef
+;
+
+DoCatalogs Network :
+	x-vnd.Haiku-Network
+	:
+	EthernetSettingsView.cpp
+	NetworkWindow.cpp
+;

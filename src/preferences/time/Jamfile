@@ -1,0 +1,46 @@
+SubDir HAIKU_TOP src preferences time ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+UsePrivateHeaders interface locale shared [ FDirName libroot time ] ;
+UsePrivateSystemHeaders ;
+
+local sources =
+	AnalogClock.cpp
+	BaseView.cpp
+	Bitmaps.cpp
+	DateTimeEdit.cpp
+	SectionEdit.cpp
+	DateTimeView.cpp
+	NetworkTimeView.cpp
+	ntp.cpp
+	Time.cpp
+	TimeSettings.cpp
+	TimeWindow.cpp
+	TimeZoneListItem.cpp
+	TZDisplay.cpp
+	ZoneView.cpp
+	;
+
+
+SubDirSysHdrs $(HAIKU_ICU_HEADERS) ;
+Includes [ FGristFiles $(sources) ] : $(HAIKU_ICU_HEADERS_DEPENDENCY) ;
+	# Dependency needed to trigger downloading/unzipping the package before
+	# compiling the files.
+
+Preference Time
+	: $(sources)
+	: be libshared.a $(TARGET_LIBSTDC++) $(HAIKU_LOCALE_LIBS) $(HAIKU_NETWORK_LIBS)
+	: Time.rdef
+	;
+
+DoCatalogs Time :
+	x-vnd.Haiku-Time
+	:
+	DateTimeView.cpp
+	NetworkTimeView.cpp
+	ntp.cpp
+	Time.cpp
+	TimeWindow.cpp
+	ZoneView.cpp
+	;

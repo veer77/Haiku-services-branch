@@ -1,0 +1,44 @@
+1	belarusian	x-vnd.Be-PRNT	2065133853
+%.2f KB	JobListView		%.2f KB
+1 pending job.	PrinterListView		1 заданне ў чарзе.
+<pick one>	AddPrinterDialog		<выберыце адно>
+Add	AddPrinterDialog		Дадаць
+Add printer	AddPrinterDialog		Дадаць прынтэр
+Add …	PrintersWindow		Дадаць ...
+Black	TestPageView		Чорны
+Blue	TestPageView		Сіні
+Cancel	AddPrinterDialog		Адмена
+Cancel job	PrintersWindow		Адмяніць заданне
+Completed	JobListView		Скончана
+Connected to:	AddPrinterDialog		Падключаны да:
+Cyan	TestPageView		Блакітны
+Default Printer	PrinterListView		Прадвызначаны прынтэр
+Driver: %driver%	PrinterListView		Драйвер: %driver%
+Failed	JobListView		Не ўдалося
+Green	TestPageView		Зялёны
+Magenta	TestPageView		Пурпурны
+Make default	PrintersWindow		Зрабіць прадвызначаным
+No pending jobs.	PrinterListView		Няма заданняў у чарзе.
+No printer found!	TransportMenu		Прынтэры не знойдзены!
+Print jobs for 	PrintersWindow		Заданні друку для
+Print jobs: No printer selected	PrintersWindow		Заданні друку: Не выбраны прынтэр
+Print test page	PrintersWindow		Надрукаваць тэставую старонку
+Printer name:	AddPrinterDialog		Імя прынтэра:
+Printer type:	AddPrinterDialog		Тып прынтэру:
+Printer: %printer_name%\nDriver:  %driver%\n	TestPageView		Прынтэр: %printer_name%\nДрайвер: %driver%\n
+Printers	PrintersWindow		Прынтэры
+Printers	System name		Прынтэры
+Processing	JobListView		Апрацоўка
+Red	TestPageView		Чырвоны
+Remove	PrintersWindow		Выдаліць
+Restart job	PrintersWindow		Пачаць нанова
+Test Page	PrintersWindow		Тэставая старонка
+Test Page	TestPageView		Тэставая старонка
+Transport: %transport% %transport_address%	PrinterListView		Транспорт: %transport% %transport_address%
+Transport: %transport% %transport_address%	TestPageView		Транспарт: %transport% %transport_address%
+Unknown status	JobListView		Невядомы стан
+Waiting	JobListView		Чаканне
+Yellow	TestPageView		Жоўты
+page	JobListView		старонка
+pages	JobListView		старонкаў
+pending jobs.	PrinterListView		заданні ў чарзе.

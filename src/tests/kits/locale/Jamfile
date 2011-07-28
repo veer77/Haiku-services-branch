@@ -1,0 +1,50 @@
+SubDir HAIKU_TOP src tests kits locale ;
+
+UsePublicHeaders locale ;
+UsePrivateHeaders locale shared ;
+
+# Pseudo target to build all locale kit tests
+NotFile LocaleKitTests ;
+Depends LocaleKitTests
+	:
+	catalogSpeed
+	catalogTest
+	catalogTestAddOn
+	collatorSpeed
+	collatorTest
+	localeTest
+	ICUTest
+	libNumberFormatTests.so
+	;
+
+rule LocaleTest
+{
+	# LocaleTest <sources> ;
+	local sources = $(1) ;
+	local name = $(sources[1]:B) ;
+	Application $(name) : $(sources) : be liblocale.so $(TARGET_LIBSTDC++) $(TARGET_LIBSUPC++) ;
+}
+
+LocaleTest catalogSpeed.cpp ;
+LocaleTest catalogTest.cpp ;
+LocaleTest collatorSpeed.cpp ;
+LocaleTest collatorTest.cpp ;
+LocaleTest genericNumberFormatTest.cpp ;
+LocaleTest localeTest.cpp ;
+LocaleTest formatTest.cpp ;
+
+SubDirSysHdrs $(HAIKU_ICU_HEADERS) ;
+Includes [ FGristFiles ICUTest.cpp ] : $(HAIKU_ICU_HEADERS_DEPENDENCY) ;
+	# Dependency needed to trigger downloading/unzipping the package before
+	# compiling the files.
+
+Application ICUTest :
+	ICUTest.cpp :
+	be $(TARGET_LIBSUPC++) $(HAIKU_ICU_LIBS) ;
+
+Addon catalogTestAddOn
+	: catalogTestAddOn.cpp
+	: be liblocale.so
+	;
+
+SubInclude HAIKU_TOP src tests kits locale number_format ;

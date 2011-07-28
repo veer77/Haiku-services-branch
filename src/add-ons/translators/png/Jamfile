@@ -1,0 +1,34 @@
+SubDir HAIKU_TOP src add-ons translators png ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+UseLibraryHeaders png zlib ;
+SubDirHdrs [ FDirName $(SUBDIR) $(DOTDOT) shared ] ;
+
+AddResources PNGTranslator : PNGTranslator.rdef ;
+
+if $(HAIKU_GCC_VERSION[1]) = 2 {
+	SubDirCcFlags -DPNG_NO_PEDANTIC_WARNINGS ;
+}
+
+Translator PNGTranslator : 
+	PNGMain.cpp
+	PNGTranslator.cpp
+	PNGView.cpp
+
+	: be translation libpng.so z libtranslatorsutils.a $(TARGET_LIBSUPC++) $(HAIKU_LOCALE_LIBS)
+	: true
+;
+
+DoCatalogs PNGTranslator :
+	x-vnd.Haiku-PNGTranslator
+	:
+	PNGMain.cpp
+	PNGTranslator.cpp
+	PNGView.cpp
+;
+
+Package haiku-translationkit-cvs :
+	PNGTranslator :
+	boot home config add-ons Translators ;
+

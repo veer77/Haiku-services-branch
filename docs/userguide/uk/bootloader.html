@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+<head>
+<!-- 
+ *
+ * Copyright 2008-2010, Haiku. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ *
+ * Authors:
+ *		Humdinger <humdingerb@gmail.com>
+ * Translators:
+ *		totish
+ *
+-->
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta name="robots" content="all" />
+	<title>Завантажувач (Boot Loader)</title>
+	<link rel="stylesheet" type="text/css" href="../Haiku-doc.css" />
+</head>
+<body>
+
+<div id="banner">
+<div><span>User guide</span></div>
+</div>
+
+<div class="nav">
+<div class="inner">
+<ul class="lang-menu">
+<li class="now"><img src="../images/flags/uk.png" alt="" /> Українська</li>
+<li><a href="../fr/bootloader.html"><img src="../images/flags/fr.png" alt="" />Français</a></li>
+<li><a href="../de/bootloader.html"><img src="../images/flags/de.png" alt="" />Deutsch</a></li>
+<li><a href="../it/bootloader.html"><img src="../images/flags/it.png" alt="" />Italiano</a></li>
+<li><a href="../ru/bootloader.html"><img src="../images/flags/ru.png" alt="" />Русский</a></li>
+<li><a href="../es/bootloader.html"><img src="../images/flags/es.png" alt="" />Español</a></li>
+<li><a href="../sv_SE/bootloader.html"><img src="../images/flags/sv_SE.png" alt="" />Svenska</a></li>
+<li><a href="../jp/bootloader.html"><img src="../images/flags/jp.png" alt="" />日本語</a></li>
+<li><a href="../zh_CN/bootloader.html"><img src="../images/flags/zh_CN.png" alt="" /> 中文 ［中文］</a></li>
+<li><a href="../pt_PT/bootloader.html"><img src="../images/flags/pt_PT.png" alt="" />Português</a></li>
+<li><a href="../en/bootloader.html"><img src="../images/flags/gb.png" alt="" />English</a></li>
+</ul>
+<span>
+    <!-- «  <a href="installation.html">Installing Haiku</a> 
+::  -->
+    <a href="contents.html" class="uplink">Contents</a> 
+::  <a href="filesystem-layout.html">Filesystem layout</a>  »
+</span></div>
+</div>
+
+<div id="content">
+<div>
+
+<h1>Завантажувач (Boot Loader)</h1>
+
+<p>Завантажувач Haiku може допомогти вирішити апаратні проблеми або вибрати яку з систем запустити для встановлення, якщо у Вас більше однієї копії Haiku (установочний CD або USB-карта).<br />
+Він також допоможе при встановленні програмного компонента, котрий перешкоджає успішному завантаженню системи. Опція <i>Заборонити завантаження додатків користувача (Disable user add-ons)</i> запустить систему без компонентів, що встановив користувач, наприклад, без драйвера.</p>
+<p>Для того щоб зайти в настройки завантажувача необхідно натиснути і утримувати клавішу <span class="key">SHIFT</span> до початку завантаження Haiku. Якщо завантажувач встановлено , то Ви можете починати утримання <span class="key">SHIFT</span> перед вибором загрузочного запису  Haiku. Якщо Haiku єдина система на комп'ютер, то утримання можна починати під час початкових повідомлень BIOS.</p>
+<p><br /></p>
+<p>Ви побачите три пункти меню:</p>
+<table summary="bootloader menus" border="0" cellspacing="0" cellpadding="2">
+<tr><td><b>Вибір загруз. розділу<br />(Select boot volume)</b></td><td> </td><td>Вибрати з якого розділу запустити Haiku.</td></tr>
+<tr><td><b>Вибір опцій безпечного режиму<br />(Select safe mode options</b><br />
+</td><td> </td><td>Тут Ви знайдете кілька опцій, котрі допоможуть вирішити апаратні проблеми. При виборі опцій в нижній частині екрану відображається короткий її опис.
+<p><i>- Safe mode</i><br />
+<i>- Disable user add-ons</i><br />
+<i>- Disable IDE DMA</i><br />
+<i>- Use fail-safe video mode</i><br />
+<i>- Disable IO-APIC</i><br />
+<i>- Disable LOCAL APIC</i><br />
+<i>- Don't call the BIOS</i><br />
+<i>- Disable APM</i><br />
+<i>- Disable ACPI</i>
+</p></td></tr>
+<tr><td><b>Вибір опцій відладки<br />(Select debug options)</b><br />
+</td><td> </td><td>Тут Ви знайдете кілька опцій, котрі допоможуть Вам при пошуку неполадок або при отриманні додаткових відомостей при складанні звіту про помилки. Знову ж таки внизу можна бачити короткий опис для кожної опції.
+<p><i>- Enable serial debug output</i><br />
+<i>- Enable on screen debug output</i><br />
+<i>- Enable debug syslog</i>
+</p>
+<p>Якщо активувати меню "debug syslog", то після горячого перезавантаження ( після зависання системи) з'являться додаткові опції :</p>
+<p><i>- Display syslog from previous session</i><br />
+<i>- Save syslog from previous session</i>
+</p></td></tr>
+<tr><td class="onelinetop"><b>Вибір безпечного відео-режиму <br />(Select fail safe video mode)</b></td><td> </td><td>Якщо Ви активували опцію <i>Use fail-safe video mode</i>, то зможете вибрати роздільчу здатність екрану і глибину кольору.</td></tr>
+</table>
+<p><br /></p>
+<p>Після активації однієї чи більшої кількості опцій поверніться в головне меню і продовжіть загрузку. Ви побачите загрузочний екран
+:</p>
+<img src="../images/bootloader-images/boot-screen.png" alt="boot-screen.png" />
+
+<p>Якщо все гаразд, то іконки будуть швидко запалюватись по черзі.<br />
+Кожна з них відповідає певному етапу загрузки:</p>
+<table summary="layout" border="0" cellpadding="2" cellspacing="0"> 
+	<tr><td><b>Атом</b></td><td style="width:10px;"> </td><td>Ініціалізація модулів.</td></tr>
+	<tr><td><b>Диск з лупою</b></td><td> </td><td>Створення кореневої файлової системи (<span class="path">/</span>) і монтування файлової системи пристроїв (<span class="path">/dev</span>).</td></tr>
+	<tr><td><b>Карта розширення</b></td><td> </td><td>Ініціалізація менеджера пристроїв.</td></tr>
+	<tr><td><b>Загрузочний диск</b></td><td> </td><td>Монтування загрузочного диску.</td></tr>
+	<tr><td><b>Чіп</b></td><td> </td><td>Загрузка модулів процесора.</td></tr>
+	<tr><td><b>Папка</b></td><td> </td><td>Фінальна ініціалізація підсистем.</td></tr>
+	<tr><td><b>Ракета</b></td><td> </td><td>Загрузочний скрипт запускає систему.</td></tr>
+</table>
+
+</div>
+</div>
+
+<div class="nav">
+<div class="inner"><span>
+    <!-- «  <a href="installation.html">Installing Haiku</a> 
+::  -->
+    <a href="contents.html" class="uplink">Contents</a> 
+::  <a href="filesystem-layout.html">Filesystem layout</a>  »
+</span></div>
+</div>
+
+</body>
+</html>

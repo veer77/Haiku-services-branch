@@ -1,0 +1,17 @@
+1	norwegian_bokmål	x-vnd.haiku.zip-o-matic	829498916
+%ld files added.	file:ZipOMaticWindow.cpp		%ld filer lagt til.
+1 file added.	file:ZipOMaticWindow.cpp		1 fil lagt til.
+Archive	file:ZipperThread.cpp		Arkiv
+Archive created OK	file:ZipOMaticWindow.cpp		Arkivet ble opprettet
+Are you sure you want to stop creating this archive?	file:ZipOMaticWindow.cpp		Er du sikker på at du ønsker å avbryte arkiveringen?
+Continue	file:ZipOMaticWindow.cpp		Fortsett
+Creating archive: %s	file:ZipOMaticWindow.cpp		Oppretter arkiv: %s
+Do you want to stop them?	file:ZipOMatic.cpp		Ønsker du å avbryte dem?
+Error creating archive	file:ZipOMaticWindow.cpp		Noe gikk galt under arkiveringen.
+Filename: %s	file:ZipOMaticWindow.cpp		Filnavn: %s
+Let them continue	file:ZipOMatic.cpp		La dem fortsette
+Preparing to archive	file:ZipperThread.cpp		Forbereder arkivering
+Stop	file:ZipOMaticWindow.cpp		Avbryt
+Stop them	file:ZipOMatic.cpp		Avbryt dem
+Stopped	file:ZipOMaticWindow.cpp		Avbrutt
+You have %ld Zip-O-Matic running.\n\n	file:ZipOMatic.cpp		%ld Zip-O-Matic kjører.\n\n

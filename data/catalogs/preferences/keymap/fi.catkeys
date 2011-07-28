@@ -1,0 +1,22 @@
+1	finnish	x-vnd.Haiku-Keymap	1259868356
+(Current)	Keymap window		(Nykyinen)
+Acute trigger	Keymap window		Akuuttiaksenttiliipaisin
+Circumflex trigger	Keymap window		Sirkumfleksiliipaisin
+Diaeresis trigger	Keymap window		Treemaliipaisin
+File	Keymap window		Tiedosto
+Font	Keymap window		Kirjasin
+Grave trigger	Keymap window		Gravisliipaisin
+Keymap	System name		Näppäinkartta-asetukset
+Layout	Keymap window		Ulkoasu
+Open…	Keymap window		Avaa…
+Quit	Keymap window		Poistu
+Revert	Keymap window		Palauta
+Sample and clipboard:	Keymap window		Näyte ja leikepöytä:
+Save as…	Keymap window		Tallenna nimellä…
+Select dead keys	Keymap window		Valitse kuolleet näppäimet
+Switch shortcut keys	Keymap window		Vaihda pikanäppäimiä
+Switch shortcut keys to Haiku mode	Keymap window		Vaihda pikanäppäimet Haiku-tilaan
+Switch shortcut keys to Windows/Linux mode	Keymap window		Vaihda pikanäppäimet Windows/Linux -tilaan
+System:	Keymap window		Järjestelmä:
+Tilde trigger	Keymap window		Aaltoviivaliipaisin
+User:	Keymap window		Käyttäjä:

@@ -1,0 +1,30 @@
+SubDir HAIKU_TOP src add-ons translators pcx ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+SubDirHdrs [ FDirName $(SUBDIR) $(DOTDOT) shared ] ;
+
+AddResources PCXTranslator : PCXTranslator.rdef ;
+
+Translator PCXTranslator :
+	# PCXTranslator classes
+	main.cpp
+	PCXTranslator.cpp
+	ConfigView.cpp
+	PCX.cpp
+	: be translation libtranslatorsutils.a $(TARGET_LIBSUPC++) $(HAIKU_LOCALE_LIBS)
+	: true
+;
+
+DoCatalogs PCXTranslator :
+	x-vnd.Haiku-PCXTranslator
+	:
+	main.cpp
+	ConfigView.cpp
+	PCXTranslator.cpp
+;
+
+Package haiku-translationkit-cvs :
+	PCXTranslator
+	: boot home config add-ons Translators
+	;

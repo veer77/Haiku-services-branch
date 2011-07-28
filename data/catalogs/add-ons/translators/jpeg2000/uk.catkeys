@@ -1,0 +1,6 @@
+1	ukrainian	x-vnd.Haiku-JPEG2000Translator	3397102117
+About	JPEG2000Translator		Про
+Be Bitmap Format (JPEG2000Translator)	JPEG2000Translator		Be Bitmap Format (Перетворювач JPEG2000)
+Output only codestream (.jpc)	JPEG2000Translator		Виводити тільки кодовий потік (.jpc)
+Output quality	JPEG2000Translator		Якість вихідних
+Write black-and-white images as RGB24	JPEG2000Translator		Записати чорно-білі зображення як RGB24

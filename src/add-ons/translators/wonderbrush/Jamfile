@@ -1,0 +1,43 @@
+SubDir HAIKU_TOP src add-ons translators wonderbrush ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+# Include support sub folder
+SEARCH_SOURCE += [ FDirName $(HAIKU_TOP) src add-ons translators wonderbrush support ] ;
+
+UseLibraryHeaders zlib ;
+SubDirHdrs [ FDirName $(SUBDIR) $(DOTDOT) shared ] ;
+
+AddResources WonderBrushTranslator : WonderBrushTranslator.rdef ;
+
+Translator WonderBrushTranslator :
+	Canvas.cpp
+	Layer.cpp
+	WonderBrushImage.cpp
+	WonderBrushMain.cpp
+	WonderBrushTranslator.cpp
+	WonderBrushView.cpp
+
+	# support
+	bitmap_compression.cpp
+	blending.cpp
+	lab_convert.cpp
+
+	: be translation z libtranslatorsutils.a $(TARGET_LIBSUPC++)
+	$(HAIKU_LOCALE_LIBS)
+	: true
+;
+
+DoCatalogs WonderBrushTranslator :
+	x-vnd.Haiku-WonderBrushTranslator
+	:
+	Layer.cpp
+	WonderBrushMain.cpp
+	WonderBrushTranslator.cpp
+	WonderBrushView.cpp
+;
+
+Package haiku-translationkit-cvs :
+	WonderBrushTranslator :
+	boot home config add-ons Translators ;
+

@@ -1,0 +1,22 @@
+1	ukrainian	x-vnd.Haiku-Mouse	1036956709
+...by Andrew Edward McCall	MouseApplication		...автор Andrew Edward McCall
+1-Button	SettingsView		Однокнопочна
+2-Button	SettingsView		Двухкнопочна
+3-Button	SettingsView		Трикнопочна
+Accept first click	SettingsView		Сприймати перший клік
+Click to focus	SettingsView		Клацніть для встановлення фокуса
+Defaults	MouseWindow		За замовчуванням
+Dig Deal	MouseApplication		Чудово
+Double-click speed	SettingsView		Швидкість подвійного кліку
+Double-click test area	SettingsView		Область для перевірки подвійного кліку
+Fast	SettingsView		Швидко
+Focus follows mouse	SettingsView		Фокус слідкує за вказівником
+Focus mode:	SettingsView		Режим фокуса:
+Instant warp	SettingsView		Миттєве переміщення
+Mouse acceleration	SettingsView		Прискорення вказівника
+Mouse speed	SettingsView		Швидкість переміщення вказівника
+Mouse type:	SettingsView		Тип миші:
+Normal	SettingsView		Нормально
+Revert	MouseWindow		Повернути
+Slow	SettingsView		Повільно
+Warp	SettingsView		Переміщення

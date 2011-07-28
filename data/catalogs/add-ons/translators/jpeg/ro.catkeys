@@ -1,0 +1,20 @@
+1	romanian	x-vnd.Haiku-JPEGTranslator	1536577076
+About	JPEGTranslator		Despre
+Be Bitmap Format (JPEGTranslator)	JPEGTranslator		Format imagine Be (TraducătorJPEG)
+High	JPEGTranslator		Sus
+JPEG Library Error: %s\n	be_jerror		Eroare bibliotecă JPEG: %s\n
+JPEG Library Warning: %s\n	be_jerror		Avertisment bibliotecă JPEG: %s\n
+JPEG images	JPEGTranslator		Imagini JPEG
+Low	JPEGTranslator		Jos
+Make file smaller (sligthtly worse quality)	JPEGTranslator		Micșorează fișierul (calitate mai scăzută)
+None	JPEGTranslator		Nimic
+Output quality	JPEGTranslator		Calitatea rezultatului
+Output smoothing strength	JPEGTranslator		Produce putere de netezire
+Prevent colors 'washing out'	JPEGTranslator		Previne „spălarea” culorilor
+Read	JPEGTranslator		Citește
+Read greyscale images as RGB32	JPEGTranslator		Citește imaginile cu scală de gri ca RGB32
+Show warning messages	JPEGTranslator		Afișează mesajele de avertisment
+Use CMYK code with 0 for 100% ink coverage	JPEGTranslator		Utilizează codul CMYK cu 0 pentru acoperire 100% cu cerneală
+Use progressive compression	JPEGTranslator		Utilizează compresie progresivă
+Write	JPEGTranslator		Scrie
+Write black-and-white images as RGB24	JPEGTranslator		Scrie imaginile alb-negru ca RGB24

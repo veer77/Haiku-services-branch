@@ -1,0 +1,10 @@
+1	ukrainian	x-vnd.Haiku-GIFTranslator	2939496153
+Be Bitmap Format (GIFTranslator)	GIFTranslator		Формат Be Bitmap (Перетворювач GIF)
+BeOS system	GIFView		Система BeOS
+Colors	GIFView		Кольори
+GIF image	GIFTranslator		Зображення GIF
+Greyscale	GIFView		сірий
+Use RGB color	GIFView		Використовувати кольори RGB
+Use dithering	GIFView		Використовувати згладжування
+Write interlaced images	GIFView		Записати зображення, що переплітаються
+Write transparent images	GIFView		Записати прозорі зображення

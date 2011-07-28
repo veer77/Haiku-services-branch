@@ -1,0 +1,22 @@
+1	ukrainian	x-vnd.Haiku-PowerStatus	1297803567
+About	PowerStatus		про
+Battery charging	PowerStatus		Батарея заряджається
+Battery discharging	PowerStatus		Батарея розряджена
+Battery info	PowerStatus		Дані батареї
+Battery info…	PowerStatus		Дані батареї…
+Battery unused	PowerStatus		Батарея не використовується
+Design capacity: 	PowerStatus		Проектна ємність: 
+Install in Deskbar	PowerStatus		Встановити в Deskbar
+OK	PowerStatus		Гаразд
+Power status box	PowerStatus		Вікно стану живлення
+PowerStatus\nwritten by Axel Dörfler, Clemens Zeidler\nCopyright 2006, Haiku, Inc.\n	PowerStatus		PowerStatus\nавтори Axel Dörfler, Clemens Zeidler\nCopyright 2006, Haiku, Inc.\n
+Quit	PowerStatus		Вийти
+Run in window	PowerStatus		Запустити у вікні
+Show percent	PowerStatus		Показати процент
+Show status icon	PowerStatus		Показати іконку стану
+Show text label	PowerStatus		Показати текстові мітки
+Show time	PowerStatus		Показати час
+charging	PowerStatus		зарядка
+discharging	PowerStatus		розрядка
+non-rechargeable	PowerStatus		той що не може перезаряджатись
+rechargeable	PowerStatus		та що може перезаряджатись

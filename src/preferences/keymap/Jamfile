@@ -1,0 +1,22 @@
+SubDir HAIKU_TOP src preferences keymap ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+UsePrivateHeaders interface shared ;
+
+Preference Keymap :
+	KeyboardLayout.cpp
+	KeyboardLayoutView.cpp
+	Keymap.cpp
+	KeymapApplication.cpp
+	KeymapListItem.cpp
+	KeymapWindow.cpp
+
+	: be tracker $(HAIKU_LOCALE_LIBS) libshared.a $(TARGET_LIBSTDC++)
+	: Keymap.rdef
+;
+
+DoCatalogs Keymap :
+	x-vnd.Haiku-Keymap
+	: KeymapWindow.cpp
+;

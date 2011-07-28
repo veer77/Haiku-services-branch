@@ -1,0 +1,93 @@
+1	belarusian	x-vnd.Haiku.CodyCam	441085909
+Can't find an available connection to the video window	CodyCam		Немагчыма знайсці даступнае спалучэнне да акна відэа
+Cannot connect the video source to the video window	CodyCam		Немагчыма падключыць відэакрыніцу для відэаакна
+Cannot create a video window	CodyCam		Не ўдалося стварыць відэаакно
+Cannot find a video source. You need a webcam to use CodyCam.	CodyCam		Немагчыма запусціць крыніцу відэа. Вам патрэбна вэб-камера.
+Cannot find an available video stream	CodyCam		Немагчыма знайсці даступны відэапаток
+Cannot find the media roster	CodyCam		Не ўдалося знайсці медыа ростэр
+Cannot get a time source	CodyCam		Немагчыма знайсці крыніцу часу
+Cannot register the video window	CodyCam		Немагчыма зарэгістраваць акно відэа
+Cannot seek time source!	CodyCam		Немагчыма шукаць часавую крыніцу
+Cannot set the time source for the video source	CodyCam		Немагчыма ўстанавіць часавую крыніцу для відэакрыніцы
+Cannot set the time source for the video window	CodyCam		Немагчыма ўстанавіць часавую крыніцу для відэаакна
+Cannot start the video source	CodyCam		Не ўдалося запусціць відэакрыніцу
+Cannot start the video window	CodyCam		Не ўдалося запусціць відэаакно
+Cannot start time source!	CodyCam		Немагчыма запусціць крыніцу часу!
+Capture Rate Menu	CodyCam		Меню частаты захвату
+Capture controls	CodyCam		Кіраванне захватам
+Capturing Image…	VideoConsumer.cpp		Захват выявы...
+Closing the window\n	VideoConsumer.cpp		Закрываю акно\n
+CodyCam	System name		Камера
+Connected…	VideoConsumer.cpp		Падключаны...
+Couldn't find requested directory on server	VideoConsumer.cpp		Немагчыма знайсці запрошаны каталёг на серверы
+Directory:	CodyCam		Каталёг:
+Error creating output file	VideoConsumer.cpp		Памылка пры стварэнні выходнага файлу
+Error getting initial latency for the capture node	CodyCam		Памылка пры вызначэнні затрымкі для вузлу захвату
+Error setting type of output file	VideoConsumer.cpp		Памылка пры прызначэнні тыпу выходнага файлу
+Error writing output file	VideoConsumer.cpp		Памылка пры запісу выходнага файла
+Every 10 minutes	CodyCam		Кожныя 10 хвілін
+Every 15 minutes	CodyCam		Кожныя 15 мінут
+Every 15 seconds	CodyCam		Кожныя 15 секунд
+Every 2 hours	CodyCam		Кожныя 2 гадзіны
+Every 24 hours	CodyCam		Кожныя 24 гадзіны
+Every 30 minutes	CodyCam		Кожныя 30 секунд
+Every 30 seconds	CodyCam		Кожныя 30 секунд
+Every 4 hours	CodyCam		Кожныя 4 гадзіны
+Every 5 minutes	CodyCam		Кожныя 5 хвілін
+Every 8 hours	CodyCam		Кожныя 8 гадзін
+Every hour	CodyCam		Кожную гадзіну
+Every minute	CodyCam		Кожную хвіліну
+FTP	CodyCam		FTP
+File	CodyCam		Файл
+File %s # unterminated quote at end of file\n	SettingsHandler		Файл %s # невыдаленая кавычка ў канцы файла\n
+File %s ; Line %ld # unterminated quote\n	SettingsHandler		Файл %s ; Страка %ld # невыдаленая кавычка\n
+File %s; Line %ld # %s	SettingsHandler		Файл %s ; Страка %ld # %s
+File name:	CodyCam		Імя файла:
+File transmission failed	VideoConsumer.cpp		Не ўдалося перадаць файл
+Format:	CodyCam		Фармат:
+Image Format Menu	CodyCam		Меню Фармата Выявы
+JPEG image	CodyCam		Выява JPEG
+Last Capture: 	VideoConsumer.cpp		Апошні захват:
+Local	CodyCam		Лакальны
+Locking the window\n	VideoConsumer.cpp		Прывязка акна\n
+Logging in…	VideoConsumer.cpp		Уваход...
+Login:	CodyCam		Лагін:
+Never	CodyCam		Ніколі
+OK	CodyCam		OK
+Output	CodyCam		Выхад:
+PASS <suppressed>  (real password sent)\n	FtpClient		PASS <несапраўдны> (рэальны пароль адпраўлены)\n
+Passive FTP	CodyCam		Пасіўны FTP
+Password:	CodyCam		Пароль:
+Quit	CodyCam		Выйсці
+Rate:	CodyCam		Тэмп:
+Remote host has closed the connection.\n	FtpClient		Падалены хост закрыў спалучэнне.\n
+Rename failed	VideoConsumer.cpp		Перайменаванне не ўдалося
+Renaming…	VideoConsumer.cpp		Пераймяноўваем...
+SFTP	CodyCam		SFTP
+Send to…	CodyCam		Адпраўлена да...
+Server login failed	VideoConsumer.cpp		Не ўдалося залагініцца
+Server:	CodyCam		Сервер:
+Start video	CodyCam		Запусціць відэа
+Stop video	CodyCam		Астанавіць відэа
+Transmitting…	VideoConsumer.cpp		Перадаецца...
+Type:	CodyCam		Тып:
+Video settings	CodyCam		Наладкі відэа
+Waiting…	CodyCam		Чакаем...
+capture rate expected	CodyCam		частата захвату чаканая
+cmd: '%s'\n	FtpClient		cmd: '%s'\n
+destination directory expected	CodyCam		каталёг прызначэння чаканы
+image file format expected	CodyCam		фармат файлу выявы чаканы
+invalid upload client %ld\n	VideoConsumer.cpp		Неправільны кліент загрузкі %ld\n
+login ID expected	CodyCam		login ID чаканы
+on or off expected	Settings	Do not translate 'on' and 'off'	on або off чаканыя
+password	CodyCam		пароль
+password expected	CodyCam		пароль чаканы
+read: %d\n	SftpClient		чытаю: %d\n
+read: %ld\n	SftpClient		чытаю: %ld\n
+reply: %d, %d\n	FtpClient		адказ: %d, %d\n
+reply: '%s'\n	SftpClient		адказ: '%s'\n
+server address expected	CodyCam		адрас сервера чаканы
+still image filename expected	CodyCam		імя файла статычнай выявы чаканае
+unknown command	SettingsHandler		невядомая каманда
+unrecognized upload client specified	CodyCam		указаны кліент загрузкі не пазнаны
+upload client name expected	CodyCam		імя кліента загрузкі чаканае

@@ -1,0 +1,19 @@
+SubDir HAIKU_TOP src add-ons kernel drivers ports usb_serial ;
+
+UsePrivateKernelHeaders ;
+UseHeaders [ FDirName $(HAIKU_TOP) headers os drivers tty ] : true ;
+
+SubDirC++Flags -fno-rtti ;
+
+KernelAddon usb_serial :
+	Driver.cpp
+	SerialDevice.cpp
+	Tracing.cpp
+
+	ACM.cpp
+	FTDI.cpp
+	KLSI.cpp
+	Prolific.cpp
+;
+
+AddResources usb_serial : usb_serial.rdef ;

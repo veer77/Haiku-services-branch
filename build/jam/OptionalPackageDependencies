@@ -1,0 +1,38 @@
+
+# package dependencies
+#
+# For transitive dependencies dependants should be listed before their
+# dependencies.
+
+OptionalPackageDependencies APR-util : APR Expat ;
+OptionalPackageDependencies AllegroLibs : XiphLibs ;
+OptionalPackageDependencies ArmyKnife : TagLib ;
+OptionalPackageDependencies Beam : LibIconv LibLayout OpenSSL PCRE ;
+OptionalPackageDependencies BeHappy : BeBook NetSurf ;
+OptionalPackageDependencies BurnItNow : CDRecord ;
+OptionalPackageDependencies CDRecord : LibIconv ;
+OptionalPackageDependencies Curl : OpenSSL ;
+OptionalPackageDependencies DevelopmentBase : CDRecord DevelopmentMin Yasm ;
+OptionalPackageDependencies Development : DevelopmentBase Perl ;
+OptionalPackageDependencies GetText : LibIconv ;
+OptionalPackageDependencies Git : Expat Curl OpenSSL LibIconv ;
+OptionalPackageDependencies ICU-devel : DevelopmentBase ;
+OptionalPackageDependencies LibLayout : DevelopmentBase ;
+OptionalPackageDependencies Man : Groff ;
+OptionalPackageDependencies Tar : LibIconv ;
+OptionalPackageDependencies Python : Bzip ;
+OptionalPackageDependencies Mercurial : Python ;
+OptionalPackageDependencies Neon : LibXML2 ;
+OptionalPackageDependencies NetFS : UserlandFS ;
+OptionalPackageDependencies NetSurf : OpenSSL Curl LibXML2 LibIconv Libmng ;
+OptionalPackageDependencies OpenSSH : OpenSSL ;
+OptionalPackageDependencies Paladin : CCache Fastdep ;
+OptionalPackageDependencies Pe : PCRE ;
+OptionalPackageDependencies SDLLibs : XiphLibs libmad libmikmod Libmng libmodplug physfs ;
+OptionalPackageDependencies Subversion : APR-util Neon LibIconv LibXML2 OpenSSL SQLite ;
+OptionalPackageDependencies Transmission : LibEvent Curl OpenSSL LibIconv ;
+OptionalPackageDependencies Vim : GetText LibIconv ;
+OptionalPackageDependencies WebPositive : Curl LibXML2 SQLite ;
+OptionalPackageDependencies XZ-Utils : Tar ;
+
+OptionalPackageDependencies MandatoryPackages : ICU Sed Tar ;

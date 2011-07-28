@@ -1,0 +1,33 @@
+SubDir HAIKU_TOP src apps soundrecorder ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+UsePrivateHeaders shared ;
+
+Application SoundRecorder :
+	DrawButton.cpp
+	DrawingTidbits.cpp
+	FileUtils.cpp
+	RecorderApp.cpp
+	RecorderWindow.cpp
+	ScopeView.cpp
+	SoundConsumer.cpp
+	SoundListView.cpp
+	SoundUtils.cpp
+	TrackSlider.cpp
+	TransportButton.cpp
+	UpDownButton.cpp
+	VUView.cpp
+	VolumeSlider.cpp
+	: be $(HAIKU_LOCALE_LIBS) media tracker $(TARGET_LIBSTDC++)
+	: SoundRecorder.rdef
+;
+
+DoCatalogs SoundRecorder :
+	x-vnd.Haiku-SoundRecorder
+	:
+	RecorderWindow.cpp
+	SoundListView.cpp
+;
+
+

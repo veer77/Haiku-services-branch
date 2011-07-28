@@ -1,0 +1,14 @@
+1	ukrainian	x-vnd.Haiku-DataTranslations	3458095697
+An item named '%name' already exists in the Translators folder! Shall the existing translator be overwritten?	DataTranslations		 Елемент з назвою '%name' повністю присутній у папці Перетворювачів! Переписати існуючий Перетворювач?
+Cancel	DataTranslations		Відміна
+Could not install %s:\n%s	DataTranslations		Неможливо встановити %s:\n%s
+DataTranslations - Note	DataTranslations		Перетворення даних — Заувага
+Info	DataTranslations		інформація
+Info:	DataTranslations		Інформація:
+Name:	DataTranslations		І’мя:
+OK	DataTranslations		Гаразд
+Overwrite	DataTranslations		Перезаписати
+Path:	DataTranslations		Шлях:
+The item '%name' does not appear to be a Translator and will not be installed.	DataTranslations		Елемент '%name' не є перетворювачем і його не буде встановлено.
+The new translator has been installed successfully.	DataTranslations		Новий транслятор був успішно встановлений.
+Version:	DataTranslations		Версія:

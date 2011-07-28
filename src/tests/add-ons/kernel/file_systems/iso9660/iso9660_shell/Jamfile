@@ -1,0 +1,34 @@
+SubDir HAIKU_TOP src tests add-ons kernel file_systems iso9660 iso9660_shell ;
+
+UsePrivateHeaders fs_shell ;
+
+SEARCH_SOURCE
+	+= [ FDirName $(HAIKU_TOP) src add-ons kernel file_systems iso9660 ] ;
+
+# set some additional defines
+{
+	local defines = [ FDefines FS_SHELL USER DEBUG ] ;
+	SubDirCcFlags $(defines) ;
+	SubDirC++Flags $(defines) -fno-exceptions ;
+}
+
+local libHaikuCompat ;
+if $(HOST_PLATFORM_BEOS_COMPATIBLE) && ! $(HOST_PLATFORM_HAIKU_COMPATIBLE) {
+	libHaikuCompat = libhaikucompat_build.a ;
+}
+
+# platform specific libraries
+local fsShellCommandLibs ;
+if ! $(HOST_PLATFORM_BEOS_COMPATIBLE) {
+	fsShellCommandLibs = $(HOST_NETWORK_LIBS) ;
+}
+
+BuildPlatformMain iso9660_shell
+	:
+	iso9660.cpp
+	iso9660_identify.cpp
+	kernel_interface.cpp
+
+	: <build>fs_shell.a $(libHaikuCompat) $(HOST_LIBSUPC++) $(HOST_LIBSTDC++)
+	  $(HOST_LIBROOT) $(fsShellCommandLibs)
+;

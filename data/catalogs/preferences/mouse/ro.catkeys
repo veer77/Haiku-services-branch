@@ -1,0 +1,23 @@
+1	romanian	x-vnd.Haiku-Mouse	3904912604
+...by Andrew Edward McCall	MouseApplication		...de Andrew Edward McCall
+1-Button	SettingsView		1-buton
+2-Button	SettingsView		2-Butoane
+3-Button	SettingsView		3-Butoane
+Accept first click	SettingsView		Acceptă primul clic
+Click to focus	SettingsView		Clic pentru a focaliza
+Click to focus and raise	SettingsView		Clic pentu a focaliza și a mări
+Defaults	MouseWindow		Implicite
+Dig Deal	MouseApplication		Dig Deal
+Double-click speed	SettingsView		Viteză dublu-clic
+Double-click test area	SettingsView		Zonă de text pentru dublu-clic
+Fast	SettingsView		Rapid
+Focus follows mouse	SettingsView		Focalizarea urmărește mausul
+Focus mode:	SettingsView		Mod focalizare:
+Instant warp	SettingsView		Încadrare instantă
+Mouse acceleration	SettingsView		Accelerare mouse
+Mouse speed	SettingsView		Viteză mouse
+Mouse type:	SettingsView		Tip mouse:
+Normal	SettingsView		Normal
+Revert	MouseWindow		Revenire
+Slow	SettingsView		Încet
+Warp	SettingsView		Încadrare

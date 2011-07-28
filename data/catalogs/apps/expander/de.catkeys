@@ -1,0 +1,49 @@
+1	german	x-vnd.Haiku-Expander	187676748
+Are you sure you want to stop expanding this\narchive? The expanded items may not be complete.	ExpanderWindow		Soll das Entpacken wirklich abgebrochen werden? Die entpackten Dateien sind eventuell nicht vollständig.
+Automatically expand files	ExpanderPreferences		Archiv automatisch entpacken
+Automatically show contents listing	ExpanderPreferences		Dateiliste automatisch anzeigen
+Cancel	ExpanderPreferences		Abbrechen
+Cancel	ExpanderWindow		Abbrechen
+Close	ExpanderMenu		Schließen
+Close window when done expanding	ExpanderPreferences		Fenster nach dem Entpacken schließen
+Continue	ExpanderWindow		Fortsetzen
+Creating listing for '%s'	ExpanderWindow		Dateiliste für '%s' wird erstellt
+Destination	ExpanderWindow		Ziel
+Destination folder:	ExpanderPreferences		Zielordner:
+Error when expanding archive	ExpanderWindow		Fehler beim Entpacken
+Expand	ExpanderMenu		Entpacken
+Expand	ExpanderWindow		Entpacken
+Expander	System name		Entpacker
+Expander settings	ExpanderPreferences		Entpacker-Einstellungen
+Expander: Choose destination	DirectoryFilePanel		Entpacker: Zielordner wählen
+Expander: Open	ExpanderWindow		Entpacker: Öffnen
+Expanding '%s'	ExpanderWindow		'%s' wird entpackt
+Expansion:	ExpanderPreferences		Entpacken:
+File	ExpanderMenu		Datei
+File expanded	ExpanderWindow		Archiv wurde entpackt
+Hide contents	ExpanderWindow		Inhalt verbergen
+Leave destination folder path empty	ExpanderPreferences		Keinen Zielordner vorgeben
+OK	ExpanderPreferences		OK
+Open destination folder after extraction	ExpanderPreferences		Zielordner nach dem Entpacken öffnen
+Other:	ExpanderPreferences		Allgemeines:
+Same directory as source (archive) file	ExpanderPreferences		Gleicher Ordner wie Quelldatei
+Select	DirectoryFilePanel		Auswählen
+Select	ExpanderPreferences		Auwählen
+Select '%s'	DirectoryFilePanel		'%s' wählen
+Select current	DirectoryFilePanel		Aktuellen wählen
+Set destination…	ExpanderMenu		Ziel wählen…
+Set source…	ExpanderMenu		Quelle wählen…
+Settings	ExpanderMenu		Einstellungen
+Settings…	ExpanderMenu		Einstellungen…
+Show contents	ExpanderMenu		Inhalt zeigen
+Show contents	ExpanderWindow		Inhalt zeigen
+Source	ExpanderWindow		Quelle
+Stop	ExpanderMenu		Stopp
+Stop	ExpanderWindow		Stopp
+The destination folder does not exist.	ExpanderWindow		Der Zielordner existiert nicht.
+The destination is not a folder.	ExpanderWindow		Das Ziel ist kein Ordner.
+The destination is read only.	ExpanderWindow		Das Ziel ist schreibgeschützt.
+The file doesn't exist	ExpanderWindow		Die Datei existiert nicht
+The folder was either moved, renamed or not\nsupported.	ExpanderWindow		Der Ordner wurde entweder verschoben, umbenannt oder wird nicht unterstützt.
+Use:	ExpanderPreferences		Benutzerdefiniert:
+is not supported	ExpanderWindow		wird nicht unterstützt

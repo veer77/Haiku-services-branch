@@ -1,0 +1,85 @@
+1	romanian	x-vnd.Haiku-Terminal	2238213580
+Abort	Terminal Shell		Renunță
+Appearance	Terminal PrefWindow		Aspect
+Background	Terminal AppearancePrefView		Fundal
+Black on White	Terminal colors schema		Negru pe alb
+Cancel	Terminal PrefWindow		Anulează
+Cancel	Terminal SetTitleWindow		Anulează
+Cancel	Terminal TermView		Anulează
+Cancel	Terminal TermWindow		Anulează
+Change directory	Terminal TermView		Modifică dosar
+Clear all	Terminal TermWindow		Eliberează tot
+Close	Terminal TermWindow		Închide
+Close active tab	Terminal TermWindow		Închide tabul activ
+Close other tabs	Terminal TermWindow		Închide alte taburi
+Close tab	Terminal TermWindow		Închide tab
+Close window	Terminal TermWindow		Închide fereastră
+Color schema:	Terminal AppearancePrefView		Schemă de culoare:
+Color:	Terminal AppearancePrefView		Culoare:
+Confirm exit if active programs exist	Terminal AppearancePrefView		Confirmă ieșirea dacă există programe active
+Copy	Terminal TermWindow		Copiază
+Copy here	Terminal TermView		Copiază aici
+Create link here	Terminal TermView		Creează legătură aici
+Custom	Terminal colors schema		Personalizat
+Decrease	Terminal TermWindow		Micșorează
+Don't save	Terminal PrefWindow		Nu salva
+Edit	Terminal TermWindow		Editează
+Edit tab title…	Terminal TermWindow		Editează titlu tab...
+Error!	Terminal getString		Eroare!
+Find	Terminal FindWindow		Găsește
+Find failed	Terminal TermWindow		Găsește eșuat
+Find next	Terminal TermWindow		Găsește următorul
+Find previous	Terminal TermWindow		Găsește precedent
+Find…	Terminal TermWindow		Caută...
+Font:	Terminal AppearancePrefView		Font:
+Full screen	Terminal TermWindow		Ecran complet
+Increase	Terminal TermWindow		Mărește
+Insert path	Terminal TermView		Inserează cale
+Match case	Terminal FindWindow		Potrivire caz
+Match word	Terminal FindWindow		Potrivire cuvânt
+Move here	Terminal TermView		Mută aici
+New Terminal	Terminal TermWindow		Terminal nou
+New tab	Terminal TermWindow		Tab nou
+No search string was entered.	Terminal TermWindow		Nu s-a introdus un șir de căutat.
+Not found.	Terminal TermWindow		Nu a fost găsit.
+Nothing is selected.	Terminal TermWindow		Nimic nu este selectat.
+OK	Terminal PrefWindow		OK
+OK	Terminal SetTitleWindow		OK
+OK	Terminal TermApp		OK
+OK	Terminal TermWindow		OK
+Page setup…	Terminal TermWindow		Configurări pagină...
+Paste	Terminal TermWindow		Lipește
+Print	Terminal TermWindow		Tipărește
+Print cancelled.	Terminal TermWindow		Tipărire anulată.
+Quit	Terminal TermWindow		Părăsește
+Really close?	Terminal TermWindow		Sigur închideți?
+Save	Terminal PrefWindow		Salvează
+Save as default	Terminal TermWindow		Salvează ca implicit
+Save changes to this settings panel?	Terminal PrefWindow		Salvați modificările la acest panou de configurări?
+Save to file…	Terminal PrefWindow		Salvează în fișier...
+Search forward	Terminal FindWindow		Caută înainte
+Select all	Terminal TermWindow		Selectează tot
+Selected background	Terminal AppearancePrefView		Fundal selectat
+Selected text	Terminal AppearancePrefView		Text selectat
+Set window title	Terminal TermWindow		Configurează titlu fereastră
+Settings	Terminal TermWindow		Configurări
+Settings…	Terminal TermWindow		Configurări...
+Shell 	Terminal TermWindow		Shell
+Size:	Terminal AppearancePrefView		Dimensiune:
+Switch Terminals	Terminal TermWindow		Comută terminale
+Tab title:	Terminal AppearancePrefView		Titlu tab:
+Tab title:	Terminal TermWindow		Titlu tab:
+Terminal couldn't start the shell. Sorry.	Terminal TermApp		Terminalul nu a putut porni shell. Îmi pare rău.
+Text	Terminal AppearancePrefView		Text
+Text encoding	Terminal TermWindow		Codificare text
+Text not found.	Terminal TermWindow		Nu s-a găsit textul.
+Text size	Terminal TermWindow		Dimensiune text
+Use default	Terminal SetTitleWindow		Utilizează implicit
+Use default shell	Terminal Shell		Utilizează shell implicit
+Use selection	Terminal FindWindow		Utilizează selecție
+Use text:	Terminal FindWindow		Utilizează text:
+White on Black	Terminal colors schema		Alb pe negru
+Window size	Terminal TermWindow		Dimensiune fereastră
+Window title:	Terminal AppearancePrefView		Titlu fereastră:
+Window title…	Terminal TermWindow		Titlu fereastră...
+size	Terminal TermView		dimensiune

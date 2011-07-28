@@ -1,0 +1,69 @@
+1	romanian	x-vnd.Haiku-StyledEdit	3472082864
+???	LoadAlert		???
+Align	Menus		Aliniază
+Black	Menus		Negru
+Blue	Menus		Albastru
+Bold	Menus		Aldin
+Can't undo	Menus		Nu se poate reface
+Cancel	FindandReplaceWindow		Anulează
+Cancel	QuitAlert		Anulează
+Cancel	RevertToSavedAlert		Anulează
+Cancel	SaveAlert		Anulează
+Case-sensitive	FindandReplaceWindow		Sensibil la majuscule
+Center	Menus		Centru
+Characters:	Statistics		Caractere:
+Close	Menus		Închide
+Color	Menus		Culoare
+Copy	Menus		Copiază
+Cut	Menus		Taie
+Cyan	Menus		Cyan
+Default	Open_and_SaveAsPanel		Implicit
+Document	Menus		Document
+Document statistics	Statistics		Statistici document
+Don't save	QuitAlert		Nu salva
+Don't save	SaveAlert		Nu salva
+Edit	Menus		Editează
+Encoding	Open_and_SaveAsPanel		Codare
+Find	FindandReplaceWindow		Găsește
+Find again	Menus		Găsește din nou
+Find selection	Menus		Găsește selecție
+Find:	FindandReplaceWindow		Găsește:
+Find…	Menus		Găsește...
+Font	Menus		Font
+Green	Menus		Verde
+Italic	Menus		Cursiv
+Left	Menus		Stânga
+Lines:	Statistics		Linii:
+Magenta	Menus		Magenta
+New	Menus		Nou
+OK	LoadAlert		OK
+OK	RevertToSavedAlert		OK
+OK	SaveAlert		OK
+OK	Statistics		OK
+Open…	Menus		Deschide...
+Paste	Menus		Lipește
+Print…	Menus		Tipărește...
+Quit	Menus		Părăsește
+Red	Menus		Roșu
+Redo typing	QuitAlert		Repetă tastarea
+Replace	FindandReplaceWindow		Înlocuiește
+Replace all	FindandReplaceWindow		Înlocuiește tot
+Replace in all windows	FindandReplaceWindow		Înlocuiește în toate ferestrele
+Replace with:	FindandReplaceWindow		Înlocuiește cu:
+Replace…	Menus		Înlocuiește...
+Revert to saved…	Menus		Revenire la salvat...
+Right	Menus		Dreapta
+Save	Menus		Salvează
+Save	QuitAlert		Salvează
+Save	SaveAlert		Salvează
+Save as…	Menus		Salvează ca...
+Search backwards	FindandReplaceWindow		Caută înapoi 
+Select all	Menus		Selectează tot
+Size	Menus		Dimensiune
+Statistics…	Menus		Statistici...
+Undo typing	QuitAlert		Refă tastarea
+Untitled 	StyledEditWindow		Fără titlu
+Words:	Statistics		Cuvinte:
+Wrap lines	Menus		Încadrează linii
+Wrap-around search	FindandReplaceWindow		Căutare încadrează împrejur
+Yellow	Menus		Galben

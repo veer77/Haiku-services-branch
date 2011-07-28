@@ -1,0 +1,38 @@
+1	ukrainian	x-vnd.Haiku-About	2326505773
+%.2f GHz	AboutView		%.2f GHz
+%d MiB total	AboutView		%d MiB заг.
+%d MiB used (%d%%)	AboutView		%d MiB викор. (%d%%)
+%ld MHz	AboutView		%ld MHz
+%ld Processors:	AboutView		%ld Процесори:
+%total MiB total, %inaccessible MiB inaccessible	AboutView		%total MiB заг., %inaccessible MiB недоступно
+... and the many people making donations!\n\n	AboutView		...і багатьом людям, що зробили внески!\n\n
+About this system	AboutWindow		Про цю систему
+Be Inc. and its developer team, for having created BeOS!\n\n	AboutView		 	Be Inc. і команді розробників, за створення BeOS!\n\n
+Contributors:\n	AboutView		Співробітники:\n
+Current maintainers:\n	AboutView		Розробники:\n
+GCC %d Hybrid	AboutView		GCC %d гібрид
+Google & their Google Summer of Code program\n	AboutView		Google і їхній програмі Google Summer of Code\n
+Kernel:	AboutView		Ядро:
+License: 	AboutView		Ліцензія:
+Licenses: 	AboutView		Ліцензії:
+Memory:	AboutView		Пам’ять:
+Michael Phipps (project founder)\n\n	AboutView		Michael Phipps (засновнику проекту)\n\n
+Past maintainers:\n	AboutView		Попередні розробники:\n
+Processor:	AboutView		Процесор:
+Revision	AboutView		Ревізія
+Source Code: 	AboutView		Код:
+The BeGeistert team\n	AboutView		Команді BeGeistert\n
+The Haiku-Ports team\n	AboutView		Команді Haiku-Ports\n
+The Haikuware team and their bounty program\n	AboutView		Команді Haikuware з їхньою програмою заохочень\n
+The University of Auckland and Christof Lutteroth\n\n	AboutView		Університету Окленда і Крістофу Люттероту\n\n
+The code that is unique to Haiku, especially the kernel and all code that applications may link against, is distributed under the terms of the %MIT licence%. Some system libraries contain third party code distributed under the LGPL license. You can find the copyrights to third party code below.\n\n	AboutView		Код що є унікальним для Haiku, особливо ядро і весь код, що додатки можуть використовувати, поширюються за умовами %MIT licence%. Деякі системні бібліотеки містять другорядні частини коду під ліцензією LGPL. Ви можете знайти  авторські права цих частин нижче.\n\n
+Time running:	AboutView		Час роботи:
+Translations:\n	AboutView		Переклади:\n
+Travis Geiselbrecht (and his NewOS kernel)\n	AboutView		Travis Geiselbrecht (і ядро його NewOS)\n
+Unknown	AboutView		Невідомий
+Version:	AboutView		Версія:
+Website, marketing & documentation:\n	AboutView		Сайт, маркетинг і документація:\n
+[Click a license name to read the respective license.]\n\n	AboutView		[Клікніть ім'я ліцензії для прочитання її.]\n\n
+\nCopyrights\n\n	AboutView		\nАвторські права\n\n
+\n\nSpecial thanks to:\n	AboutView		\n\nОсоблива вдячність:\n
+\n… and probably some more we forgot to mention (sorry!)\n\n	AboutView		\n… і напевно багатьох інших, котрих ми забули згадати (Вибачте!)\n\n

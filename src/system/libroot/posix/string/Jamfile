@@ -1,0 +1,43 @@
+SubDir HAIKU_TOP src system libroot posix string ;
+
+UsePrivateHeaders [ FDirName libroot locale ] ;
+
+MergeObject posix_string.o :
+	bcmp.c
+	bcopy.c
+	bzero.c
+	ffs.cpp
+	memccpy.c
+	memchr.c
+	memcmp.c
+	memmove.c
+	stpcpy.c
+	strcasecmp.c
+	strcasestr.c
+	strcat.c
+	strchr.c
+	strchrnul.c
+	strcmp.c
+	strcoll.cpp
+	strcpy.c
+	strcspn.c
+	strdup.c
+	strerror.c
+	strlcat.c
+	strlcpy.c
+	strlwr.c
+	strncat.c
+	strncmp.c
+	strncpy.c
+	strndup.cpp
+	strnlen.c
+	strpbrk.c
+	strrchr.c
+	strspn.c
+	strstr.c
+	strtok.c
+	strupr.c
+	strxfrm.cpp
+;
+
+HaikuSubInclude arch $(TARGET_ARCH) ;

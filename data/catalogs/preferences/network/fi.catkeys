@@ -1,0 +1,21 @@
+1	finnish	x-vnd.Haiku-Network	2324385456
+<no wireless networks found>	EthernetSettingsView		<langatonta verkkoa ei löytynyt>
+Adapter:	EthernetSettingsView		Adapteri:
+Apply	EthernetSettingsView		Käytä
+Auto-configuring failed: 	EthernetSettingsView		Automaattiasetus epäonnistui: 
+Choose automatically	EthernetSettingsView		Valitse automaattisesti
+DHCP	EthernetSettingsView		DHCP
+DNS #1:	EthernetSettingsView		DNS nr1:
+DNS #2:	EthernetSettingsView		DNS nr2:
+Disabled	EthernetSettingsView		Ota pois käytöstä
+Domain:	EthernetSettingsView		Verkkoalue:
+Gateway:	EthernetSettingsView		Yhdyskäytävä:
+IP address:	EthernetSettingsView		IP-osoite:
+Mode:	EthernetSettingsView		Tila:
+Netmask:	EthernetSettingsView		Verkkopeite:
+Network	System name		Verkkotila-asetukset
+Network:	EthernetSettingsView		Verkko:
+OK	EthernetSettingsView		Valmis
+Revert	EthernetSettingsView		Palauta
+Static	EthernetSettingsView		Staattinen
+The net_server needs to run for the auto configuration!	EthernetSettingsView		Automaattiasetusta varten net_server on suoritettava!

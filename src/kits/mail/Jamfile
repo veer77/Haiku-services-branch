@@ -1,0 +1,71 @@
+SubDir HAIKU_TOP src kits mail ;
+
+UsePrivateHeaders mail shared ;
+UsePublicHeaders [ FDirName add-ons mail_daemon ] ;
+
+if $(CHECK_MALLOC) {
+	SubDirC++Flags -D_NO_INLINE_ASM -fcheck-memory-usage ;
+}
+
+SubDirC++Flags -D_BUILDING_mail=1 ;
+
+UsePrivateHeaders textencoding ;
+
+
+local sources =
+	c_mail_api.cpp
+	crypt.cpp
+	des.c
+	FileConfigView.cpp
+	HaikuMailFormatFilter.cpp
+	mail_encoding.c
+	mail_util.cpp
+	MailAttachment.cpp
+	MailComponent.cpp
+	MailContainer.cpp
+	MailDaemon.cpp
+	MailMessage.cpp
+	MailProtocol.cpp
+	MailSettings.cpp
+	NodeMessage.cpp
+	numailkit.cpp
+	ProtocolConfigView.cpp
+	ServerConnection.cpp
+	StringList.cpp
+;
+
+
+# use OpenSSL, if enabled
+if $(HAIKU_OPENSSL_ENABLED) {
+	SubDirC++Flags -DUSE_SSL ;
+	SubDirSysHdrs $(HAIKU_OPENSSL_HEADERS) ;
+	Includes [ FGristFiles $(sources) ] : $(HAIKU_OPENSSL_HEADERS_DEPENDENCY) ;
+		# Dependency needed to trigger downloading/unzipping the package before
+		# compiling the files.
+	SetupFeatureObjectsDir ssl ;
+} else {
+	SetupFeatureObjectsDir no-ssl ;
+}
+
+AddResources libmail.so : libmail.rdef ;
+
+SharedLibrary libmail.so :
+	$(sources)
+	:
+	be
+	libtextencoding.so
+	tracker
+	$(TARGET_LIBSTDC++)
+	$(TARGET_NETWORK_LIBS)
+	$(TARGET_SELECT_UNAME_ETC_LIB)
+	$(HAIKU_OPENSSL_LIBS)
+	$(HAIKU_LOCALE_LIBS)
+;
+
+
+DoCatalogs libmail.so :
+	x-vnd.Haiku-libmail
+	:
+	FileConfigView.cpp
+	ProtocolConfigView.cpp
+;

@@ -1,0 +1,31 @@
+SubDir HAIKU_TOP src add-ons print transports ipp ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+SubDirHdrs [ FDirName $(HAIKU_TOP) src add-ons print transports shared ] ;
+
+UsePrivateHeaders shared print ;
+
+Addon IPP : 
+	Ipp.cpp
+	IppSetupDlg.cpp
+	IppTransport.cpp
+	HttpURLConnection.cpp
+	IppContent.cpp
+	IppURLConnection.cpp
+	URL.cpp
+	Socket.o
+	SocketStream.o
+	DbgMsg.o
+	: libshared.a be $(TARGET_NETAPI_LIB) $(TARGET_NETWORK_LIBS) $(TARGET_LIBSTDC++)
+;
+
+ObjectReferences
+	<src!add-ons!print!transports!shared>Socket.o
+	<src!add-ons!print!transports!shared>SocketStream.o
+	<src!add-ons!print!transports!shared>DbgMsg.o
+;
+
+Package haiku-printingkit-cvs :
+	IPP :
+	boot home config add-ons Print transport ;

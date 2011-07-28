@@ -1,0 +1,115 @@
+1	ukrainian	x-vnd.Haiku-DiskProbe	2710260630
+%ld (native)	ProbeView		%ld (рідна)
+(native)	ProbeView		 (рідний)
+15 bit	TypeEditors		15 біт
+16 bit	TypeEditors		16 біт
+16 bit signed value:	TypeEditors		16-ти бітне знакове значення:
+16 bit unsigned value:	TypeEditors		16-ти бітне беззнакове значення
+32 bit	TypeEditors		32 біти
+32 bit signed value:	TypeEditors		32-х бітне знакове значення:
+32 bit size or status:	TypeEditors		32-х бітний розмір або стан:
+32 bit unsigned pointer:	TypeEditors		32-х бітний беззнаковий вказівник
+32 bit unsigned size:	TypeEditors		32-х бітний беззнаковий розмір
+32 bit unsigned value:	TypeEditors		32-х бітне  беззнакове значення
+64 bit signed offset:	TypeEditors		64-бітне знакове зміщення
+64 bit signed value:	TypeEditors		64-х бітне знакове значення
+64 bit unsigned value:	TypeEditors		64-х бітне беззнакове значення:
+8 bit palette	TypeEditors		8-ми бітна палітра
+8 bit signed value:	TypeEditors		8-ми бітне знакове значення
+8 bit unsigned value:	TypeEditors		8-ми бітне беззнакове значення
+Add	ProbeView		Додати
+Attribute	AttributeWindow		Атрибут
+Attribute	ProbeView		Атрибут
+Attributes	ProbeView		Атрибути
+Back	ProbeView		Назад
+Block	ProbeView		Блок
+Block %Ld (0x%Lx)	ProbeView		Блок %Ld (0x%Lx)
+Block 0x%Lx	ProbeView		Блок 0x%Lx
+Bookmarks	ProbeView		Закладки
+Boolean	TypeEditors	This is the type of editor	Булевий
+Boolean editor	TypeEditors		Булевий редактор
+Boolean value:	TypeEditors		Булеве значення:
+Cancel	AttributeWindow		Відмінити
+Cancel	OpenWindow		Відмінити
+Cancel	ProbeView		Відмінити
+Case sensitive	FindWindow		Враховувати регістр
+Close	AttributeWindow		Закрити
+Close	FileWindow		Закрити
+Close	ProbeView		Закрити
+Contents:	TypeEditors		Вміст:
+Copy	ProbeView		Копіювати
+Could not find search string.	ProbeView		Неможливо знайти запитаний рядок
+Could not open \"%s\":\n%s	DiskProbe	Opening of entry reference buffer for a DiskProbe request Alert message. The name of entry reference and error message is shown.	Неможливо відкрити \"%s\":\n%s
+Could not open file \"%s\": %s\n	DiskProbe		Неможливо відкрити файл \"%s\": %s\n
+Could not read image	TypeEditors	Image means here a picture file, not a disk image.	Неможливо прочитати образ
+Decimal	ProbeView	A menu item, as short as possible, noun is recommended if it is shorter than adjective.	Десятковий
+Device	ProbeView		Пристрій
+DiskProbe request	AttributeWindow		Запит DiskProbe
+DiskProbe request	ProbeView		Запит DiskProbe
+Do you really want to remove the attribute \"%s\" from the file \"%s\"?\n\nYou cannot undo this action.	AttributeWindow		Ви дійсно бажаєте видалити атрибут \"%s\" для файлу \"%s\"?\n\nЦя дія незворотня.
+Don't save	ProbeView		Не зберігати
+Double precision floating-point value:	TypeEditors		Значення з плаваючою комою подвійної точності
+Edit	ProbeView		Редагувати
+Examine device:	OpenWindow		Перевірка пристрою:
+File	FileWindow		Файл
+File	ProbeView		Файл
+Find	FindWindow		Знайти
+Find again	ProbeView		Знайти знову
+Find…	ProbeView		Знайти…
+Fit	ProbeView	Size of fonts, fits to available room	Припасувати
+Flattened bitmap	TypeEditors		Плаский образ
+Floating-point value:	TypeEditors		Значення з плаваючою комою:
+Font size	ProbeView		Розмір шрифту
+Grayscale	TypeEditors		Відтінки сірого
+Hex	ProbeView	A menu item, as short as possible, noun is recommended if it is shorter than adjective.	Шіснадцятичний
+Hexadecimal	FindWindow	A menu item, as short as possible, noun is recommended if it is shorter than adjective.	Шістнадцятичний
+Icon	TypeEditors		Іконка
+Icon view	TypeEditors		У вигляді іконки
+Image	TypeEditors	This is the type of view	Зображення
+Image view	TypeEditors	Image means here a picture file, not a disk image.	Перегляд зображення
+MIME type editor	TypeEditors		Редактор MIME типу
+MIME type:	TypeEditors		MIME тип:
+Message	TypeEditors	This is the type of view	Повідомлення
+Message View	TypeEditors		Вид повідомлення
+Mode:	FindWindow		Режим:
+Native: %Ld (0x%0*Lx)	ProbeView		Рідний: %Ld (0x%0*Lx)
+Native: 0x%0*Lx	ProbeView		Рідний: 0x%0*Lx
+New…	FileWindow		Новий…
+Next	ProbeView		Наступне
+No type editor available	AttributeWindow		Недоступний редактор номеру
+Number	TypeEditors	This is the type of editor	Номер
+Number editor	TypeEditors		Редактор номеру
+Number:	TypeEditors		Номер:
+OK	DiskProbe		Гаразд
+OK	ProbeView		Гаразд
+Open device	FileWindow		Відкрити пристрій
+Open file…	FileWindow		Відкрити файл…
+PNG format	TypeEditors		PNG формат
+Page setup…	ProbeView		Налаштування сторінки…
+Paste	ProbeView		Вставити
+Previous	ProbeView		Попереднє
+Probe device	OpenWindow		Перевірити пристрій
+Probe file…	OpenWindow		Перевірити файл…
+Quit	FileWindow		Вийти
+Raw editor	AttributeWindow		Raw редактор
+Redo	ProbeView		Відмінити відміну
+Remove from file	AttributeWindow		Видалити для файлу
+Save	ProbeView		Зберегти
+Save changes before closing?	ProbeView		Зберегти зміни перед закриттям?
+Select all	ProbeView		Вибрати все
+Selection	ProbeView		Вибір
+Stop	ProbeView		Зупинити
+String editor	TypeEditors		Редактор рядків
+Swapped: %Ld (0x%0*Lx)	ProbeView		Перевернутий: %Ld (0x%0*Lx)
+Swapped: 0x%0*Lx	ProbeView		Перевернутий: 0x%0*Lx
+Text	FindWindow		Текст
+Text	TypeEditors	This is the type of editor	Текст
+Type editor	AttributeWindow		Редактор типу
+Type editor	ProbeView		Редактор типу
+Type editor not supported	ProbeView		Редактор типу не підтримується
+Undo	ProbeView		Відмінити
+Unknown format	TypeEditors		Невідомий формат
+Unknown type	TypeEditors		Невідомий тип
+Writing to the file failed:\n%s\n\nAll changes will be lost when you quit.	ProbeView		Запис до файлу зупинено:\n%s\n\nКоли Ви вийдете зміни не збережуться.
+none	ProbeView	No attributes	немає
+what: '%.4s'\n\n	TypeEditors	'What' is a message specifier that defines the type of the message.	what: '%.4s'\n\n

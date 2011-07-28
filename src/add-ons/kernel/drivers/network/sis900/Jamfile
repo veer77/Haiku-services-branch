@@ -1,0 +1,56 @@
+SubDir HAIKU_TOP src add-ons kernel drivers network sis900 ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+
+# For ether_driver.h
+UsePrivateHeaders net ;
+
+KernelAddon sis900 :
+	driver.c
+	device.c
+	interface.c
+	sis900.c
+	;
+
+Package haiku-sis900-cvs :
+	sis900 : 
+	boot home config add-ons kernel drivers bin ;
+PackageDriverSymLink haiku-sis900-cvs : net sis900 ;
+Package haiku-sis900-cvs :
+	sis900.settings :
+	boot home config settings kernel drivers sample ;
+
+Package haiku-networkingkit-cvs :
+	sis900 :
+	boot home config add-ons kernel drivers bin ;
+PackageDriverSymLink haiku-networkingkit-cvs : net sis900 ;
+Package haiku-networkingkit-cvs :
+	sis900.settings :
+	boot home config settings kernel drivers sample ;
+
+
+
+rule InstallSiS900
+{
+	Depends $(<) : $(>) ;
+}
+
+actions ignore InstallSiS900
+{
+	cp $(>) /boot/home/config/add-ons/kernel/drivers/bin/
+}
+
+#InstallSiS900 install : sis900 ;
+
+# Installation
+
+HaikuInstall install-networking : /boot/home/config/add-ons/kernel/drivers/bin : 
+ 	sis900 
+;
+
+HaikuInstallRelSymLink install-networking : /boot/home/config/add-ons/kernel/drivers/dev/net : 
+	<installed>sis900 : 
+	installed-symlink 
+;
+

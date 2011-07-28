@@ -1,0 +1,73 @@
+1	german	x-vnd.Haiku-Devices	1943893993
+ACPI Information	DeviceACPI		ACPI-Information
+ACPI Processor Namespace '%2'	DeviceACPI		ACPI Prozessor Namespace '%2'
+ACPI System Bus	DeviceACPI		ACPI Systembus
+ACPI System Indicator	DeviceACPI		ACPI System-Indikator
+ACPI Thermal Zone	DeviceACPI		ACPI Temperaturzone
+ACPI bus	Device		ACPI-Bus
+ACPI bus	DevicesView		ACPI-Bus
+ACPI controller	Device		ACPI-Controller
+ACPI node '%1'	DeviceACPI		ACPI Node '%1'
+Basic information	DevicesView		Basisinformation
+Bridge	Device		Schnittstellen
+Bus	DevicesView		Bus
+Bus Information	Device		Bus-Information
+Category	DevicesView		Kategorie
+Class Info:\t\t\t\t: %classInfo%	DeviceACPI		Klassen-Info:\t\t\t\t: %classInfo%
+Class info	DevicePCI		Klassen-Info
+Communication controller	Device		Kommunikationscontroller
+Computer	Device		Computer
+Computer	DevicesView		Rechner
+Connection	DevicesView		Verbindung
+Detailed	DevicesView		Details
+Device	Device		Gerät
+Device Name\t\t\t\t: %Name%\nManufacturer\t\t\t: %Manufacturer%\nDriver used\t\t\t\t: %DriverUsed%\nDevice paths\t: %DevicePaths%	Device		Gerätename\t\t\t\t: %Name%\nHersteller\t\t\t: %Manufacturer%\nBenutzter Treiber\t\t\t\t: %DriverUsed%\nPfade für Treiber\t: %DevicePaths%
+Device name	Device		Gerätename
+Device name	DeviceACPI		Gerätename
+Device name	DevicePCI		Gerätename
+Device name:	Device		Gerätename:
+Device paths	Device		Gerätepfade
+Device paths	DevicePCI		Gerätepfad
+Devices	DevicesView		Geräte
+Devices	System name		Geräte
+Display controller	Device		Anzeige-Controller
+Docking station	Device		Andockstation
+Driver used	Device		Treiber benutzt
+Driver used	DevicePCI		Benutzter Treiber
+Encryption controller	Device		Verschlüsselungscontroller
+Generate system information	DevicesView		Systeminformationen erstellen
+Generic system peripheral	Device		Peripheriegeräte
+ISA bus	Device		ISA-Bus
+ISA bus	DevicesView		ISA-Bus
+Input device controller	Device		Eingabegeräte-Kontroller
+Intelligent controller	Device		Intelligenter Controller
+Manufacturer	Device		Hersteller
+Manufacturer	DeviceACPI		Hersteller
+Manufacturer	DevicePCI		Hersteller
+Manufacturer:	Device		Hersteller:
+Mass storage controller	Device		Massenspeicher-Controller
+Memory controller	Device		Speichercontroller
+Multimedia controller	Device		Multimedia-Controller
+Name	PropertyList		Name
+Network controller	Device		Netzwerk-Controller
+None	Device		Kein
+Not implemented	DeviceACPI		Nicht implementiert
+Not implemented	DevicePCI		Nicht implementiert
+Order by:	DevicesView		Sortieren nach:
+PCI Information	DevicePCI		PCI-Information
+PCI bus	Device		PCI-Bus
+PCI bus	DevicesView		PCI-Bus
+Processor	Device		Prozessor
+Quit	DevicesView		Beenden
+Refresh devices	DevicesView		Geräte aktualisieren
+Report compatibility	DevicesView		Kompatibilität anzeigen
+Satellite communications controller	Device		Satellitenkommunikations-Controller
+Serial bus controller	Device		Serieller Bus-Controller
+Signal processing controller	Device		Signalverarbeitungscontroller
+Unclassified device	Device		Sonstige Geräte
+Unknown	DevicePCI		Unbekannt
+Unknown device	Device		Unbekanntes Gerät
+Unknown device	DevicesView		Unbekanntes Gerät
+Value	PropertyList		Wert
+Wireless controller	Device		Funknetzwerk-Controller
+unknown	Device		unbekannt

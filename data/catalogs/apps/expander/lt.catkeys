@@ -1,0 +1,31 @@
+1	lithuanian	x-vnd.Haiku-Expander	3653851738
+Are you sure you want to stop expanding this\narchive? The expanded items may not be complete.	ExpanderWindow		Tikrai norite stabdyti skleidimą šio\narchyvo? Kai kurios bylos gali būti ne iki galo išskleistos.
+Cancel	ExpanderWindow		Atsisakyti
+Close	ExpanderMenu		Uždaryti
+Continue	ExpanderWindow		Tęsti
+Destination	ExpanderWindow		Paskirtis
+Error when expanding archive	ExpanderWindow		Klaida išskleidžiant bylą
+Expand	ExpanderMenu		Išskleisti
+Expand	ExpanderWindow		Išskleisti
+Expander: Choose destination	DirectoryFilePanel		Skleideris: šaltinio vietos parinkimas
+Expander: Open	ExpanderWindow		Skleideris: Atidaryti
+File	ExpanderMenu		Byla
+File expanded	ExpanderWindow		Byla išskleista
+Hide contents	ExpanderWindow		Slėpti turinį
+Select	DirectoryFilePanel		Parinkti
+Select '%s'	DirectoryFilePanel		Rinktis „%s“
+Select current	DirectoryFilePanel		Parinkti esamą
+Set destination…	ExpanderMenu		Paskirti vietą…
+Set source…	ExpanderMenu		Parinkti šaltinį…
+Settings	ExpanderMenu		Nustatymai
+Settings…	ExpanderMenu		Nustatymai…
+Show contents	ExpanderMenu		Rodyti turinį
+Show contents	ExpanderWindow		Rodyti turinį
+Source	ExpanderWindow		Šaltinis
+Stop	ExpanderMenu		Stop
+Stop	ExpanderWindow		Stop
+The destination folder does not exist.	ExpanderWindow		Paskirties aplanko nėra.
+The destination is not a folder.	ExpanderWindow		Paskirties vieta nėra aplankas.
+The destination is read only.	ExpanderWindow		Paskirties vieta tik skaitymui.
+The file doesn't exist	ExpanderWindow		Tokios bylos nėra
+The folder was either moved, renamed or not\nsupported.	ExpanderWindow		Aplankas buvo perkeltas, pervadintas arba\nnepalaikomas.

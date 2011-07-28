@@ -1,0 +1,23 @@
+1	polish	x-vnd.Haiku-Mouse	3904912604
+...by Andrew Edward McCall	MouseApplication		...stworzone przez Andrew Edward McCall
+1-Button	SettingsView		Jednoprzyciskowa
+2-Button	SettingsView		Dwuprzyciskowa
+3-Button	SettingsView		Trójprzyciskowa
+Accept first click	SettingsView		Akceptuj pierwsze klinięcie
+Click to focus	SettingsView		Kliknij by zaznaczyć
+Click to focus and raise	SettingsView		Kliknij aby zaznaczyć i podnieść
+Defaults	MouseWindow		Domyślne
+Dig Deal	MouseApplication		Dig Deal
+Double-click speed	SettingsView		Prędkość dwukrotnego kliknięcia
+Double-click test area	SettingsView		Strefa testowania podw. kliknięcia
+Fast	SettingsView		Szybko
+Focus follows mouse	SettingsView		Podążaj za wskaźnikiem myszy
+Focus mode:	SettingsView		Tryb zaznaczania:
+Instant warp	SettingsView		Natychmiastowe przeniesienie
+Mouse acceleration	SettingsView		Przyspieszenie wskaźnika
+Mouse speed	SettingsView		Prędkość wskaźnika
+Mouse type:	SettingsView		Rodzaj myszy:
+Normal	SettingsView		Normalna
+Revert	MouseWindow		Przywróć
+Slow	SettingsView		Wolno
+Warp	SettingsView		Przeniesienie

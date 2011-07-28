@@ -1,0 +1,10 @@
+SubDir HAIKU_TOP src tests kits net libnetapi ;
+
+UnitTestLib libnetapitest.so :
+	NetAPITestAddon.cpp
+
+	NetworkAddressTest.cpp
+	NetworkInterfaceTest.cpp
+
+	: bnetapi network $(TARGET_LIBSTDC++) $(TARGET_LIBSUPC++)
+;

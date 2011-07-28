@@ -1,0 +1,33 @@
+SubDir HAIKU_TOP src add-ons translators rtf ;
+
+# It's called RTF-Translator (with a dash) to differentiate it from the
+# RTFTranslator that comes with Gobe Productive (that doesn't support
+# STXT or plain text files output).
+
+SubDirHdrs [ FDirName $(SUBDIR) $(DOTDOT) shared ] ;
+
+UsePrivateHeaders shared storage ;
+
+AddResources RTF-Translator : RTFTranslator.rdef ;
+
+Translator RTF-Translator :
+	main.cpp
+	ConfigView.cpp
+
+	convert.cpp
+	RTF.cpp
+	RTFTranslator.cpp
+
+	: be translation libtranslatorsutils.a $(TARGET_LIBSUPC++) 
+$(HAIKU_LOCALE_LIBS)
+	$(HAIKU_LOCALE_LIBS)
+	: true
+;
+
+DoCatalogs RTF-Translator :
+	x-vnd.Haiku-RTFTranslator
+	:
+	main.cpp
+	RTFTranslator.cpp
+	ConfigView.cpp
+;

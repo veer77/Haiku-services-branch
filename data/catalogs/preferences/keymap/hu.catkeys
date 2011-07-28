@@ -1,0 +1,21 @@
+1	hungarian	x-vnd.Haiku-Keymap	3858687220
+(Current)	Keymap window		(jelenlegi)
+Acute trigger	Keymap window		Ékezet kapcsoló
+Circumflex trigger	Keymap window		Kalap kapcsoló
+Diaeresis trigger	Keymap window		Tréma kapcsoló
+File	Keymap window		Fájl
+Font	Keymap window		Betűtípus
+Grave trigger	Keymap window		Fordított ékezet kapcsoló
+Layout	Keymap window		Elrendezés
+Open…	Keymap window		Megnyitás…
+Quit	Keymap window		Kilépés
+Revert	Keymap window		Visszaállítás
+Sample and clipboard:	Keymap window		Minta és vágólap:
+Save as…	Keymap window		Mentés másként…
+Select dead keys	Keymap window		„Beragadó” gombok kiválasztása
+Switch shortcut keys	Keymap window		Billentyűzetkombináció-váltás
+Switch shortcut keys to Haiku mode	Keymap window		Billentyűzetkombináció-váltás Haiku-módra
+Switch shortcut keys to Windows/Linux mode	Keymap window		Billentyűkombináció váltása Windows/Linux módra
+System:	Keymap window		Nyelv:
+Tilde trigger	Keymap window		Hullámvonal kapcsoló
+User:	Keymap window		Felhasználó:

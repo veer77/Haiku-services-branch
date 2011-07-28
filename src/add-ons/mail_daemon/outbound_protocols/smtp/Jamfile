@@ -1,0 +1,40 @@
+SubDir HAIKU_TOP src add-ons mail_daemon outbound_protocols smtp ;
+
+
+UsePublicHeaders [ FDirName add-ons mail_daemon ] ;
+UsePrivateHeaders mail shared ;
+
+SubDirHdrs [ FDirName $(HAIKU_TOP) headers os add-ons mail_daemon ] ;
+
+local sources =
+	ConfigView.cpp
+	smtp.cpp
+	md5c.c
+;
+
+# use OpenSSL, if enabled
+if $(HAIKU_OPENSSL_ENABLED) {
+	SubDirC++Flags -DUSE_SSL ;
+	SubDirSysHdrs $(HAIKU_OPENSSL_HEADERS) ;
+	Includes [ FGristFiles $(sources) ] : $(HAIKU_OPENSSL_HEADERS_DEPENDENCY) ;
+		# Dependency needed to trigger downloading/unzipping the package before
+		# compiling the files.
+	SetupFeatureObjectsDir ssl ;
+} else {
+	SetupFeatureObjectsDir no-ssl ;
+}
+
+AddResources SMTP : SMTP.rdef ;
+
+Addon SMTP
+	: $(sources)
+	: be libmail.so $(TARGET_NETWORK_LIBS) $(TARGET_LIBSTDC++)
+		$(HAIKU_LOCALE_LIBS) $(HAIKU_OPENSSL_LIBS)
+;
+
+DoCatalogs SMTP :
+	x-vnd.Haiku-SMTP
+	:
+	ConfigView.cpp
+	smtp.cpp
+;

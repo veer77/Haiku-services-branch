@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+<head>
+<!-- 
+ *
+ * Copyright 2009, Haiku. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ *
+ * Authors:
+ *		Humdinger <humdingerb@gmail.com>
+ * Translators:
+ *		Pengphei Han
+ *
+-->
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta name="robots" content="all" />
+	<title>磁盘查看器</title>
+	<link rel="stylesheet" type="text/css" href="../../Haiku-doc.css" />
+</head>
+<body>
+
+<div id="banner">
+<div><span>用户指南</span></div>
+</div>
+
+<div class="nav">
+<div class="inner">
+<ul class="lang-menu">
+<li class="now"><img src="../../images/flags/zh_CN.png" alt="" />  中文 ［中文］</li>
+<li><a href="../../fr/applications/diskusage.html"><img src="../../images/flags/fr.png" alt="" />Français</a></li>
+<li><a href="../../de/applications/diskusage.html"><img src="../../images/flags/de.png" alt="" />Deutsch</a></li>
+<li><a href="../../it/applications/diskusage.html"><img src="../../images/flags/it.png" alt="" />Italiano</a></li>
+<li><a href="../../ru/applications/diskusage.html"><img src="../../images/flags/ru.png" alt="" />Русский</a></li>
+<li><a href="../../es/applications/diskusage.html"><img src="../../images/flags/es.png" alt="" />Español</a></li>
+<li><a href="../../sv_SE/applications/diskusage.html"><img src="../../images/flags/sv_SE.png" alt="" />Svenska</a></li>
+<li><a href="../../jp/applications/diskusage.html"><img src="../../images/flags/jp.png" alt="" />日本語</a></li>
+<li><a href="../../uk/applications/diskusage.html"><img src="../../images/flags/uk.png" alt="" />Українська</a></li>
+<li><a href="../../pt_PT/applications/diskusage.html"><img src="../../images/flags/pt_PT.png" alt="" />Português</a></li>
+<li><a href="../../en/applications/diskusage.html"><img src="../../images/flags/gb.png" alt="" />English</a></li>
+</ul>
+<span>
+ «  <a href="diskprobe.html">磁盘扫描器</a> 
+::  <a href="../applications.html#list-of-apps" class="uplink">应用程序</a> 
+::  <a href="drivesetup.html">磁盘管理器</a>  »
+</span></div>
+</div>
+
+<div id="content">
+<div>
+
+<h2><img src="../../images/apps-images/diskusage-icon_64.png" alt="diskusage-icon_64.png" width="64" height="64" />磁盘查看器</h2>
+<table summary="layout" border="0" cellspacing="0" cellpadding="2">
+<tr><td>桌面栏：</td><td style="width:15px;"></td><td><span class="menu">应用程序</span></td></tr>
+<tr><td>位置：</td><td></td><td><span class="path">/boot/system/apps/DiskUsage</span></td></tr>
+<tr><td>设置：</td><td></td><td><span class="path">~/config/settings/DiskUsage</span></td></tr>
+</table>
+<p><br /></p>
+<p>磁盘查看器以图形的形式显示了您的磁盘卷的空间利用情况。<br />
+一个非常好用的工具，它回答了下面的问题，“<i>我的磁盘空间哪儿去了啊？</i>”。</p>
+<p><img id="diskusage" src="../images/apps-images/diskusage.png" alt="diskusage.png" /></p>
+<p>不同层次的同心圆代表了文件系统中的不同等级。 在上图中，圆环中心代表了 <span class="path">/boot/home/</span> 文件夹。而圆环外的每个图块都代表了 <span class="path">/boot/home/</span> 文件夹下的一个文件或者文件夹。而更外层的图块则代表了更深一层等级的文件层次。当然，您可能需要调节窗口的大小来容纳深层地的文件夹。</p>
+<p>在图形的上方是一个弹出式菜单，它用于在所有挂载的磁卷之间进行转换。在显示磁卷的利用情况之前，该磁卷需要进行一次完全的扫描。对于大一点的磁卷，这可能需要比较长的时间，但是在此期间，您可以检查其他磁卷的利用情况，而磁卷的扫描将在后台运行。</p>
+<div class="box-info"><ul>
+<li>如果代表一个文件或者文件夹的扇形图块的角度小于圆环的2° ，那么它在图形中将无法显示出来。
+</li>
+<li>一个文件夹中文件的数量包括了其子文件夹中的文件。当然一个文件夹也看做为一个文件。</li>
+<li>磁盘查看器会忽略符号链接。</li>
+</ul></div>
+<p>在您的鼠标移动到一个图块上时，关于该文件或者文件夹的信息将会呈现在底部的状态栏里。</p>
+<p>右键点击一个图块将会显示一个右键菜单 <span class="menu">Get Info</span>, <span class="menu">Open</span> （ 在Tracker 中打开），<span class="menu">Open With</span> 其他的应用程序或者 <span class="menu">Rescan（浏览）</span> 此文件夹。<br />
+左键点击一个图块将会使其所代表的文件或者文件夹位于圆环的中央。<br />
+左键点击中央的圆环将会使您到达上一级的文件夹。</p>
+<p>您可以从磁盘查看器中拖拽文件或者文件夹到其他的程序，桌面或者其他的Tracker窗口完成复制。反之，如果把磁卷或者文件夹拖拽至磁盘查看器窗口将会把他们放置在圆环的中央进行显示。</p>
+
+</div>
+</div>
+
+<div class="nav">
+<div class="inner"><span>
+ «  <a href="diskprobe.html">磁盘扫描器</a> 
+::  <a href="../applications.html#list-of-apps" class="uplink">应用程序</a> 
+::  <a href="drivesetup.html">磁盘管理器</a>  »
+</span></div>
+</div>
+
+</body>
+</html>

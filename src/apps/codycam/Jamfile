@@ -1,0 +1,30 @@
+SubDir HAIKU_TOP src apps codycam ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+UsePrivateHeaders shared ;
+
+Application CodyCam :
+	CodyCam.cpp
+	FileUploadClient.cpp
+	SpawningUploadClient.cpp
+	FtpClient.cpp
+	SftpClient.cpp
+	Settings.cpp
+	SettingsHandler.cpp
+	VideoConsumer.cpp
+	: be $(HAIKU_LOCALE_LIBS) media translation $(TARGET_NETAPI_LIB)
+		$(TARGET_LIBSTDC++)
+	: CodyCam.rdef
+;
+
+DoCatalogs CodyCam :
+	x-vnd.Haiku-CodyCam
+	:
+	CodyCam.cpp
+	FtpClient.cpp
+	Settings.cpp
+	SettingsHandler.cpp
+	SftpClient.cpp
+	VideoConsumer.cpp
+;

@@ -1,0 +1,43 @@
+SubDir HAIKU_TOP src servers mail ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+if $(TARGET_PLATFORM) != haiku {
+	UsePublicHeaders mail ;
+}
+
+UsePublicHeaders [ FDirName add-ons mail_daemon ] ;
+UsePrivateHeaders mail ;
+UsePrivateHeaders shared ;
+
+SubDirHdrs [ FDirName $(HAIKU_TOP) headers os add-ons mail_daemon ] ;
+
+AddResources mail_daemon : mail_daemon.rdef DeskbarViewIcons.rdef ;
+
+Server mail_daemon :
+	DeskbarView.cpp
+	ErrorLogWindow.cpp
+	LEDAnimation.cpp
+	MailDaemon.cpp
+	main.cpp
+	Notifier.cpp
+	StatusWindow.cpp
+	: be libmail.so tracker $(HAIKU_LOCALE_LIBS) $(TARGET_LIBSTDC++)
+		$(TARGET_NETWORK_LIBS)
+;
+
+Package haiku-maildaemon-cvs :
+	mail_daemon :
+	boot beos system servers ;
+
+Packages haiku-maildaemon-cvs :
+	README LICENSE HISTORY install.sh ;
+
+DoCatalogs mail_daemon :
+	x-vnd.Be-POST
+	:
+	DeskbarView.cpp
+	MailDaemon.cpp
+	Notifier.cpp
+	StatusWindow.cpp
+;

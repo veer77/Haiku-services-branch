@@ -1,0 +1,292 @@
+SubDir HAIKU_TOP src bin ;
+
+HAIKU_MULTIPLE_LOCALIZED_TARGETS on $(SUBDIR) = 1 ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+AddSubDirSupportedPlatforms libbe_test ;
+
+UsePrivateHeaders app shared storage support usb ;
+UsePrivateSystemHeaders ;
+SubDirHdrs $(HAIKU_TOP) src add-ons kernel file_cache ;
+UseLibraryHeaders ncurses ;
+UseLibraryHeaders termcap ;
+
+local haiku-utils_rsrc = [ FGristFiles haiku-utils.rsrc ] ;
+
+ResComp $(haiku-utils_rsrc) : [ FGristFiles haiku-utils.rdef ] ;
+
+AddResources checkitout : checkitout.rdef ;
+AddResources dstcheck : dstcheck.rdef ;
+AddResources fortune : fortune.rdef ;
+AddResources hey : hey.rdef ;
+AddResources mimeset : mimeset.rdef ;
+AddResources mountvolume : mountvolume.rdef ;
+AddResources notify : notify.rdef ;
+AddResources urlwrapper : urlwrapper.rdef ;
+
+# standard commands that don't need any additional library
+StdBinCommands
+	badblocks.cpp
+	cal.c
+	chop.c
+	clear.c
+#	csplit.c
+	driveinfo.c
+#	echo.c
+	error.c
+	fortune.c
+	finddir.c
+	hd.c
+	idestatus.c
+	listarea.c
+	listimage.c
+	listport.c
+	listsem.c
+	logger.cpp
+	lsindex.cpp
+	prio.c
+	ps.c
+	release.c
+	renice.c
+	rescan.c
+	sysinfo.c
+	unchop.c
+	uptime.cpp
+	vmstat.cpp
+#	whoami.c
+	: : $(haiku-utils_rsrc) ;
+
+# Commands which don't need another library that depend on
+# Haiku-specific code
+if $(TARGET_PLATFORM) = haiku {
+StdBinCommands
+	boot_process_done.cpp
+	fdinfo.cpp
+	mount.c
+	rmattr.cpp
+	rmindex.cpp
+	safemode.c
+	unmount.c
+	: : $(haiku-utils_rsrc) ;
+}
+
+# standard commands that need libtermcap.a
+StdBinCommands
+	top.c
+	tput.c
+	: libtermcap.a : $(haiku-utils_rsrc) ;
+
+# standard commands that need libbe.so
+StdBinCommands
+	beep.cpp
+	catattr.cpp
+	checkfs.cpp
+	clipboard.cpp
+	clockconfig.cpp
+	df.cpp
+	diskimage.cpp
+	dpms.cpp
+	draggers.cpp
+#	factor.cpp
+	ffm.cpp
+	iroster.cpp
+	listattr.cpp
+	listfont.cpp
+	listres.cpp
+	mimeset.cpp
+	mkindex.cpp
+	message.cpp
+	modifiers.cpp
+	open.cpp
+	play.cpp
+	quit.cpp
+	roster.cpp
+	setversion.cpp
+	trash.cpp
+	version.cpp
+	waitfor.cpp
+	WindowShade.cpp
+#	yes.cpp
+	: be : $(haiku-utils_rsrc) ;
+
+if $(TARGET_PLATFORM) = libbe_test {
+	HaikuInstall install-test-apps : $(HAIKU_APP_TEST_DIR) : setdecor
+		: tests!apps ;
+}
+
+# standard commands that need libbe.so and libsupc++.so
+StdBinCommands
+	alert.cpp
+	eject.cpp
+	hey.cpp
+	reindex.cpp
+	resattr.cpp
+	setdecor.cpp
+	settype.cpp
+	spybmessage.cpp
+	urlwrapper.cpp
+	: be $(TARGET_LIBSUPC++) : $(haiku-utils_rsrc) ;
+
+# commands that need libbe.so and liblocale.so
+StdBinCommands
+	query.cpp
+	: be $(HAIKU_LOCALE_LIBS) : $(haiku-utils_rsrc) ;
+
+# commands that need libbe.so, libsupc++.so and liblocale.so
+StdBinCommands
+	dstcheck.cpp
+	: be $(TARGET_LIBSUPC++) $(HAIKU_LOCALE_LIBS) : $(haiku-utils_rsrc) ;
+
+# Haiku-specific apps which need libbe.so
+if $(TARGET_PLATFORM) = haiku {
+StdBinCommands
+	isvolume.cpp
+	shutdown.cpp
+	: be : $(haiku-utils_rsrc) ;
+}
+
+# standard commands that need libbe.so, libstdc++.so
+StdBinCommands
+	copyattr.cpp
+	xres.cpp
+	: be $(TARGET_LIBSTDC++) : $(haiku-utils_rsrc) ;
+
+# Haiku-specific apps which need libbe.so, libstdc++.so
+if $(TARGET_PLATFORM) = haiku {
+StdBinCommands
+	mountvolume.cpp
+	: be $(TARGET_LIBSTDC++) : $(haiku-utils_rsrc) ;
+}
+
+# commands that need libstdc++ only
+StdBinCommands
+	diff_zip.cpp
+	: $(TARGET_LIBSTDC++) : $(haiku-utils_rsrc) ;
+
+# standard commands that need libbe.so, libtranslation.so, libsupc++.so
+StdBinCommands
+	translate.cpp
+	: be translation $(TARGET_LIBSUPC++) : $(haiku-utils_rsrc) ;
+
+# standard commands that need libbe.so, libtranslation.so, libicon.a, libstdc++.so
+StdBinCommands
+	notify.cpp
+	: be translation libicon.a $(TARGET_LIBSTDC++) : $(haiku-utils_rsrc) ;
+
+# standard commands that need libbe.so, libmedia.so
+StdBinCommands
+	installsound.cpp
+	: be libmedia.so : $(haiku-utils_rsrc) ;
+
+# standard commands that need libbe.so, libmedia.so, libsupc++.so
+StdBinCommands
+	setvolume.cpp
+	: be libmedia.so $(TARGET_LIBSUPC++) : $(haiku-utils_rsrc) ;
+
+# standard commands that need libbe.so, libmail.so
+StdBinCommands
+	mail.cpp
+	: be libmail.so : $(haiku-utils_rsrc) ;
+
+# standard commands that need libbe.so, libdevice.so
+StdBinCommands
+	listusb.cpp
+	setusbconfig.cpp
+	: be libdevice.so : $(haiku-utils_rsrc) ;
+
+ObjectHdrs [ FGristFiles listusb$(SUFOBJ) ]
+	: [ FDirName $(SUBDIR) $(DOTDOT) add-ons kernel bus_managers usb ] ;
+
+# standard commands that need libbluetooth.so, due the Bluetooth Kit
+StdBinCommands
+	bt_dev_info.cpp
+	: be libbluetooth.so : $(haiku-utils_rsrc) ;
+
+StdBinCommands
+	bt_discovery.cpp
+	: be libbluetooth.so $(TARGET_LIBSUPC++) : $(haiku-utils_rsrc) ;
+
+
+# standard commands that need libbe.so, libtracker.so
+StdBinCommands
+	checkitout.cpp
+	: be tracker $(TARGET_LIBSUPC++) : $(haiku-utils_rsrc) ;
+
+#standard commands that need libbe.so, libtracker.so, liblocale.so
+StdBinCommands
+	filepanel.cpp
+	: be tracker $(TARGET_LIBSUPC++) $(HAIKU_LOCALE_LIBS) : $(haiku-utils_rsrc) ;
+
+# standard commands that need libncurses.a
+StdBinCommands
+	watch.c
+	: libncurses.a : $(haiku-utils_rsrc) ;
+
+# Localization of some applications
+DoCatalogs dstcheck
+	: x-vnd.Haiku-cmd-dstconfig
+	: dstcheck.cpp
+;
+
+DoCatalogs filepanel
+	: x-vnd.mmu_man.filepanel
+	: filepanel.cpp
+;
+
+SubInclude HAIKU_TOP src bin addattr ;
+SubInclude HAIKU_TOP src bin bash ;
+SubInclude HAIKU_TOP src bin bc ;
+SubInclude HAIKU_TOP src bin mail_utils ;
+SubInclude HAIKU_TOP src bin compress ;
+SubInclude HAIKU_TOP src bin consoled ;
+SubInclude HAIKU_TOP src bin coreutils ;
+SubInclude HAIKU_TOP src bin ctags ;
+SubInclude HAIKU_TOP src bin desklink ;
+SubInclude HAIKU_TOP src bin diffutils ;
+SubInclude HAIKU_TOP src bin findutils ;
+SubInclude HAIKU_TOP src bin fwcontrol ;
+SubInclude HAIKU_TOP src bin gawk ;
+SubInclude HAIKU_TOP src bin gdb ;
+SubInclude HAIKU_TOP src bin grep ;
+SubInclude HAIKU_TOP src bin hid_decode ;
+SubInclude HAIKU_TOP src bin iasl ;
+SubInclude HAIKU_TOP src bin ideinfo ;
+SubInclude HAIKU_TOP src bin keymap ;
+SubInclude HAIKU_TOP src bin less ;
+SubInclude HAIKU_TOP src bin listdev ;
+SubInclude HAIKU_TOP src bin locale ;
+SubInclude HAIKU_TOP src bin makebootable ;
+#SubInclude HAIKU_TOP src bin makeudfimage ;
+SubInclude HAIKU_TOP src bin mkdos ;
+SubInclude HAIKU_TOP src bin mkfs ;
+SubInclude HAIKU_TOP src bin multiuser ;
+SubInclude HAIKU_TOP src bin package ;
+SubInclude HAIKU_TOP src bin package_repo ;
+SubInclude HAIKU_TOP src bin patch ;
+SubInclude HAIKU_TOP src bin pc ;
+SubInclude HAIKU_TOP src bin pcmcia-cs ;
+SubInclude HAIKU_TOP src bin pkgman ;
+SubInclude HAIKU_TOP src bin playsound ;
+SubInclude HAIKU_TOP src bin rc ;
+SubInclude HAIKU_TOP src bin rmd160 ;
+SubInclude HAIKU_TOP src bin screen_blanker ;
+SubInclude HAIKU_TOP src bin screenmode ;
+SubInclude HAIKU_TOP src bin sharutils ;
+SubInclude HAIKU_TOP src bin unrar ;
+SubInclude HAIKU_TOP src bin zic ;
+
+# RCS commands
+SubInclude HAIKU_TOP src bin rcs ;
+
+# debugging tools
+SubInclude HAIKU_TOP src bin debug ;
+
+# Network command line tools
+SubInclude HAIKU_TOP src bin network ;
+
+# Compression command line tools
+SubInclude HAIKU_TOP src bin unzip ;
+SubInclude HAIKU_TOP src bin zip ;
+SubInclude HAIKU_TOP src bin gzip ;
+SubInclude HAIKU_TOP src bin bzip2 ;

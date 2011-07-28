@@ -1,0 +1,44 @@
+1	ukrainian	x-vnd.Haiku-Expander	2487745131
+Are you sure you want to stop expanding this\narchive? The expanded items may not be complete.	ExpanderWindow		Ви впевнені, що хочете зупинити розпаковку цього архіва? Розпаковка елементів може бути неповною.
+Automatically expand files	ExpanderPreferences		Автоматично розпакувати файли
+Automatically show contents listing	ExpanderPreferences		Автоматично показувати список вмісту
+Cancel	ExpanderPreferences		Відміна
+Cancel	ExpanderWindow		Відмінити
+Close	ExpanderMenu		Закрити
+Continue	ExpanderWindow		Продовжити
+Creating listing for '%s'	ExpanderWindow		Створення списку для '%s'
+Destination	ExpanderWindow		Папка призначення
+Destination folder:	ExpanderPreferences		Папка призначення:
+Error when expanding archive	ExpanderWindow		Помилка при розпаковці архіва
+Expand	ExpanderMenu		Розпакувати
+Expand	ExpanderWindow		Розпакувати
+Expander settings	ExpanderPreferences		Настройки Розпаковувача
+Expander: Choose destination	DirectoryFilePanel		Expander: Виберіть ціль
+Expander: Open	ExpanderWindow		Expander: Відкрити
+Expanding '%s'	ExpanderWindow		Розтиск '%s'
+Expansion:	ExpanderPreferences		Розширення:
+File	ExpanderMenu		Файл
+File expanded	ExpanderWindow		Файл розпаковано
+Hide contents	ExpanderWindow		Сховати вміст
+Leave destination folder path empty	ExpanderPreferences		Зберегти шлях папки призначення пустим
+Open destination folder after extraction	ExpanderPreferences		Відкрити папку призначення після розтиску
+Other:	ExpanderPreferences		Інший:
+Same directory as source (archive) file	ExpanderPreferences		Та ж папка що і джерела (архіву)
+Select	DirectoryFilePanel		Вибрати
+Select	ExpanderPreferences		Вибрати
+Select current	DirectoryFilePanel		Вибрати поточний
+Set destination…	ExpanderMenu		Встановити ціль…
+Set source…	ExpanderMenu		Встановити джерело…
+Settings	ExpanderMenu		Налаштування
+Settings…	ExpanderMenu		Налаштування…
+Show contents	ExpanderMenu		Показати вміст
+Show contents	ExpanderWindow		Показати вміст
+Source	ExpanderWindow		Джерело
+Stop	ExpanderMenu		Зупинити
+Stop	ExpanderWindow		Зупинити
+The destination folder does not exist.	ExpanderWindow		Цільова папка відсутня.
+The destination is not a folder.	ExpanderWindow		Ціль не є папкою.
+The destination is read only.	ExpanderWindow		Ціль тільки для читання.
+The file doesn't exist	ExpanderWindow		Файл відсутній
+The folder was either moved, renamed or not\nsupported.	ExpanderWindow		Папка була переіменована, видалена або не\nпідтримується.
+Use:	ExpanderPreferences		Використати:

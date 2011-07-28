@@ -1,0 +1,45 @@
+SubDir HAIKU_TOP src add-ons kernel network ppp ipcp ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+if $(TARGET_PLATFORM) != haiku {
+	UseHeaders [ FDirName $(HAIKU_TOP) headers posix ] : true ;
+		# We need the public network headers also when not compiling for Haiku.
+		# Unfortunately we get more than we want, namely all POSIX headers.
+}
+
+# for kernel_cpp.h and BLocker
+UseHeaders [ FDirName $(HAIKU_TOP) headers cpp ] : true ;
+UsePrivateHeaders net ;
+UsePrivateHeaders [ FDirName kernel ] ;
+UsePrivateHeaders [ FDirName kernel util ] ;
+UseHeaders [ FDirName $(HAIKU_TOP) src add-ons kernel network ppp shared
+	libkernelppp headers ] : true ;
+
+
+{
+	SubDirC++Flags -fno-rtti ;
+}
+
+
+KernelAddon ipcp :
+	# imported from libnet
+	inet_addr.c
+	
+	ipcp.cpp
+	Protocol.cpp
+;
+
+SEARCH on [ FGristFiles inet_addr.c ]
+	= [ FDirName $(HAIKU_TOP) src kits network compat libnet ] ;
+
+LinkAgainst ipcp : libkernelppp.a ;
+
+# Installation
+HaikuInstall install-networking
+	: /boot/home/config/add-ons/kernel/obos_network/ppp
+	: ipcp ;
+
+Package haiku-networkingkit-cvs :
+	ipcp :
+	boot home config add-ons kernel obos_network ppp ;

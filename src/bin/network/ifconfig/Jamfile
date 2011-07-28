@@ -1,0 +1,8 @@
+SubDir HAIKU_TOP src bin network ifconfig ;
+
+UsePrivateHeaders net ;
+
+BinCommand ifconfig :
+	ifconfig.cpp
+	: be network bnetapi
+;

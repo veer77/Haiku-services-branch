@@ -1,0 +1,22 @@
+SubDir HAIKU_TOP src tests servers input replicant ;
+
+UseHeaders [ FDirName $(HAIKU_TOP) src servers input ] ;
+UsePrivateHeaders input ;
+AddResources ReplicantTest : replicant.rdef ;
+
+if $(COMPILE_FOR_R5) {
+	SubDirC++Flags -DCOMPILE_FOR_R5 ;
+}
+
+SimpleTest ReplicantTest :
+	MethodReplicant.cpp
+	MethodMenuItem.cpp
+	main.cpp
+	: be tracker $(TARGET_LIBSUPC++) ;
+
+SEARCH on [ FGristFiles
+	MethodReplicant.cpp
+	MethodMenuItem.cpp
+	]
+	= [ FDirName $(HAIKU_TOP) src servers input ] ;
+

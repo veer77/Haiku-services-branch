@@ -1,0 +1,31 @@
+SubDir HAIKU_TOP src apps drivesetup ;
+
+AddSubDirSupportedPlatforms libbe_test ;
+
+UsePrivateHeaders interface shared storage tracker ;
+
+Preference DriveSetup :
+	CreateParamsPanel.cpp
+	DiskView.cpp
+	DriveSetup.cpp
+	InitParamsPanel.cpp
+	MainWindow.cpp
+	PartitionList.cpp
+	Support.cpp
+
+	: be $(HAIKU_LOCALE_LIBS) libcolumnlistview.a libshared.a
+		$(TARGET_LIBSUPC++)
+	: DriveSetup.rdef
+;
+
+DoCatalogs DriveSetup :
+	x-vnd.Haiku-DriveSetup
+	:
+	CreateParamsPanel.cpp
+	DiskView.cpp
+	InitParamsPanel.cpp
+	MainWindow.cpp
+	PartitionList.cpp
+	Support.cpp
+;
+

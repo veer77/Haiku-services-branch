@@ -1,0 +1,6 @@
+1	hungarian	x-vnd.Haiku-ReadOnlyBootPrompt	1972532432
+Desktop (Live-CD)	BootPromptWindow		Asztal (Live-CD)
+Keymap	BootPromptWindow		Billentyűzetkiosztás
+Language	BootPromptWindow		Nyelv
+Run Installer	BootPromptWindow		Telepítő futtatása
+Welcome to Haiku!	BootPromptWindow		A Haiku üdvözli Önt!

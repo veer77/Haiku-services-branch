@@ -1,0 +1,13 @@
+1	esperanto	x-vnd.Be-PSRV	1128772901
+All pages	ConfigWindow		Ĉiom da paĝoj
+Cancel	ConfigWindow		Nuligi
+Cancel	PrintServerApp		Nuligi
+No	PrintServerApp		Ne
+OK	ConfigWindow		Bone
+OK	PrintServerApp		Bone
+Page setup:	ConfigWindow		Paĝaj agordoj:
+Printer:	ConfigWindow		Printilo:
+Select a printer	ConfigWindow		Elektu printilon
+Undefined	ConfigWindow		Nedefinita
+Would you like to set one up now?	PrintServerApp		Ĉu vi volas agordi unu nun?
+Yes	PrintServerApp		Jes

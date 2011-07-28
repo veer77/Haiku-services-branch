@@ -1,0 +1,18 @@
+1	ukrainian	x.vnd.OBOS-Inspector	2081327042
+Active Translators	ImageWindow		Активні транслятори
+Active Translators	InspectorApp		Активні транслятори
+Bummer	ImageWindow		Помилка
+File	ImageWindow		Файл
+First Page	ImageWindow		Перша сторінка
+Next Page	ImageWindow		Наступна сторінка
+No image available to save.	ImageWindow		Немає доступних для збереження образів.
+Number of Documents: %1\n\nTranslator Used:\nName: %2\nInfo: %3\nVersion: %4\n	ImageView		Кількість документів: %1\n\nВикористати транслятор:\nName: %2\nІнфо: %3\nВерсія: %4\n
+Previous Page	ImageWindow		Попередня сторінка
+Save feature not implemented yet.	ImageWindow		Функція збереження не реалізована.
+Selected Document: %1\n\nTranslator Used:\nName: %2\nInfo: %3\nVersion: %4\n	ImageView		Вибрати документ: %1\n\nВикористати транслятор:\nІ'мя: %2\nІнформація: %3\nВерсія: %4\n
+Sorry, unable to load the image.	ImageView		Прикро , неможливо завантажити образ.
+Sorry, unable to write the image file.	ImageView		Прикро, неможливо записати файл образу.
+System Translators	ActiveTranslatorsWindow		Системні транслятори
+Unknown	ImageView		Невідомий
+User Translators	ActiveTranslatorsWindow		Транслятори користувача
+\nInput Formats:	ImageView		\nВхідні формати:

@@ -1,0 +1,37 @@
+SubDir HAIKU_TOP src apps text_search ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+UsePrivateHeaders shared ;
+UsePrivateHeaders storage ;
+
+local additionalBeOSSources ;
+if $(TARGET_PLATFORM) != haiku {
+	SEARCH_SOURCE += [ FDirName $(HAIKU_TOP) src kits storage ] ;
+	additionalBeOSSources += PathMonitor.cpp ;
+}
+
+Application TextSearch :
+	ChangesIterator.cpp
+	FileIterator.cpp
+	InitialIterator.cpp
+	GrepApp.cpp
+	GrepListView.cpp
+	Grepper.cpp
+	GrepWindow.cpp
+	Model.cpp
+	TextSearch.cpp
+
+	$(additionalBeOSSources)
+
+	: be $(HAIKU_LOCALE_LIBS) tracker textencoding libshared.a
+		$(TARGET_LIBSUPC++)
+	: TextSearch.rdef
+;
+
+DoCatalogs TextSearch :
+	x-vnd.Haiku.TextSearch
+	:
+	GrepWindow.cpp
+	Grepper.cpp
+;

@@ -1,0 +1,9 @@
+1	finnish	x-vnd.Haiku-BMPTranslator	2497639570
+BMP Settings	BMPMain		BMP-asetukset
+BMP image (MS format, %d bits	BMPTranslator	Ignore missing closing round bracket	BMP-kuva (MS-muoto, %d bittiä
+BMP image (OS/2 format, %d bits)	BMPTranslator		BMP-kuva (OS/2-muoto, %d bittiä)
+BMP image translator	BMPTranslator		BMP-kuvamuunnin
+BMP image translator	BMPView		BMP-kuvamuunnin
+BMP images	BMPTranslator		BMP-kuvat
+BMPTranslator Settings	BMPTranslator		BMP-muunninasetukset
+Version %d.%d.%d, %s	BMPView		Versio %d.%d.%d, %s

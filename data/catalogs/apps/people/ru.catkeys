@@ -1,0 +1,49 @@
+1	russian	x-vnd.Be-PEPL	2993050801
+%name% picture	People		Изображение для %name%
+Address	People		Адрес
+Cancel	People		Отмена
+City	People		Город
+Close	People		Закрыть
+Company	People		Компания
+Configure attributes	People		Выбрать атрибуты
+Contact information for a person.	Long mimetype description		Контактная информация для человека.
+Contact name	People		Имя контакта
+Copy	People		Копировать
+Could not create %s.	People		Невозможно создать %s.
+Country	People		Страна
+Cut	People		Вырезать
+Drop an image here,\nor use the contextual menu.	People		Перенесите сюда фотографию\nили используйте контекстное меню.
+E-mail	People		E-mail
+Edit	People		Изменить
+Error	People		Ошибка
+Fax	People		Факс
+File	People		Файл
+Group	People		Группа
+Home phone	People		Домашний телефон
+Launching the FileTypes preflet to configure Person attributes has failed.\n\nError: 	People		Не удалось запустить FileTypes для настройки атрибутов Персоны.\n\nОшибка:
+Load image…	People		Выбрать рисунок…
+Name	People		Имя
+New person	People		Новая персона
+New person…	People		Новая персона…
+Nickname	People		Прозвище
+OK	People		ОК
+Paste	People		Вставить
+People	System name		Контакты
+Person	Short mimetype description		Персона
+Quit	People		Выход
+Redo	People		Отменить
+Remove image	People		Удалить рисунок
+Revert	People		Вернуть
+Save	People		Сохранить
+Save as…	People		Сохранить как…
+Save changes before quitting?	People		Сохранить изменения перед выходом?
+Select all	People		Выделить всё
+Sorry	People		Извините
+State	People		Штат
+The file '%name%' could not be written.	People		Невозможно записать файл '%name%'.
+URL	People		URL
+Undo	People		Отменить
+Unnamed person	People		Новая персона
+Work phone	People		Рабочий телефон
+Zip	People		Индекс
+none	Groups list		пусто

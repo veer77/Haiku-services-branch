@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+<head>
+<!-- 
+ *
+ * Copyright 2008-2010, Haiku. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ *
+ * Authors:
+ *		Humdinger <humdingerb@gmail.com>
+ * Translators:
+ *		totish
+ *
+-->
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta name="robots" content="all" />
+	<meta name="robots" content="all" />
+	<title>Додатки (Applications)</title>
+	<link rel="stylesheet" type="text/css" href="../Haiku-doc.css" />
+</head>
+<body>
+
+<div id="banner">
+<div><span>User guide</span></div>
+</div>
+
+<div class="nav">
+<div class="inner">
+<ul class="lang-menu">
+<li class="now"><img src="../images/flags/uk.png" alt="" /> Українська</li>
+<li><a href="../fr/applications.html"><img src="../images/flags/fr.png" alt="" />Français</a></li>
+<li><a href="../de/applications.html"><img src="../images/flags/de.png" alt="" />Deutsch</a></li>
+<li><a href="../it/applications.html"><img src="../images/flags/it.png" alt="" />Italiano</a></li>
+<li><a href="../ru/applications.html"><img src="../images/flags/ru.png" alt="" />Русский</a></li>
+<li><a href="../es/applications.html"><img src="../images/flags/es.png" alt="" />Español</a></li>
+<li><a href="../sv_SE/applications.html"><img src="../images/flags/sv_SE.png" alt="" />Svenska</a></li>
+<li><a href="../jp/applications.html"><img src="../images/flags/jp.png" alt="" />日本語</a></li>
+<li><a href="../zh_CN/applications.html"><img src="../images/flags/zh_CN.png" alt="" /> 中文 ［中文］</a></li>
+<li><a href="../pt_PT/applications.html"><img src="../images/flags/pt_PT.png" alt="" />Português</a></li>
+<li><a href="../en/applications.html"><img src="../images/flags/gb.png" alt="" />English</a></li>
+</ul>
+<span>
+ «  <a href="workshop-filetypes+attributes.html">Workshop</a> 
+::  <a href="contents.html" class="uplink">Contents</a> 
+::  <a href="desktop-applets.html">Desktop Applets</a>  »
+</span></div>
+</div>
+
+<div id="content">
+<div>
+<div class="box-info">The translation of this page isn't yet complete. Until it is, unfinished parts use the English original.</div>
+
+<h1>Додатки (Applications)</h1>
+
+<p>Перед тим як перейти до додатків, що супроводжують Haiku, спробуємо детально вивчити, як встановити або видалити додатки, котрі Ви скачали, наприклад з одного з сайтів,  що згадуються на сторінці  <a href="../../welcome/welcome_uk.html#software">привітання (Welcome)</a>.</p>
+<div class="box-info">Вам слід просто розпакувати архів під Haiku. При розпакуванні вмісту архіву в Linux або Windows, наприклад, і простому копіюванні їх у Haiku, Ви втратите всі важливі атрибути, бо ці системи не вміють правильно обробляти метадані.</div>
+
+<h2>
+<a href="#"><img src="../images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="install" name="install">Встановлення додатків</a></h2>
+<p>Додатки для Haiku завжди постачаються у  вигляді архіву. У більшості випадків це ZIP, деякі старі BeOS пакунки існують у форматі Software Valet's PKG. Software Valet дозволяв автоматично виконати інсталяційні скрипти, достатньо було вибрати папку призначення і все належно проходило.<br />
+Якщо це ZIP архів, двоклік відкриє <span class="app">Expander</span> де вказавши папку призначення треба розпакувати його. Як описано в розділі <a href="filesystem-layout.html">Ієрархія файлової системи</a>, цільовими можуть бути :</p>
+<table summary="layout" border="0" cellspacing="0" cellpadding="2">
+<tr><td><span class="path">/boot/common/apps/</span></td><td>   </td><td> для додатків доступних всім користувачам</td></tr>
+<tr><td><span class="path">/boot/home/apps/</span></td><td>   </td><td> для додатків призначених особисто Вам</td></tr>
+</table>
+<p>Ця різниця стане актуальною, коли Haiku буде  
+багатокористувацькою системою.</p>
+<p>Після розпаковки архіву було би непогано заглянути всередину тільки но утвореної папки. Дуже часто там поряд с основними файлами можна знайти файл ReadMe і іншу документацію.</p>
+<p>Після встановлення деякі додатки вимагають подальшого налаштування. Наприклад, <a href="tracker-add-ons.html">придатки Tracker</a>, <a href="preferences/datatranslations.html">транслятори</a> або інші компоненти, що розширюють можливості системи, треба покласти  у відповідні папки. Деколи це маленький файл сценарій ( звичайно має розширення <span class="cli">.sh</span>) типу <span class="cli">install</span> який досить запустити двокліком мишки.<br />
+Деколи - папки, що посилаються на потрібне місце розташування. Вони переважно мають назву "<span class="cli">drag [filename] here...</span>". Таким чином просто скористайтесь ними і ви зможете легко все налаштувати.</p>
+<p>Однак у більшості випадків від Вас крім розпаковки архіва нічого не буде вимагатись.<br />
+Теми <a href="deskbar.html">Deskbar - панель завдань</a> і <a href="desktop-applets/launchbox.html">LaunchBox</a> описують, як додати значок для нових додатків.</p>
+
+<h2>
+<a href="#"><img src="../images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="uninstall" name="uninstall">Видалення додатків</a></h2>
+<p>Якщо для встановлення додатку  використовувався сценарій , то і для його видалення він повинен існувати. У цьому випадку досить двокліка мишкою.<br />
+У решті випадків досить просто видалити папку з додатком.</p>
+<p>Це ясна річ залишає можливість повернути файл настройок, що зберігаються у папці <span class="path">~/config/settings</span>. Це може стати корисним коли Ви повторно захочете встановити його. Також збережуться файли, що Ви перетягували методом "<span class="cli">drag [filename] here...</span>" (дивись вище).</p>
+<p>Один із способів швидко знайти всі файли, що належать додатку, це зробити запит по назві програми або його частин. Це дозволить виявити бінарний файл додатку, папку куди він встановлений і файли його налаштувань і т. д. Просто виділіть усі відповідні файли і видаліть їх.</p>
+
+<h2>
+<a href="#"><img src="../images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="list-of-apps" name="list-of-apps">Haiku - додатки</a></h2>
+<p>Haiku постачається з невеликим набором необхідних додатків. Ви можете знайти їх за адресами <span class="path">/boot/system/apps/</span> або <span class="path">/boot/common/apps/</span>. Додатки, що переважно не запускаються двокліком по файлу (наприклад, ShowImage для перегляду зображень) можуть бути знайдені в меню <span class="menu">Додатки (Applications)</span> панелі Deskbar.</p>
+<table summary="layout" border="0" cellpadding="2" cellspacing="0"> 
+	<tr><td style="width:24px;"><img src="../images/apps-images/activitymonitor-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/activitymonitor.html">ActivityMonitor</a></td><td style="width:10px;"> </td>
+		<td valign="top">Додаток для відстеження системних ресурсів, наприклад, використання процесора і оперативної пам'яті.</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/cdplayer-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/cdplayer.html">CDPlayer</a></td><td> </td>
+		<td valign="top">Програвач аудіо компактів</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/charactermap-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/charactermap.html">CharacterMap</a></td><td> </td>
+		<td valign="top">Додаток , що показує мапу  Unicode - символів.</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/codycam-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/codycam.html">CodyCam</a></td><td> </td>
+		<td valign="top">Додаток для роботі з веб-камерою, який дозволяє завантажувати зображення на сервер.</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/deskcalc-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/deskcalc.html">DeskCalc</a></td><td> </td>
+		<td valign="top">Калькулятор.</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/diskprobe-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/diskprobe.html">DiskProbe</a></td><td> </td>
+		<td valign="top"> HEX-редактор файлів і пристроїв .</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/diskusage-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/diskusage.html">DiskUsage</a></td><td> </td>
+		<td valign="top">Додаток для візуалізації використання пам'яті.</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/drivesetup-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/drivesetup.html">DriveSetup</a></td><td> </td>
+		<td valign="top">Додаток для роботи з розділами вінчестера.</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/expander-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/expander.html">Expander</a></td><td> </td>
+		<td valign="top">Додаток для роботи з архівами.</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/icon-o-matic-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/icon-o-matic.html">Icon-O-Matic</a></td><td> </td>
+		<td valign="top">Додаток для створення векторних іконок в Haiku.</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/installer-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/installer.html">Installer</a></td><td> </td>
+		<td valign="top">Додаток для встановлення Haiku в розділ .</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/magnify-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/magnify.html">Magnify</a></td><td> </td>
+		<td valign="top">Додаток для збільшення зображення в зоні курсора.</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/mail-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/mail.html">Mail</a></td><td> </td>
+		<td valign="top"><span style="color:silver"> Еmail клієнт. [<i>опис поки відсутній</i>]</span></td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/mediaplayer-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/mediaplayer.html">MediaPlayer</a></td><td> </td>
+		<td valign="top">A player for all supported audio/video files.</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/midiplayer-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/midiplayer.html">MidiPlayer</a></td><td> </td>
+		<td valign="top">A player for MIDI files.</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/packageinstaller-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/packageinstaller.html">PackageInstaller</a></td><td> </td>
+		<td valign="top"><span style="color:silver">Встановлювач BeOS пакетів формату PKG. [<i>опис поки відсутній</i>]</span></td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/people-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/people.html">People</a></td><td> </td>
+		<td valign="top">Менеджер контактів.</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/poorman-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/poorman.html">PoorMan</a></td><td> </td>
+		<td valign="top">Простий веб-сервер.</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/screenshot-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/screenshot.html">Screenshot</a></td><td> </td>
+		<td valign="top">Додаток для зйомки зображень робочого столу.</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/showimage-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/showimage.html">ShowImage</a></td><td> </td>
+		<td valign="top">A simple image viewer.</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/soundrecorder-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/soundrecorder.html">SoundRecorder</a></td><td> </td>
+		<td valign="top"><span style="color:silver">Додаток для запису звуку з лінійного входу або мікрофону. [<i>опис поки відсутній</i>]</span></td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/stylededit-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/stylededit.html">StyledEdit</a></td><td> </td>
+		<td valign="top">Простий редактор текстів.</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/terminal-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/terminal.html">Terminal</a></td><td> </td>
+		<td valign="top">Доступ до командної стрічки оболонки bash .</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/textsearch-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/textsearch.html">TextSearch</a></td><td> </td>
+		<td valign="top">Додаток для пошуку текстових файлів .</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/tv-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/tv.html">TV</a></td><td> </td>
+		<td valign="top"><span style="color:silver">Переглядач аналового TV. [<i>опис поки відсутній</i>]</span></td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/webpositive-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/webpositive.html">WebPositive</a></td><td> </td>
+		<td valign="top">Нативний переглядач веб-сторінок.</td></tr>
+</table>
+
+<h2>
+<a href="#"><img src="../images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="cli-apps" name="cli-apps">Haiku - додатки для командної стрічки</a></h2>
+<p>Окрім звиклих термінальних додатків, що ідуть разом с оболонкою bash і які вимагаються для POSIX сумісності  постачаються Haiku-додатки для командної стрічки. Вони часто використовуються для написання скриптів, корисно буде заглянути в тему <a href="bash-scripting.html">Bash і написання сценаріїв</a>.</p>
+<table summary="layout" border="0" cellpadding="2" cellspacing="0">
+		<tr><td style="width:24px;"><img src="../images/apps-images/cli-app-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/list-cli-apps.html">Список всіх додатків для командної стрічки</a></td><td> </td></tr>
+		<tr><td style="width:24px;"><img src="../images/apps-images/cli-app-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/cli-apps.html">Спеціальні Haiku-додатки для командної стрічки</a></td><td> </td></tr>
+</table>
+
+<h2>
+<a href="#"><img src="../images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="list-of-bundled-apps" name="list-of-bundled-apps">Додатки, що входять у склад Haiku</a></h2>
+<p>Крім додатків,які ми згадували, що підтримуються проектом Haiku, існує ще кілька важливих додатків, що підтримуються сторонніми розробниками. Виявлені помилки і запити на їх покращення просимо відсилати саме до людей які супроводжують ці додатки.</p>
+<table summary="layout" border="0" cellpadding="2" cellspacing="0">
+		<tr><td style="width:24px;"><img src="../images/apps-images/bepdf-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/bepdf.html">BePDF</a></td><td style="width:10px;"> </td>
+		<td valign="top">A <acronym title="Portable Document Format">PDF</acronym> переглядач.</td></tr>
+<!--	<tr><td style="width:24px;"><img src="../images/apps-images/bezillabrowser-icon_16.png" alt="icon" width="16" height="16" /></td><td _translation_id="270"><a href="applications/bezillabrowser.html">BeZillaBrowser</a></td><td> </td>
+		<td valign="top" _translation_id="271">A web browser based on Mozilla's source code.</td></tr> -->
+	<tr><td style="width:24px;"><img src="../images/apps-images/pe-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/pe.html">Pe</a></td><td> </td>
+		<td valign="top">Розширений редактор текстів з підсвіткою синтаксису і багатьом іншим.</td></tr>
+	<tr><td style="width:24px;"><img src="../images/apps-images/vision-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/vision.html">Vision</a></td><td> </td>
+		<td valign="top"><acronym title="Internet Relay Chat">IRC</acronym>-клієнт.</td></tr>
+<!--	<tr><td style="width:24px;"><img src="../images/apps-images/vlc-icon_16.png" alt="icon" width="16" height="16" /></td><td _translation_id="276"><a href="applications/vlc.html">VLC media player</a></td><td> </td>
+		<td valign="top" _translation_id="277">VideoLAN's media player.</td></tr> -->
+	<tr><td style="width:24px;"><img src="../images/apps-images/wonderbrush-icon_16.png" alt="icon" width="16" height="16" /></td><td><a href="applications/wonderbrush.html">WonderBrush</a></td><td> </td>
+		<td valign="top">Растровий і векторний редактор від YellowBite.</td></tr>
+</table>
+
+</div>
+</div>
+
+<div class="nav">
+<div class="inner"><span>
+ «  <a href="workshop-filetypes+attributes.html">Workshop</a> 
+::  <a href="contents.html" class="uplink">Contents</a> 
+::  <a href="desktop-applets.html">Desktop Applets</a>  »
+</span></div>
+</div>
+
+</body>
+</html>

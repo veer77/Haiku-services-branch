@@ -1,0 +1,18 @@
+SubDir HAIKU_TOP src apps pairs ;
+
+Application Pairs :
+	Pairs.cpp
+	PairsWindow.cpp
+	PairsView.cpp
+	PairsTopButton.cpp
+
+	: be $(HAIKU_LOCALE_LIBS) $(TARGET_LIBSTDC++)
+	: Pairs.rdef
+;
+
+DoCatalogs Pairs :
+	x-vnd.Haiku-Pairs
+	:
+	PairsView.cpp
+	PairsWindow.cpp
+;

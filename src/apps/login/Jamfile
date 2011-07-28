@@ -1,0 +1,25 @@
+SubDir HAIKU_TOP src apps login ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+UsePrivateHeaders app ;
+#UsePrivateHeaders shared ;
+#UsePrivateHeaders tracker ;
+#SubDirHdrs $(HAIKU_TOP) src kits tracker ;
+local mu_libs ;
+if $(TARGET_PLATFORM_HAIKU_COMPATIBLE) {
+        mu_libs = libmultiuser_utils.a ;
+}
+
+UseHeaders [ FDirName $(HAIKU_TOP) src bin multiuser ] ;
+
+Application Login :
+	DesktopWindow.cpp
+	LoginApp.cpp
+	LoginWindow.cpp
+	LoginView.cpp
+	main.cpp
+	: be tracker $(mu_libs) $(TARGET_LIBSTDC++)
+	: Login.rdef
+;
+

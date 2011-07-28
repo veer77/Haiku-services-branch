@@ -1,0 +1,15 @@
+1	italian	x-vnd.Haiku-DataTranslations	2855793119
+An item named '%name' already exists in the Translators folder! Shall the existing translator be overwritten?	DataTranslations		Un elemento '%name' esiste già nella cartella dei Translator! Il translator deve essere sovrascritto?
+Cancel	DataTranslations		Cancella
+Could not install %s:\n%s	DataTranslations		Impossibile installare %s:\n%s
+DataTranslations - Error	DataTranslations		DataTranslations - Errore
+DataTranslations - Note	DataTranslations		DataTranslations - Nota
+Info	DataTranslations		informazioni
+Info:	DataTranslations		Informazioni:
+Name:	DataTranslations		Nome:
+OK	DataTranslations		OK
+Overwrite	DataTranslations		Sovrascrivi
+Path:	DataTranslations		Percorso:
+The item '%name' does not appear to be a Translator and will not be installed.	DataTranslations		L'elemento '%name' non sembra essere un Translator e non verrà installato.
+The new translator has been installed successfully.	DataTranslations		Il nuovo translator è stato installato con successo.
+Version:	DataTranslations		Versione:

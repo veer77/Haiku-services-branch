@@ -1,0 +1,21 @@
+SubDir HAIKU_TOP src preferences fonts ;
+
+Preference Fonts :
+	FontSelectionView.cpp
+	FontsSettings.cpp
+	FontView.cpp
+	main.cpp
+	MainWindow.cpp
+	: be $(TARGET_LIBSUPC++) $(HAIKU_LOCALE_LIBS)
+	: Fonts.rdef
+	;
+
+DoCatalogs Fonts :
+	x-vnd.Haiku-Fonts
+	:
+	FontSelectionView.cpp
+	FontView.cpp
+	main.cpp
+	MainWindow.cpp
+;
+

@@ -1,0 +1,37 @@
+1	spanish	x-vnd.Haiku-About	3149623567
+%.2f GHz	AboutView		%.2f GHz
+%d MiB total	AboutView		%d MiB en total
+%d MiB used (%d%%)	AboutView		%d MiB usados (%d%%)
+%ld MHz	AboutView		%ld MHz
+%ld Processors:	AboutView		%ld procesadores:
+%total MiB total, %inaccessible MiB inaccessible	AboutView		%total MiB en total, %inaccesible MiB inaccesible(s)
+... and the many people making donations!\n\n	AboutView		... ¡y a toda la gente que realizó donaciones!\n\n
+About this system	AboutWindow		Acerca de este sistema
+Contributors:\n	AboutView		Colaboradores:\n
+Current maintainers:\n	AboutView		Mantenedores actuales:\n
+GCC %d Hybrid	AboutView		GCC %d híbrido
+Google & their Google Summer of Code program\n	AboutView		Google y su programa Google Summer of Code\n
+Kernel:	AboutView		Núcleo:
+License: 	AboutView		Licencia: 
+Licenses: 	AboutView		Licencias: 
+Memory:	AboutView		Memoria:
+Michael Phipps (project founder)\n\n	AboutView		Michael Phipps (fundador del proyecto)\n\n
+Past maintainers:\n	AboutView		Mantenedores previos:\n
+Processor:	AboutView		Procesador:
+Revision	AboutView		Revisión
+Source Code: 	AboutView		Código fuente:
+The BeGeistert team\n	AboutView		El equipo de BeGeistert\n
+The Haiku-Ports team\n	AboutView		El equipo Haiku-Ports\n
+The Haikuware team and their bounty program\n	AboutView		El equipo de Haikuware y su programa de recompensas\n
+The University of Auckland and Christof Lutteroth\n\n	AboutView		La Universidad de Auckland y a Christof Lutteroth\n\n
+The code that is unique to Haiku, especially the kernel and all code that applications may link against, is distributed under the terms of the %MIT licence%. Some system libraries contain third party code distributed under the LGPL license. You can find the copyrights to third party code below.\n\n	AboutView		El código que es único de Haiku, en especial el núcleo y todo el código al cual se enlazan las aplicaciones, se distribuye bajo los términos de la %licencia MIT%. Algunas librerías del sistema contienen código de terceras personas distribuidas bajo la licencia LGPL. Los derechos de autor de terceras personas se encuentran a continuación.\n\n
+Time running:	AboutView		Tiempo en ejecución:
+Translations:\n	AboutView		Traducciones:\n
+Travis Geiselbrecht (and his NewOS kernel)\n	AboutView		Travis Geiselbrecht (y su núcleo NewOS)\n
+Unknown	AboutView		Desconocido
+Version:	AboutView		Versión:
+Website, marketing & documentation:\n	AboutView		Sitio web, márketing y documentación:\n
+[Click a license name to read the respective license.]\n\n	AboutView		[Haga clic en un nombre para leer la licencia respectiva.]\n\n
+\nCopyrights\n\n	AboutView		\nDerechos de autor\n\n
+\n\nSpecial thanks to:\n	AboutView		\n\nAgradecimientos especiales a:\n
+\n… and probably some more we forgot to mention (sorry!)\n\n	AboutView		\n… y probablemente algunos más que hemos olvidado mencionar (¡perdón!)\n\n

@@ -1,0 +1,48 @@
+SubDir HAIKU_TOP src preferences mail ;
+
+
+UsePublicHeaders [ FDirName add-ons mail_daemon ] ;
+UsePrivateHeaders mail ;
+
+SubDirHdrs [ FDirName $(HAIKU_TOP) headers os add-ons mail_daemon ] ;
+
+# for BObjectList.h
+UsePrivateHeaders shared ;
+
+
+local sources =
+	AutoConfig.cpp
+	AutoConfigView.cpp
+	AutoConfigWindow.cpp
+	CenterContainer.cpp
+	ConfigViews.cpp
+	ConfigWindow.cpp
+	FilterAddonList.cpp
+	DNSQuery.cpp
+	FilterConfigView.cpp
+	main.cpp
+;
+
+AddResources E-mail : e-mail.rdef ;
+
+Preference E-mail
+	:
+	$(sources)
+	:
+	be libmail.so $(HAIKU_NETWORK_LIBS) $(TARGET_NETAPI_LIB) $(TARGET_LIBSTDC++)
+	$(TARGET_LIBSUPC++) $(HAIKU_LOCALE_LIBS)
+;
+
+DoCatalogs E-mail
+	:
+	x-vnd.Haiku-Mail
+	:
+	AutoConfigView.cpp
+	AutoConfigWindow.cpp
+	ConfigViews.cpp
+	ConfigWindow.cpp
+	FilterConfigView.cpp
+;
+
+
+SubInclude HAIKU_TOP src preferences mail ProviderInfo ;

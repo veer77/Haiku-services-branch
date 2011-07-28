@@ -1,0 +1,108 @@
+1	italian	x-vnd.Haiku-Installer	3961982123
+%1ld of %2ld	InstallerWindow	number of files copied	%1ld di %2ld
+2)   The Installer will make the Haiku partition itself bootable, but takes no steps to integrate Haiku into an existing boot menu. If you have GRUB already installed, you can add Haiku to its boot menu. Depending on what version of GRUB you use, this is done differently.\n\n\n	InstallerApp		2) L'installer renderà la partizione Haiku avviabile, ma non esegue nessun passo per integrare Haiku in un menu di avvio esistente. Se avete GRUB già installato, potete aggiungere Haiku al suo menu d'avvio. Ciò ouò essere fatto in maniera differente, dipende da quale versione di GRUB utilizzate.\n\n\n 
+2.1) GRUB 1\n	InstallerApp		2.1) GRUB 1\n
+2.2) GRUB 2\n	InstallerApp		2.2) GRUB 2\n
+3)   When you successfully boot into Haiku for the first time, make sure to read our \"Welcome\" documentation, there is a link on the Desktop.\n\n	InstallerApp		3) Una volta avviato Haiku con successo la prima volta, assicuratevi di leggere la documentazione di \"Benvenuto\", c'è un link sul desktop.\n\n
+<none>	InstallerWindow	No partition available	<nessuna>
+?? of ??	InstallerWindow	Unknown progress	?? di ??
+???	InstallerWindow	Unknown currently copied item	???
+???	InstallerWindow	Unknown partition name	???
+Additional disk space required: %s	InstallerWindow		Spazio addizionale richiesto sul disco: %s
+Additional disk space required: 0.0 KiB	InstallerWindow		Spazio aggiuntivo richiesto sul disco: 0.0 KiB
+Additionally you have to edit another file to actually display the boot menu:\n\n	InstallerApp		Inoltre è necessario modificare un altro file per visualizzare i menu di avvio:\n\n
+All hard disks start with \"hd\".\n	InstallerApp		Tutti gli hard disk iniziano con \"hd\".\n 
+An error was encountered and the installation was not completed:\n\nError:  %s	InstallerWindow		È stato riscontrato un errore e l'installazione non è stata completata:\n\nErrore:  %s
+Are you sure you want to abort the installation and restart the system?	InstallerWindow		Sei sicuro di voler annullare l'installazione e riavviare il sistema?
+Are you sure you want to install onto the current boot disk? The Installer will have to reboot your machine if you proceed.	InstallProgress		Sei sicuro di voler installare sul disco d'avvio corrente? Se procedi l'Installer riavvierà la tua macchina.
+Are you sure you want to to stop the installation?	InstallerWindow		Sei sicuro di voler interrompere l'installazione?
+Begin	InstallerWindow		Inizia
+Boot sector not written because of an internal error.	InstallProgress		Settore d'avvio non scritto a causa di un errore interno.
+Boot sector successfully written.	InstallProgress		Settore d'avvio scritto con successo.
+Cancel	InstallProgress		Annulla
+Cancel	InstallerWindow		Annulla
+Choose the disk you want to install onto from the pop-up menu. Then click \"Begin\".	InstallerWindow		Scegli il disco sul quale vuoi installare tramite il menu a pop-up. Quindi fai click su \"Inizia\"
+Choose the source and destination disk from the pop-up menus. Then click \"Begin\".	InstallerWindow		Scegli il disco d'origine e di destinazione dai menù a pop-up. Quindi fai click su \"Inizia\".
+Choose the source disk from the pop-up menu. Then click \"Begin\".	InstallerWindow		Scegli il disco d'origine dal menu a pop-up. Quindi fai click su \"Inizia\".
+Collecting copy information.	InstallProgress		Raccolta informazioni di copia.
+Configure your /boot/grub/menu.lst by launching your favorite editor from a Terminal like this:\n\n	InstallerApp		Configurate il vostro /boot/grub/menu.lst  lanciando il vostro editor preferito da Terminale così:\n\n
+Continue	InstallerApp		Continua
+Continue	InstallerWindow	In alert after pressing Stop	Continua
+DriveSetup, the application to configure disk partitions, could not be launched.	InstallerWindow		Impossibile lanciare DriveSetup, l'applicazione per configurare le partizioni dei dischi.
+Finally, you have to update the boot menu by entering:\n\n	InstallerApp		Infine, è necessario aggiornare il menu di avvio inserendo:\n\n
+Finishing Installation.	InstallProgress		Conclusione installazione.
+GRUB's naming scheme is still: (hdN,n)\n\n	InstallerApp		Lo schema di denominazione di GRUB è ancora: (hdN,n)\n\n
+Here you have to comment out the line \"GRUB_HIDDEN_TIMEOUT=0\" by putting a \"#\" in front of it in order to actually display the boot menu.\n\n	InstallerApp		Qui devi commentare la linea \"GRUB_HIDDEN_TIMEOUT=0\" inserendo un \"#\" davanti la linea per visualizzare il menu d'avvio.\n\n
+Hide optional packages	InstallerWindow		Nascondi pacchetti opzionali
+IMPORTANT INFORMATION BEFORE INSTALLING HAIKU\n\n	InstallerApp		INFORMAZIONI IMPORTANTI PRIMA DI INSTALLARE HAIKU\n\n
+Install anyway	InstallProgress		Installa comunque
+Install from:	InstallerWindow		Installa da:
+Install progress:  	InstallerWindow		Avanzamento dell'installazione:  
+Installation canceled.	InstallProgress		Installazione annullata.
+Installation completed. Boot sector has been written to '%s'. Press Quit to leave the Installer or choose a new target volume to perform another installation.	InstallerWindow		Installazione completa. Il settore d'avvio è stato scritto su '%s'. Premi Esci per abbandonare l'Installer oppure scegli un nuovo volume di destinazione per procedere con un'altra installazione.
+Installer\n\twritten by Jérôme Duval and Stephan Aßmus\n\tCopyright 2005-2010, Haiku.\n\n	InstallerApp		Installer\n\tscritto da Jérôme Duval e Stephan Aßmus\n\tCopyright©2005-2010, Haiku.\n\n
+Launch the DriveSetup utility to partition\navailable hard drives and other media.\nPartitions can be initialized with the\nBe File System needed for a Haiku boot\npartition.	InstallerWindow		Avvia l'utilità DriveSetup per creare partizioni sui dischi rigidi e altri media disponibili.\nLe partizioni possono essere inizializzate con il \nBe File System necessario per una partizione d'avvio Haiku.
+NOTE: While the naming strategy for hard disks is still as described under 2.1) the naming scheme for partitions has changed.\n\n	InstallerApp		NOTA: Se la strategia di denominazione per gli hard disk è ancora come descritto al punto 2.1) lo schema di denominazione per le partizioni è cambiato.\n\n
+Newer versions of GRUB use an extra configuration file to add custom entries to the boot menu. To add them to the top, you have to create/edit a file by launching your favorite editor from a Terminal like this:\n\n	InstallerApp		Le nuove versioni di GRUB utilizzano un file di configurazione in più per aggiungere voci personalizzate al menu di avvio. Per aggiungerle alla cima, è necessario creare/modificare un file lanciando il vostro editor preferito da un terminale così:\n\n
+No optional packages available.	PackagesView		Nessun pacchetto opzionale disponibile.
+No partitions have been found that are suitable for installation. Please set up partitions and initialize at least one partition with the Be File System.	InstallerWindow		Non è stata trovata alcuna partizione adatta per l'installazione. Imposta le partizioni e inizializzane almeno una con il Be File System.
+OK	InstallProgress		Ok
+OK	InstallerApp		Ok
+OK	InstallerWindow		Ok
+Onto:	InstallerWindow		Su:
+Performing installation.	InstallProgress		Esecuzione dell'installazione.
+Please choose target	InstallerWindow		Scegli destinazione
+Please close the Boot Manager and DriveSetup windows before closing the Installer window.	InstallerWindow		Chiudi le finestre del Boot Manager e di DriveSetup prima di chiudere la finestra dell'Installer.
+Please close the Boot Manager window before closing the Installer window.	InstallerWindow		Chiudi la finestra del Boot Manager prima di chiudere la finestra dell'Installer.
+Please close the DriveSetup window before closing the Installer window.	InstallerWindow		Chiudi la finestra di DriveSetup prima di chiudere quella dell'Installer
+Press the Begin button to install from '%1s' onto '%2s'.	InstallerWindow		Premi sul tasto Inizia per installare da '%1s' su '%2s'.
+Quit	InstallerApp		Esci
+Quit	InstallerWindow		Esci
+Quit Boot Manager	InstallerWindow		Esci dal Boot Manager
+Quit Boot Manager and DriveSetup	InstallerWindow		Esci dal Boot Manager e da DriveSetup
+Quit DriveSetup	InstallerWindow		Esci da DriveSetup
+README	InstallerApp		LEGGIMI
+Restart system	InstallerWindow		Riavvia sistema
+Running Boot Manager and DriveSetup…\n\nClose both applications to continue with the installation.	InstallerWindow		Avvio di Boot Manager e DriveSetup…\n\nChiudi entrambe le applicazioni per continuare con l'installazione.
+Running Boot Manager…\n\nClose Boot Manager to continue with the installation.	InstallerWindow		Avvio di Boot Manager…\n\nChiudi Boot Manager per continuare con l'installazione.
+Running DriveSetup…\n\nClose DriveSetup to continue with the installation.	InstallerWindow		Avvio DriveSetup…\n\nChiudi DriveSetup per continuare con l'installazione.
+Scanning for disks…	InstallerWindow		Scansione dei dischi…
+Set up boot menu	InstallerWindow		Configura il menu di avvio
+Set up partitions…	InstallerWindow		Imposta partizioni…
+Show optional packages	InstallerWindow		Mostra pacchetti opzionali
+So behind the other menu entries towards the bottom of the file, add something similar to these lines:\n\n	InstallerApp		Quindi seguendo l'ordine delle voci del menu fino in fondo al file, aggiungete qualcosa di simile a queste linee:\n\n\
+So below the heading that must not be edited, add something similar to these lines:\n\n	InstallerApp		Quindi, sotto il titolo che non deve essere modificato, aggiungete qualcosa di simile a queste linee:\n\n
+Starting Installation.	InstallProgress		Avvio installazione.
+Stop	InstallerWindow		Interrompi
+Stop	InstallerWindow	In alert after pressing Stop	Interrompi
+The destination disk may not have enough space. Try choosing a different disk or choose to not install optional items.	InstallProgress		Il disco di destinazione potrebbe non avere abbastanza spazio. Prova a scegliere un disco differente oppure non installare elementi opzionali.
+The disk can't be mounted. Please choose a different disk.	InstallProgress		Il disco non può essere montato. Scegli un disco differente.
+The first logical partition always has the number \"4\", regardless of the number of primary partitions.\n\n	InstallerApp		La prima partizione logica ha sempre il numero \"4\", indipendentemente dal numero di partizioni primarie.\n\n
+The mount point could not be retrieved.	InstallProgress		Impossibile recuperare il punto di montaggio.
+The partition can't be mounted. Please choose a different partition.	InstallProgress		La partizione non può essere montata. Scegli una partizione differente.
+The target volume is not empty. Are you sure you want to install anyway?\n\nNote: The 'system' folder will be a clean copy from the source volume, all other folders will be merged, whereas files and links that exist on both the source and target volume will be overwritten with the source volume version.	InstallProgress		Il volume di destinazione non è vuoto. Sei sicuro di voler installare comunque?\n\nNota: La cartella \"system\" sarà una copia pulita dal volume d'origine, tutte le altre cartelle verranno fuse, mentre i file e collegamenti che esistono sia sul volume d'origine che di destinazione saranno sovrascritti con la versione del volume originario.
+Tools	InstallerWindow		Strumenti
+Try installing anyway	InstallProgress		Prova ad installare comunque
+Unknown Type	InstallProgress	Partition content type	Tipo Sconosciuto
+Welcome to the Haiku Installer!\n\n	InstallerApp		Benvenuto nell'Installer di Haiku!\n\n
+With GRUB 2 the first logical partition always has the number \"5\", regardless of the number of primary partitions.\n\n	InstallerApp		Con GRUB 2 la prima partizione logica ha sempre il numero \"5"\, indipendentemente dal numero di partizioni primarie.\n\n
+With GRUB it's: (hdN,n)\n\n	InstallerApp		Con GRUB si ha: (hdN,n)\n\n
+Write boot sector	InstallerWindow		Scrivi settore d'avvio
+Write boot sector to '%s'	InstallerWindow		Scrittura settore d'avvio su '%s'
+You can see the correct partition in GParted for example.\n\n\n	InstallerApp		Ad esempio potete vedere la partizione corretta in GParted.\n\n\n
+You can't install the contents of a disk onto itself. Please choose a different disk.	InstallProgress		Non puoi installare i contenuti di un disco su se stesso. Scegli un disco differente.
+You'll note that GRUB uses a different naming strategy for hard drives than Linux.\n\n	InstallerApp		Noterete che GRUB usa una diversa strategia per nominare gli hard drive rispetto a Linux.\n\n
+\"N\" is the hard disk number, starting with \"0\".\n	InstallerApp		\"N\ è il numero dell'hard disk, che comincia da \"0\".\n
+\"n\" is the partition number, also starting with \"0\".\n	InstallerApp		\"n\" è il numero della partizione, anch'esso comincia da \"0\".\n
+\"n\" is the partition number, which for GRUB 2 starts with \"1\"\n	InstallerApp		\"n\" è il numero della partizione, che per GRUB 2 inizia con \"1\"\n
+\t# Haiku on /dev/sda7\n	InstallerApp			\t# Haiku on /dev/sda7\n
+\t\tset root=(hd0,7)\n	InstallerApp		\t\tset root=(hd0,7)\n
+\tchainloader\t\t+1\n\n	InstallerApp		\tchainloader\t\t+1\n\n
+\tmenuentry \"Haiku Alpha\" {\n	InstallerApp		\tmenuentry \"Haiku Alpha\" {\n
+\trootnoverify\t\t(hd0,6)\n	InstallerApp		\trootnoverify\t\t(hd0,6)\n
+\tsudo <your favorite text editor> /boot/grub/menu.lst\n\n	InstallerApp		\tsudo <vostro editor favorito> /boot/grub/menu.lst\n\n
+\tsudo <your favorite text editor> /etc/default/grub\n\n	InstallerApp		\tsudo <vostro editor favorito> /etc/default/grub\n\n
+\tsudo update-grub\n\n\n	InstallerApp		\tsudo update-grub\n\n\n
+\ttitle\t\t\t\tHaiku\n	InstallerApp		\ttitle\t\t\t\tHaiku\n
+\t}\n\n	InstallerApp		\t}\n\n
+scanning…	InstallerWindow		scansione…

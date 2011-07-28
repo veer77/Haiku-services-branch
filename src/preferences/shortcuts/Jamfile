@@ -1,0 +1,34 @@
+SubDir HAIKU_TOP src preferences shortcuts ;
+
+SEARCH_SOURCE += [ FDirName $(HAIKU_TOP) src preferences shortcuts clv ] ;
+SEARCH_SOURCE += [ FDirName $(HAIKU_TOP) src add-ons input_server filters shortcut_catcher ] ;
+
+Preference Shortcuts :
+	main.cpp
+	MetaKeyStateMap.cpp
+	ShortcutsApp.cpp
+	ShortcutsSpec.cpp
+	ShortcutsWindow.cpp
+
+#	clv files
+	CLVColumn.cpp
+	CLVColumnLabelView.cpp
+	CLVListItem.cpp
+	ColumnListView.cpp
+	MouseWatcher.cpp
+	PrefilledBitmap.cpp
+	ScrollViewCorner.cpp
+	
+	: be $(HAIKU_LOCALE_LIBS) tracker libshortcuts_shared.a $(TARGET_LIBSTDC++)
+	: Shortcuts.rdef
+;
+
+
+DoCatalogs Shortcuts :
+	x-vnd.Haiku-Shortcuts
+	:
+	ShortcutsApp.cpp
+	ShortcutsWindow.cpp
+	ShortcutsSpec.cpp
+;
+

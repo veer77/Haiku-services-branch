@@ -1,0 +1,23 @@
+SubDir HAIKU_TOP src libs stdc++ current ;
+
+
+rule CreateSharedC++LibraryFromArchive sharedLib : staticLib
+{
+	LINKFLAGS on $(sharedLib) = [ on $(sharedLib) return $(LINKFLAGS) ]
+		-Xlinker --strip-debug -Xlinker --whole-archive ;
+
+	SharedLibraryFromObjects $(sharedLib) : : $(staticLib) ;
+}
+
+
+# create libstdc++.so from the libstdc++.a built with the compiler
+if $(HAIKU_BUILD_SHARED_LIBSTDC++) {
+	CreateSharedC++LibraryFromArchive $(HAIKU_SHARED_LIBSTDC++)
+		: $(HAIKU_STATIC_LIBSTDC++) ;
+}
+
+# create libsupc++.so from the libsupc++.a build with the compiler
+if $(HAIKU_BUILD_SHARED_LIBSUPC++) {
+	CreateSharedC++LibraryFromArchive $(HAIKU_SHARED_LIBSUPC++)
+		: $(HAIKU_STATIC_LIBSUPC++) ;
+}

@@ -1,0 +1,12 @@
+1	ukrainian	x-vnd.Haiku-CDPlayer	2145467092
+Audio CD	CDPlayer		Аудіо CD
+CD drive is empty	CDPlayer		CD пристрій пустий
+Disc: %ld:%.2ld / %ld:%.2ld	CDPlayer		Диск: %ld:%.2ld / %ld:%.2ld
+Disc: --:-- / --:--	CDPlayer		Диск: --:-- / --:--
+Disc: 88:88 / 88:88	CDPlayer		Диск: 88:88 / 88:88
+It appears that there are no CD drives on your computer or there is no system software to support one. Sorry.	CDPlayer		Можливо, що CD-привід у вашому комп’ютері відсутній, або його не підтримує система. Вибачте.
+OK	CDPlayer		Гаразд
+Track %whichTrack%: %trackAt%	CDPlayer		Track %whichTrack%: %trackAt%
+Track: %ld:%.2ld / %ld:%.2ld	CDPlayer		Трек: %ld:%.2ld / %ld:%.2ld
+Track: --:-- / --:--	CDPlayer		Композиція: --:-- / --:--
+Track: 88:88 / 88:88	CDPlayer		Трек: 88:88 / 88:88

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 
+ *
+ * Copyright 2010, Haiku. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ *
+ * Authors:
+ *		Humdinger <humdingerb@gmail.com>
+ * Translators:
+ *		Pengphei Han
+ *
+-->
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta name="robots" content="all" />
+	<title>命令行程序</title>
+	<link rel="stylesheet" type="text/css" href="../../Haiku-doc.css" />
+</head>
+<body>
+
+<div id="banner">
+<div><span>用户指南</span></div>
+</div>
+
+<div class="nav">
+<div class="inner">
+<ul class="lang-menu">
+<li class="now"><img src="../../images/flags/zh_CN.png" alt="" />  中文 ［中文］</li>
+<li><a href="../../fr/applications/cli-apps.html"><img src="../../images/flags/fr.png" alt="" />Français</a></li>
+<li><a href="../../de/applications/cli-apps.html"><img src="../../images/flags/de.png" alt="" />Deutsch</a></li>
+<li><a href="../../it/applications/cli-apps.html"><img src="../../images/flags/it.png" alt="" />Italiano</a></li>
+<li><a href="../../ru/applications/cli-apps.html"><img src="../../images/flags/ru.png" alt="" />Русский</a></li>
+<li><a href="../../es/applications/cli-apps.html"><img src="../../images/flags/es.png" alt="" />Español</a></li>
+<li><a href="../../sv_SE/applications/cli-apps.html"><img src="../../images/flags/sv_SE.png" alt="" />Svenska</a></li>
+<li><a href="../../jp/applications/cli-apps.html"><img src="../../images/flags/jp.png" alt="" />日本語</a></li>
+<li><a href="../../uk/applications/cli-apps.html"><img src="../../images/flags/uk.png" alt="" />Українська</a></li>
+<li><a href="../../pt_PT/applications/cli-apps.html"><img src="../../images/flags/pt_PT.png" alt="" />Português</a></li>
+<li><a href="../../en/applications/cli-apps.html"><img src="../../images/flags/gb.png" alt="" />English</a></li>
+</ul>
+
+<span>
+ «  <a href="list-cli-apps.html">List of commands</a> 
+::  <a href="../applications.html#cli-apps" class="uplink">Applications</a> 
+</span></div>
+</div>
+
+<div id="content">
+<div>
+
+<h2><img src="../../images/apps-images/cli-app-icon_64.png" alt="cli-app-icon_64.png" width="64" height="64" />Haiku专用命令行程序</h2>
+<table summary="layout" border="0" cellspacing="0" cellpadding="2">
+<tr><td>位置：</td><td style="width:15px;"></td><td><span class="path">/boot/system/bin</span><br /><span class="path">/boot/common/bin</span><br /><span class="path">~/config/bin</span></td></tr>
+</table>
+<p><br /></p>
+<p>所有 Haiku 附带的命令行程序都放置在 <span class="path">/boot/system/bin</span> 或者 <span class="path">/boot/common/bin</span> 目录。您自己的或另行安装的命令行程序应该放置在 <span class="path">~/config/bin</span> 目录。所有这些位置都是 PATH 变量的一部分，而且是自动查询的。<br />
+下面给出的列表并没有包含所有的用于 Haiku 的命令行程序，它只是给出了最常用的几个以方便您的尝试使用。您需要勇敢地去探索 <span class="path">bin/</span> 文件夹中的命令。以 <tt>--help</tt> 参数来运行命令行程序，这样会给出该命令的用途和相应的参数选项。</p>
+
+<h3><a href="#"><img src="../../images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="cli-attributes" name="cli-attributes">关于文件属性的命令： <span class="cli">listattr</span>, <span class="cli">catattr</span>, <span class="cli">addattr</span>, <span class="cli">rmattr</span>, <span class="cli">copyattr</span></a></h3>
+<p>这些命令用于显示，读取，添加和删除文件的属性；需要注意的是，这些元数据仅仅可用于BFS格式的磁盘和分区，而且移动文件到其他的文件系统将会把其相关的属性移除！<br />
+上面的命令在<a href="../attributes.html#attributes-terminal">终端中的属性</a>会有相关的描述。</p>
+
+<h3><a href="#"><img src="../../images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="cli-index" name="cli-index">关于文件索引的命令：<span class="cli">lsindex</span>, <span class="cli">mkindex</span>, <span class="cli">reindex</span>, <span class="cli">rmindex</span></a></h3>
+<p>利用这些命令，您可以对BFS的索引属性进行排序，新建，重新索引和删除等操作。由于每个卷都有自己独立的索引，所以在不同的卷之间拷贝文件时尤其要注意。<br />上述这些命令在<a href="../index.html">索引</a>主题中会有详细的描述。</p>
+
+<h3><a href="#"><img src="../../images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="cli-scripting" name="cli-scripting">有用的脚本命令</a></h3>
+<p>下面是一些非常有用的命令行工具，尤其适用于撰写脚本（详情请参阅 <a href="../bash-scripting.html">Bash和脚本</a>）。</p>
+<table summary="scripting cli tools" border="0" cellpadding="2" cellspacing="0"> 
+	<tr><td><p><span class="cli">alert</span></p></td><td style="width:10px;"> </td>
+		<td valign="top"><p><span class="cli">alert</span> 该命令将会打开一个带有预定义图标，说明注记和三个按钮的典型警示窗口，并且在终端中返回已选中按钮的标题和退出状态（以0开始）。例如，下面就是一个例子：</p>
+<pre class="terminal">alert --idea "FantasticApp(tm) installed successfully!
+Would you like a link to it?" "On Desktop" "In Deskbar" "No thanks"</pre>
+<p><img src="../images/apps-images/cli-alert.png" alt="cli-alert.png" /></p>
+</td></tr>
+<tr><td><p><span class="cli">filepanel</span></p></td><td style="width:10px;"> </td>
+		<td valign="top"><p><span class="cli">filepanel</span> 显示一个装载或者保存文件的面板，并且让用户选择相应的文件和位置。同时您将会获取到一个文件或者文件的路径作为返回值。并且还有几个参数可供使用，例如，设置起始目录，窗体的标题，默认保存的文件名。下面是一个例子：</p>
+<pre class="terminal">filepanel -s -t "Save your logfile" -d ~/config/settings -n Fantastic.log</pre>
+<p><img src="../images/apps-images/cli-filepanel.png" alt="cli-alert.png" /></p>
+</td></tr>
+<tr><td><p><span class="cli">waitfor</span></p></td><td style="width:10px;"> </td>
+		<td valign="top"><p><span class="cli">waitfor</span> 是一个用于等待特殊的程序或者进程启动或者终止的非常好的方式。</p>
+</td></tr>
+<tr><td><p><span class="cli">query</span></p></td><td style="width:10px;"> </td>
+		<td valign="top"><p><span class="cli">query</span> 是查询面板的命令行版本。实际上，一个创建搜索项目的快速方式是在搜索面板创建一个查询，选择 <span class="menu">by formula</span> ，在查询词的前后添加双引号（<tt>"</tt>），然后在终端或者脚本中的 <span class="cli">query</span> 命令之后粘贴所要查找的整个查询词。</p>
+</td></tr></table>
+
+<h3><a href="#"><img src="../../images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="cli-other" name="cli-other">其他命令</a></h3>
+
+<table summary="scripting cli tools" border="0" cellpadding="2" cellspacing="0"> 
+	<tr><td><p><span class="cli">checkfs</span></p></td><td style="width:10px;"> </td>
+		<td><p><span class="cli">checkfs</span> 是一个非常重要的工具，主要用于检查文件系统中的错误。只需在该命令之后添加磁卷或者设备名，它就会遍历所有的文件，然后修复所有可能出现不一致的地方。</p>
+</td></tr>
+<tr><td><p><span class="cli">open</span></p></td><td style="width:10px;"> </td>
+		<td valign="top"><p><span class="cli">open</span> 是一个非常小巧的工具。通过它，您可以以默认的程序打开任何文件，或者利用程序的签名还打开该程序而无需知道它的路径。它也可以用于打开网页，甚至“虚拟” 的目录， <tt>.</tt> 用于当前目录或者 <tt>..</tt> 用于上层目录，并且可以在 Tracker 中打开相应的文件夹。</p>
+</td></tr>
+<tr><td><p><span class="cli">desklink</span></p></td><td style="width:10px;"> </td>
+		<td valign="top"><p><span class="cli">desklink</span> 可以为任何文件，文件夹，查询或者程序在桌面栏托盘中安装图标。它也可以为相应的图标提供一个右键菜单。例如，尝试下面的脚本，为 <span class="app">Screenshot</span> 添加不同的选项 （第一行中的"<tt>\</tt>" 用于在终端中进行换行）：
+</p>
+<pre class="terminal">desklink "cmd=Active window (2s):/boot/system/apps/Screenshot --window --border --delay 2" \
+"cmd=Remove replicant:desklink --remove=Screenshot" /boot/system/apps/Screenshot
+</pre>
+<p><img src="../images/apps-images/cli-desklink.png" alt="cli-alert.png" /></p>
+</td></tr></table>
+
+</div>
+</div>
+
+<div class="nav">
+<div class="inner"><span>
+ «  <a href="list-cli-apps.html">命令列表</a> 
+::  <a href="../applications.html#cli-apps" class="uplink">应用程序</a> 
+</span></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+SubDir HAIKU_TOP src kits ;
+
+# If defined allows to run applications without the registrar
+# -- for development only, of course.
+if $(RUN_WITHOUT_REGISTRAR) {
+	local defines = [ FDefines RUN_WITHOUT_REGISTRAR ] ;
+	SubDirCcFlags $(defines) ;
+	SubDirC++Flags $(defines) ;
+}
+
+# If defined allows to run applications without the app server
+# -- needed until the app server runs on our kernel.
+RUN_WITHOUT_APP_SERVER ?= 0 ;
+if $(RUN_WITHOUT_APP_SERVER) != 0 {
+	local defines = [ FDefines RUN_WITHOUT_APP_SERVER ] ;
+	SubDirCcFlags $(defines) ;
+	SubDirC++Flags $(defines) ;
+}
+
+UsePrivateHeaders [ FDirName kernel ] ;  # For KMessage.h
+#UsePrivateHeaders syslog_daemon ;		# For syslog.cpp
+UsePrivateHeaders libbe ;
+
+# Build our libbe.so
+
+AddResources libbe.so : libbe_version.rdef ;
+
+SetVersionScript libbe.so : libbe_versions ;
+
+SharedLibrary libbe.so :
+	LocaleBackend.cpp
+	:
+	<libbe>app_kit.o
+	<libbe>interface_kit.o
+	<libbe>storage_kit.o
+	<libbe>support_kit.o
+
+	libicon.a
+	libagg.a
+
+	libroot.so	# make sure it links against our libroot.so
+	$(TARGET_LIBSTDC++)
+;
+
+# Build libbe_test.so
+
+SetSupportedPlatformsForTarget libbe_test.so : libbe_test ;
+
+SetVersionScript libbe_test.so : libbe_test_versions ;
+
+SharedLibrary libbe_test.so :
+	LocaleBackend.cpp
+	:
+	<libbe>app_kit.o
+	<libbe>interface_kit.o
+	<libbe>storage_kit.o
+	<libbe>support_kit.o
+
+	libicon.a
+	libagg.a
+
+	$(TARGET_LIBSTDC++)
+;
+
+#SEARCH on [ FGristFiles KMessage.cpp ]
+#	= [ FDirName $(HAIKU_TOP) src system kernel messaging ] ;
+#
+#SEARCH on [ FGristFiles syslog.cpp ]
+#	= [ FDirName $(HAIKU_TOP) src system libroot posix ] ;
+
+
+SubInclude HAIKU_TOP src kits app ;
+SubInclude HAIKU_TOP src kits bluetooth ;
+SubInclude HAIKU_TOP src kits debug ;
+SubInclude HAIKU_TOP src kits device ;
+SubInclude HAIKU_TOP src kits game ;
+SubInclude HAIKU_TOP src kits interface ;
+SubInclude HAIKU_TOP src kits locale ;
+SubInclude HAIKU_TOP src kits mail ;
+SubInclude HAIKU_TOP src kits media ;
+SubInclude HAIKU_TOP src kits midi ;
+SubInclude HAIKU_TOP src kits midi2 ;
+SubInclude HAIKU_TOP src kits network ;
+SubInclude HAIKU_TOP src kits notification ;
+SubInclude HAIKU_TOP src kits opengl ;
+SubInclude HAIKU_TOP src kits package ;
+SubInclude HAIKU_TOP src kits print ;
+SubInclude HAIKU_TOP src kits screensaver ;
+SubInclude HAIKU_TOP src kits shared ;
+SubInclude HAIKU_TOP src kits storage ;
+SubInclude HAIKU_TOP src kits support ;
+SubInclude HAIKU_TOP src kits textencoding ;
+SubInclude HAIKU_TOP src kits tracker ;
+SubInclude HAIKU_TOP src kits translation ;

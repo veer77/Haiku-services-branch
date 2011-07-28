@@ -1,0 +1,11 @@
+1	romanian	x-vnd.Haiku-Pairs	648353440
+Beginner (4x4)	PairsWindow		Începător (4x4)
+Expert (8x8)	PairsWindow		Avansat (8x8)
+Game	PairsWindow		Joc
+Intermediate (6x6)	PairsWindow		Mediu (6x6)
+New	PairsWindow		Nou
+New game	PairsWindow		Joc nou
+OK	PairsView		OK
+Quit	PairsWindow		Închide
+Quit game	PairsWindow		Închide jocul
+Size	PairsWindow		Dimensiune

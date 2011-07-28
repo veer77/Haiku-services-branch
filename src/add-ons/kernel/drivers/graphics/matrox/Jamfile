@@ -1,0 +1,20 @@
+SubDir HAIKU_TOP src add-ons kernel drivers graphics matrox ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+UsePrivateHeaders graphics ;
+UsePrivateHeaders [ FDirName graphics matrox ] ;
+
+KernelAddon matrox :
+	driver.c
+;
+
+Package haiku-matrox-cvs :
+	README.html UPDATE.html ;
+Package haiku-matrox-cvs :
+	matrox : 
+	boot home config add-ons kernel drivers bin ;
+PackageDriverSymLink haiku-matrox-cvs : graphics matrox ;
+Package haiku-matrox-cvs :
+	matrox.settings :
+	boot home config settings kernel drivers ;

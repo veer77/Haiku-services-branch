@@ -1,0 +1,78 @@
+1	polish	x-vnd.Haiku-StyledEdit	2399393207
+???	LoadAlert		???
+Align	Menus		Wyrównaj
+Black	Menus		Czarny
+Blue	Menus		Niebieski
+Bold	Menus		Pogrubienie
+Can't undo	Menus		Nie można cofnąć
+Cancel	FindandReplaceWindow		Anuluj
+Cancel	QuitAlert		Anuluj
+Cancel	RevertToSavedAlert		Anuluj
+Cancel	SaveAlert		Anuluj
+Cannot revert, file not found: \"%s\".	RevertToSavedAlert		Nie można przywrócić, nie znaleziono pliku: \"%s\".
+Case-sensitive	FindandReplaceWindow		Wielkość liter brana pod uwagę
+Center	Menus		Wyśrodkuj
+Characters:	Statistics		Znaków:
+Close	Menus		Zamknij
+Color	Menus		Kolor
+Copy	Menus		Kopiuj
+Cut	Menus		Wytnij
+Cyan	Menus		Cyjan
+Default	Open_and_SaveAsPanel		Domyślne
+Document	Menus		Dokument
+Document statistics	Statistics		Statystyki dokumentu
+Don't save	QuitAlert		Nie zapisuj
+Don't save	SaveAlert		Nie zapisuj
+Edit	Menus		Edytuj
+Encoding	Open_and_SaveAsPanel		Kodowanie
+Error loading \"%s\":\n\t%s	LoadAlert		Błąd podczas ładowania \"%s\":\n\t%s
+Error loading \"%s\":\n\tUnsupported format	LoadAlert		Błąd podczas otwierania \"%s\":\n\tFormat nieobsługiwany
+Error saving \"%s\":\n%s	SaveAlert		Błąd podczas zapisywania \"%s\":\n%s
+File	Menus		Plik
+Find	FindandReplaceWindow		Znajdź
+Find again	Menus		Znajdź następne
+Find selection	Menus		Znajdź zaznaczenie
+Find:	FindandReplaceWindow		Znajdź:
+Find…	Menus		Znajdź…
+Font	Menus		Czcionka
+Green	Menus		Zielony
+Italic	Menus		Kursywa
+Left	Menus		Lewo
+Lines:	Statistics		Linie:
+Magenta	Menus		Magenta
+New	Menus		Nowy
+OK	LoadAlert		OK
+OK	RevertToSavedAlert		OK
+OK	SaveAlert		OK
+OK	Statistics		OK
+Open…	Menus		Otwórz...
+Page setup…	Menus		Ustawienia strony...
+Paste	Menus		Wklej
+Print…	Menus		Drukuj...
+Quit	Menus		Wyjdź
+Red	Menus		Czerwony
+Redo typing	QuitAlert		Powtórz pisanie
+Replace	FindandReplaceWindow		Zamień
+Replace all	FindandReplaceWindow		Zamień wszystkie
+Replace in all windows	FindandReplaceWindow		Zamień we wszystkich oknach
+Replace with:	FindandReplaceWindow		Zamień na:
+Replace…	Menus		Zastąp…
+Revert to saved…	Menus		Przywróć zapisane…
+Revert to the last version of \"%s\"? 	RevertToSavedAlert		Przywrócić ostatnią wersję \"%s\"? 
+Right	Menus		Prawo
+Save	Menus		Zapisz
+Save	QuitAlert		Zapisz
+Save	SaveAlert		Zapisz
+Save as…	Menus		Zapisz jako...
+Save changes to the document \"%s\"? 	QuitAlert		Zapisać zmiany w dokumencie \"%s\"? 
+Search backwards	FindandReplaceWindow		Szukaj wstecz
+Select all	Menus		Zaznacz wszystko
+Size	Menus		Rozmiar
+Statistics…	Menus		Statystyki...
+This file is marked Read-Only. Save changes to the document \"%s\"? 	SaveAlert		Ten plik jest oznaczony jako tylko do odczytu. Zapisać zmiany w dokumencie \"%s\"? 
+Undo typing	QuitAlert		Cofnij pisanie
+Untitled 	StyledEditWindow		Bez tytułu
+Words:	Statistics		Słów:
+Wrap lines	Menus		Zawijaj wiersze
+Wrap-around search	FindandReplaceWindow		Szukanie owijające
+Yellow	Menus		Żółty

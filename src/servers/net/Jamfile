@@ -1,0 +1,31 @@
+SubDir HAIKU_TOP src servers net ;
+
+UsePrivateHeaders app net shared storage ;
+
+UseHeaders [ FDirName $(HAIKU_TOP) src libs compat freebsd_network compat ]
+	: true ;
+UseHeaders [ FDirName $(HAIKU_TOP) src libs compat freebsd_wlan ] : true ;
+
+#UseHeaders [ FDirName $(HAIKU_TOP) src add-ons kernel network ppp shared libppp headers ] ;
+#UseHeaders [ FDirName $(HAIKU_TOP) src add-ons kernel network ppp shared libkernelppp headers ] ;
+#UseHeaders [ FDirName $(HAIKU_TOP) src tests kits net DialUpPreflet ] ;
+
+#local defines = [ FDefines INET6=1 ] ;
+
+SubDirCcFlags $(defines) ;
+SubDirC++Flags $(defines) ;
+
+AddResources net_server : net_server.rdef ;
+
+Server net_server :
+	NetServer.cpp
+	Settings.cpp
+	AutoconfigClient.cpp
+	AutoconfigLooper.cpp
+	DHCPClient.cpp
+	Services.cpp
+
+	: be network bnetapi $(TARGET_LIBSTDC++)
+	# for PPP
+	#libppp.a
+;

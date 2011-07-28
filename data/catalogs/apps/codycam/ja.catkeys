@@ -1,0 +1,93 @@
+1	japanese	x-vnd.Haiku.CodyCam	441085909
+Can't find an available connection to the video window	CodyCam		有効な接続がビデオウィンドウ上に見つかりません
+Cannot connect the video source to the video window	CodyCam		ビデオソースをビデオウィンドウに接続できません
+Cannot create a video window	CodyCam		ビデオウィンドウを作成できません
+Cannot find a video source. You need a webcam to use CodyCam.	CodyCam		ビデオソースがみつかりません。CodyCam をつかうには webcam が必要です。
+Cannot find an available video stream	CodyCam		有効なビデオストリームが見つかりません
+Cannot find the media roster	CodyCam		メディアロースターがみつかりません。
+Cannot get a time source	CodyCam		タイムソースを取得できません
+Cannot register the video window	CodyCam		ビデオウィンドウを登録できません
+Cannot seek time source!	CodyCam		タイムソースをシークできません!
+Cannot set the time source for the video source	CodyCam		ビデオソースにタイムソースをセットできません
+Cannot set the time source for the video window	CodyCam		タイムソースをビデオウィンドウにセットできません
+Cannot start the video source	CodyCam		ビデオソースを開始できません
+Cannot start the video window	CodyCam		ビデオウィンドウを開始できません
+Cannot start time source!	CodyCam		タイムソースを開始できません
+Capture Rate Menu	CodyCam		キャプチャレートメニュー
+Capture controls	CodyCam		キャプチャ制御
+Capturing Image…	VideoConsumer.cpp		画像を取得中...
+Closing the window\n	VideoConsumer.cpp		ウィンドウを閉じる\n
+CodyCam	System name		CodyCam
+Connected…	VideoConsumer.cpp		接続しました...
+Couldn't find requested directory on server	VideoConsumer.cpp		指定されたディレクトリがサーバー上にみつかりませんでした
+Directory:	CodyCam		ディレクトリ:
+Error creating output file	VideoConsumer.cpp		ファイルの出力に失敗しました
+Error getting initial latency for the capture node	CodyCam		キャプチャーノードの初期の待ち時間の取得に失敗しました
+Error setting type of output file	VideoConsumer.cpp		出力ファイルの形式の設定に失敗
+Error writing output file	VideoConsumer.cpp		ファイルの書き込みに失敗した
+Every 10 minutes	CodyCam		10分毎
+Every 15 minutes	CodyCam		15分毎
+Every 15 seconds	CodyCam		15秒毎
+Every 2 hours	CodyCam		2時間毎
+Every 24 hours	CodyCam		24時間毎
+Every 30 minutes	CodyCam		30分毎
+Every 30 seconds	CodyCam		30秒毎
+Every 4 hours	CodyCam		4時間毎
+Every 5 minutes	CodyCam		5分毎
+Every 8 hours	CodyCam		8時間毎
+Every hour	CodyCam		毎時間
+Every minute	CodyCam		毎分
+FTP	CodyCam		FTP
+File	CodyCam		ファイル
+File %s # unterminated quote at end of file\n	SettingsHandler		ファイル %s # unterminated quote at end of file\n
+File %s ; Line %ld # unterminated quote\n	SettingsHandler		ファイル %s ; 行 %ld # unterminated quote\n
+File %s; Line %ld # %s	SettingsHandler		ファイル %s; 行 %ld # %s
+File name:	CodyCam		ファイル名:
+File transmission failed	VideoConsumer.cpp		ファイル転送に失敗しました
+Format:	CodyCam		形式:
+Image Format Menu	CodyCam		画像形式メニュー
+JPEG image	CodyCam		JPEG 画像
+Last Capture: 	VideoConsumer.cpp		最後のキャプチャ:
+Local	CodyCam		ローカル
+Locking the window\n	VideoConsumer.cpp		ウィンドウを固定中\n
+Logging in…	VideoConsumer.cpp		ログイン中...
+Login:	CodyCam		ログイン:
+Never	CodyCam		中止
+OK	CodyCam		OK
+Output	CodyCam		出力
+PASS <suppressed>  (real password sent)\n	FtpClient		PASS <suppressed> (パスワードを送信しました)
+Passive FTP	CodyCam		パッシブ FTP
+Password:	CodyCam		パスワード:
+Quit	CodyCam		終了
+Rate:	CodyCam		レート:
+Remote host has closed the connection.\n	FtpClient		リモートホストが接続を切断しました
+Rename failed	VideoConsumer.cpp		名前の変更に失敗しました
+Renaming…	VideoConsumer.cpp		名前を変更中...
+SFTP	CodyCam		SFTP
+Send to…	CodyCam		送る...
+Server login failed	VideoConsumer.cpp		サーバーへのログインに失敗しました
+Server:	CodyCam		サーバー:
+Start video	CodyCam		ビデオを開始
+Stop video	CodyCam		ビデオを停止
+Transmitting…	VideoConsumer.cpp		転送中...
+Type:	CodyCam		形式:
+Video settings	CodyCam		ビデオ設定
+Waiting…	CodyCam		待っています...
+capture rate expected	CodyCam		キャプチャレートを入力して下さい
+cmd: '%s'\n	FtpClient		コマンド: '%s'\n
+destination directory expected	CodyCam		出力先ディレクトリを入力して下さい
+image file format expected	CodyCam		画像ファイルのフォーマットを入力して下さい
+invalid upload client %ld\n	VideoConsumer.cpp		アップロードクライアント %ld が正しくありません\n
+login ID expected	CodyCam		ログインIDを入力して下さい
+on or off expected	Settings	Do not translate 'on' and 'off'	on か off かを入力して下さい
+password	CodyCam		パスワード
+password expected	CodyCam		パスワードを入力して下さい
+read: %d\n	SftpClient		読み込み: %d \n
+read: %ld\n	SftpClient		読み込み: %ld\n
+reply: %d, %d\n	FtpClient		返信: %d, %d\n
+reply: '%s'\n	SftpClient		返信: '%s'\n
+server address expected	CodyCam		サーバーアドレスを入力して下さい
+still image filename expected	CodyCam		イメージのファイル名を入力して下さい
+unknown command	SettingsHandler		不明なコマンドです
+unrecognized upload client specified	CodyCam		不明のアップロードクライアント
+upload client name expected	CodyCam		アップロードクライアントの名前を入力して下さい

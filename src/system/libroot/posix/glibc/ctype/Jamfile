@@ -1,0 +1,13 @@
+SubDir HAIKU_TOP src system libroot posix glibc ctype ;
+
+SubDirSysHdrs $(SUBDIR) ;
+SubDirSysHdrs $(HAIKU_TOP) src system libroot posix glibc include arch
+	$(TARGET_ARCH) ;
+SubDirSysHdrs $(HAIKU_TOP) src system libroot posix glibc include arch generic ;
+SubDirSysHdrs $(HAIKU_TOP) src system libroot posix glibc include ;
+SubDirSysHdrs $(HAIKU_TOP) src system libroot posix glibc locale ;
+SubDirSysHdrs $(HAIKU_TOP) src system libroot posix glibc ;
+
+MergeObject posix_gnu_ctype.o :
+	ctype-info.c
+;

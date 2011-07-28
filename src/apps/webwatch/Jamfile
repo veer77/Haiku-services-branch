@@ -1,0 +1,17 @@
+SubDir HAIKU_TOP src apps webwatch ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+Application WebWatch :
+	WatchApp.cpp
+	WatchView.cpp
+	: be $(HAIKU_LOCALE_LIBS) $(TARGET_LIBSUPC++)
+	: WebWatch.rdef
+;
+
+DoCatalogs WebWatch :
+	x-vnd.mahlzeit.webwatch
+	:
+	WatchApp.cpp
+	WatchView.cpp
+;

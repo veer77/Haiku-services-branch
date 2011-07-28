@@ -1,0 +1,22 @@
+SubDir HAIKU_TOP src apps 3dmov ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+Application 3DMov :
+	Application.cpp
+	MainWindow.cpp
+	ViewObject.cpp
+	Video.cpp
+	ViewBook.cpp
+	ViewCube.cpp
+	ViewSphere.cpp
+	GLUtility.cpp
+	: be GL game $(HAIKU_LOCALE_LIBS) media translation $(TARGET_LIBSUPC++)
+	: 3dmov.rdef
+;
+
+DoCatalogs 3DMov :
+	x-vnd.Haiku-3DMov
+	:
+	MainWindow.cpp
+;

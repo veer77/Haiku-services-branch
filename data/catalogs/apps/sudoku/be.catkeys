@@ -1,0 +1,34 @@
+1	belarusian	x-vnd.Haiku-Sudoku	2463385585
+Abort	ProgressWindow		Перарваць
+Advanced	SudokuWindow		Прасунуты
+Blank	SudokuWindow		Чысты
+Copy	SudokuWindow		Капіяваць
+Could not open \"%s\":\n%s\n	SudokuWindow		Немагчыма адкрыць \"%s\":\n%s\n
+Could not set Sudoku:\n%s\n	SudokuWindow		Could not set Sudoku:\n%s\n
+Creating solvable field	SudokuGenerator		Стварыць вырашальнае поле
+Easy	SudokuWindow		Лёгкі
+Export as…	SudokuWindow		Экспратаваць як…
+File	SudokuWindow		Файл
+HTML	SudokuWindow		HTML
+Hard	SudokuWindow		Цяжкі
+Help	SudokuWindow		Дапамога
+Mark invalid values	SudokuWindow		Пазначыць несапраўдныя значэнні
+Mark valid hints	SudokuWindow		Пазначыць несапраўдныя падказкі
+New	SudokuWindow		Новы
+OK	SudokuWindow		Так
+Open file…	SudokuWindow		Адкрыць файл…
+Progress monitor	ProgressWindow		Паказнік прагрэсу
+Quit	SudokuWindow		Выйсці
+Redo	SudokuWindow		Перарабіць
+Restore snapshot	SudokuWindow		Аднавіць здымак
+Searching for removable values	SudokuGenerator		Шукаць выдаляемыя значэнні
+Snapshot current	SudokuWindow		Здымак бягучага
+Solve	SudokuWindow		Вырашыць
+Solve single field	SudokuWindow		Вырашыць адно поле
+Start again	SudokuWindow		Запусціць наноў
+Sudoku	System name		Sudoku
+Sudoku request	SudokuWindow		Запыт Sudoku
+Sudoku solved - congratulations!\n	SudokuWindow		Sudoku вырашана - віншуем!\n
+Text	SudokuWindow		Тэкст
+Undo	SudokuWindow		Адвярнуць
+View	SudokuWindow		Від

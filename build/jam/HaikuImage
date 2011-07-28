@@ -1,0 +1,888 @@
+# This file defines what ends up on the Haiku image (respectively in the Haiku
+# installation directory) and it executes the rules building the image
+# (respectively installing the files in the installation directory).
+
+local X86_ONLY = ;
+local PPC_ONLY = ;
+local M68K_ONLY = ;
+if $(TARGET_ARCH) = x86 {
+	X86_ONLY = "" ;
+} else if $(TARGET_ARCH) = ppc {
+	PPC_ONLY = "" ;
+} else if $(TARGET_ARCH) = m68k {
+	M68K_ONLY = "" ;
+}
+
+local GPL_ONLY = ;
+if $(HAIKU_INCLUDE_GPL_ADDONS) = 1 {
+	GPL_ONLY = "" ;
+}
+
+#HACK: remove when old ide code is removed!
+local ATA_ONLY = ;
+local IDE_ONLY = ;
+if $(HAIKU_ATA_STACK) = 1 {
+	ATA_ONLY = "" ;
+} else {
+	IDE_ONLY = "" ;
+}
+
+SYSTEM_BIN = "[" addattr alert arp base64 basename bash bc beep bzip2
+	cal cat catattr checkfs checkitout chgrp chmod chop chown chroot cksum clear
+	clockconfig cmp collectcatkeys comm compress copyattr CortexAddOnHost cp
+	csplit ctags cut date dc dd desklink df diff diff3 dircolors dirname
+	draggers driveinfo dstcheck du dumpcatalog
+	echo eject env error expand expr
+	factor false fdinfo ffm filepanel find finddir fmt fold fortune frcode
+	ftp ftpd funzip fwcontrol
+	gawk $(X86_ONLY)gdb getlimits grep groups gzip gzexe
+	hd head hey hostname
+	id ident ifconfig <bin>install installsound iroster isvolume
+	$(IDE_ONLY)ideinfo $(IDE_ONLY)idestatus
+	join kernel_debugger keymap kill
+	less lessecho lesskey link linkcatkeys listarea listattr listimage listdev
+	listport listres listsem listusb ln locale locate logger login logname ls
+	lsindex
+	mail2mbox makebootable mbox2mail md5sum merge message mimeset mkdos mkdir
+	mkfifo mkfs mkindex mktemp modifiers mount mount_nfs mountvolume mv
+	netcat netstat nl nohup notify nproc
+	od open
+	passwd paste patch pathchk pc ping ping6 play playfile playsound playwav
+	pr prio printenv printf profile ps ptx pwd
+	query quit
+	rc readlink ReadOnlyBootPrompt reindex release renice rlog rm rmattr
+	rmindex rmdir roster route
+	safemode screen_blanker screenmode screenshot sdiff setdecor settype
+	setversion setvolume seq sha1sum shar shred shuf shutdown sleep sort
+	spamdbm
+	split stat strace stty su sum sync sysinfo
+	tac tail tcpdump tcptester tee telnet telnetd test timeout top touch
+	tput tr traceroute translate trash true truncate tsort tty
+	uname unchop unexpand unmount uniq unlink unrar unshar unzip unzipsfx
+	<bin>updatedb uptime urlwrapper useradd uudecode uuencode
+	vdir version vmstat waitfor watch wc wget whoami xargs xres yes
+	zdiff zforce zgrep zip zipcloak <bin>zipgrep zipnote zipsplit zmore znew
+;
+
+SYSTEM_APPS = AboutSystem ActivityMonitor $(X86_ONLY)BootManager CharacterMap
+	CodyCam DeskCalc Devices DiskProbe DiskUsage DriveSetup CDPlayer Expander
+	Icon-O-Matic Installer LaunchBox Magnify Mail MediaConverter MediaPlayer
+	MidiPlayer NetworkStatus PackageInstaller People PoorMan PowerStatus
+	ProcessController Screenshot ShowImage SoundRecorder StyledEdit Terminal
+	TextSearch TV Workspaces
+;
+SYSTEM_PREFERENCES = Appearance Backgrounds CPUFrequency DataTranslations
+	<preference>Deskbar E-mail FileTypes Fonts Keyboard Keymap Locale Media
+	Mouse Network Notifications OpenGL Printers Screen ScreenSaver Shortcuts
+	Sounds Time Touchpad <preference>Tracker VirtualMemory
+;
+SYSTEM_DEMOS = BSnow Chart Clock Cortex FontDemo GLTeapot
+	$(HAIKU_INCLUDE_TRADEMARKS)Haiku3d Mandelbrot OverlayImage Pairs Playground
+	Pulse Sudoku
+;
+SYSTEM_LIBS =
+	libbe.so libbsd.so libbnetapi.so
+	libdebug.so libdevice.so
+	libfreetype.so
+	libgame.so libGL.so libgnu.so
+	libjpeg.so
+	liblocale.so
+	libmail.so libmedia.so libmidi.so libmidi2.so
+	libnetwork.so
+	libpng.so
+	<revisioned>libroot.so libroot-addon-icu.so
+	libscreensaver.so
+	libtextencoding.so libtiff.so libtracker.so libtranslation.so
+	libz.so
+	$(HAIKU_SHARED_LIBSTDC++) $(HAIKU_SHARED_LIBSUPC++)
+;
+PRIVATE_SYSTEM_LIBS =
+	libalm.so
+	libfluidsynth.so
+	libilmimf.so
+	liblpsolve55.so
+;
+SYSTEM_SERVERS = app_server cddb_daemon debug_server input_server mail_daemon
+	media_addon_server media_server midi_server mount_server net_server
+	notification_server print_server print_addon_server registrar syslog_daemon
+;
+
+SYSTEM_NETWORK_DEVICES = ethernet loopback ;
+SYSTEM_NETWORK_DATALINK_PROTOCOLS = ethernet_frame <module>arp loopback_frame
+	ipv6_datagram ;
+#SYSTEM_NETWORK_PPP = ipcp modem pap pppoe ;
+SYSTEM_NETWORK_PROTOCOLS = ipv4 tcp udp icmp unix icmp6 ipv6 ;
+
+SYSTEM_ADD_ONS_ACCELERANTS = $(X86_ONLY)radeon.accelerant
+	$(X86_ONLY)nvidia.accelerant $(X86_ONLY)matrox.accelerant
+	$(X86_ONLY)neomagic.accelerant $(X86_ONLY)intel_extreme.accelerant
+	$(X86_ONLY)s3.accelerant $(X86_ONLY)vesa.accelerant
+	$(X86_ONLY)ati.accelerant
+	$(X86_ONLY)3dfx.accelerant
+	#$(X86_ONLY)radeon_hd.accelerant
+	#$(X86_ONLY)via.accelerant
+	#$(X86_ONLY)vmware.accelerant
+;
+SYSTEM_ADD_ONS_TRANSLATORS = BMPTranslator EXRTranslator GIFTranslator
+	HVIFTranslator ICOTranslator JPEGTranslator JPEG2000Translator
+	PCXTranslator PNGTranslator PPMTranslator
+	RAWTranslator RTF-Translator SGITranslator STXTTranslator TGATranslator
+	TIFFTranslator WebPTranslator WonderBrushTranslator
+;
+SYSTEM_ADD_ONS_LOCALE_CATALOGS = <catalog-addon>zeta <catalog-addon>plaintext ;
+SYSTEM_ADD_ONS_MEDIA = cortex_audioadapter.media_addon
+	cortex_flanger.media_addon
+	dvb.media_addon
+	hmulti_audio.media_addon
+	mixer.media_addon
+	opensound.media_addon
+	tone_producer_demo.media_addon
+	usb_webcam.media_addon
+	video_producer_demo.media_addon
+	video_window_demo.media_addon
+	firewire_dv.media_addon
+	#legacy.media_addon
+;
+SYSTEM_ADD_ONS_MEDIA_PLUGINS = $(X86_ONLY)ffmpeg raw_decoder ;
+SYSTEM_ADD_ONS_PRINT =
+	Canon\ LIPS3\ Compatible
+	Canon\ LIPS4\ Compatible
+	Gutenprint
+	PCL5\ Compatible
+	PCL6\ Compatible
+	PDF\ Writer
+	PS\ Compatible
+	Preview
+;
+SYSTEM_ADD_ONS_PRINT_TRANSPORT = HP\ JetDirect IPP LPR
+	# Parallel\ Port
+	Print\ To\ File Serial\ Port USB\ Port
+;
+SYSTEM_ADD_ONS_SCREENSAVERS = Butterfly DebugNow Flurry
+	$(HAIKU_INCLUDE_TRADEMARKS)Haiku Icons IFS Leaves Message Spider ;
+SYSTEM_ADD_ONS_DRIVERS_AUDIO = auich auvia echo3g emuxki hda sis7018 ;
+SYSTEM_ADD_ONS_DRIVERS_AUDIO_OLD = ; #cmedia usb_audio ;
+SYSTEM_ADD_ONS_DRIVERS_GRAPHICS = $(X86_ONLY)radeon $(X86_ONLY)nvidia
+	$(X86_ONLY)neomagic $(X86_ONLY)matrox $(X86_ONLY)intel_extreme
+	$(X86_ONLY)s3 $(X86_ONLY)vesa #$(X86_ONLY)via #$(X86_ONLY)vmware
+	$(X86_ONLY)ati $(X86_ONLY)3dfx #$(X86_ONLY)radeon_hd
+;
+SYSTEM_ADD_ONS_DRIVERS_MIDI = emuxki usb_midi ;
+SYSTEM_ADD_ONS_DRIVERS_NET = $(X86_ONLY)3com $(X86_ONLY)atheros813x
+	$(X86_ONLY)ar81xx $(X86_ONLY)attansic_l1 $(X86_ONLY)attansic_l2
+	$(X86_ONLY)broadcom440x $(X86_ONLY)broadcom570x $(X86_ONLY)dec21xxx etherpci
+	$(X86_ONLY)ipro100 $(X86_ONLY)ipro1000 $(X86_ONLY)jmicron2x0
+	$(X86_ONLY)marvell_yukon $(X86_ONLY)nforce $(X86_ONLY)pcnet pegasus
+	$(X86_ONLY)rtl8139 $(X86_ONLY)rtl81xx sis900
+	$(X86_ONLY)syskonnect usb_asix usb_ecm $(X86_ONLY)via_rhine
+	$(X86_ONLY)vt612x wb840
+
+	# WLAN drivers
+	$(X86_ONLY)aironetwifi $(X86_ONLY)atheroswifi $(X86_ONLY)broadcom43xx
+	$(X86_ONLY)ipw2100 $(X86_ONLY)iprowifi2200 $(X86_ONLY)iprowifi3945
+	$(X86_ONLY)iprowifi4965 $(X86_ONLY)marvell88w8363 $(X86_ONLY)marvell88w8335
+	$(X86_ONLY)ralink2860 $(X86_ONLY)ralinkwifi $(X86_ONLY)wavelanwifi
+
+	# WiMAX drivers
+	$(GPL_ONLY)usb_beceemwmx
+;
+#SYSTEM_ADD_ONS_DRIVERS_POWER = $(X86_ONLY)acpi_button ;
+SYSTEM_ADD_ONS_BUS_MANAGERS =  $(ATA_ONLY)ata pci $(X86_ONLY)ps2 $(X86_ONLY)isa
+	$(IDE_ONLY)ide scsi config_manager agp_gart usb firewire $(X86_ONLY)acpi
+;
+SYSTEM_ADD_ONS_FILE_SYSTEMS = bfs btrfs cdda exfat ext2 fat iso9660 nfs
+	attribute_overlay write_overlay ntfs reiserfs udf googlefs ;
+
+# wifi firmware
+for driver in $(SYSTEM_ADD_ONS_DRIVERS_NET) {
+	local package = [ on $(driver) return $(HAIKU_WIFI_FIRMWARE_PACKAGE) ] ;
+	local archive = [ on $(driver) return $(HAIKU_WIFI_FIRMWARE_ARCHIVE) ] ;
+	local extract = [ on $(driver) return $(HAIKU_WIFI_FIRMWARE_DO_EXTRACT) ] ;
+	if $(archive) {
+		AddWifiFirmwareToHaikuImage $(driver) : $(package) : $(archive)
+			: $(extract) ;
+	}
+	local packages = [ on $(driver) return $(HAIKU_WIFI_FIRMWARE_PACKAGES) ] ;
+	local archives = [ on $(driver) return $(HAIKU_WIFI_FIRMWARE_ARCHIVES) ] ;
+	for archive in $(archives) {
+		AddWifiFirmwareToHaikuImage $(driver) : $(packages[1]) : $(archive)
+			: $(extract) ;
+		packages = $(packages[2-]) ;
+	}
+}
+
+
+# modules
+AddFilesToHaikuImage system add-ons kernel bus_managers
+	: $(SYSTEM_ADD_ONS_BUS_MANAGERS) ;
+AddFilesToHaikuImage system add-ons kernel busses agp_gart
+	: $(X86_ONLY)<agp_gart>intel ;
+
+if $(HAIKU_ATA_STACK) = 1 {
+	AddFilesToHaikuImage system add-ons kernel busses ata
+		: generic_ide_pci it8211 legacy_sata silicon_image_3112
+			$(X86_ONLY)ide_isa ;
+} else {
+	AddFilesToHaikuImage system add-ons kernel busses ide
+		: generic_ide_pci it8211 legacy_sata silicon_image_3112
+			$(X86_ONLY)ide_isa ;
+}
+
+AddFilesToHaikuImage system add-ons kernel busses scsi
+	: ahci ;
+AddFilesToHaikuImage system add-ons kernel busses usb
+	: <usb>uhci <usb>ohci <usb>ehci ;
+AddFilesToHaikuImage system add-ons kernel console : vga_text ;
+AddFilesToHaikuImage system add-ons kernel debugger
+	: <kdebug>demangle $(X86_ONLY)<kdebug>disasm
+	  <kdebug>invalidate_on_exit <kdebug>usb_keyboard <kdebug>run_on_exit ;
+AddFilesToHaikuImage system add-ons kernel file_systems
+	: $(SYSTEM_ADD_ONS_FILE_SYSTEMS) ;
+AddFilesToHaikuImage system add-ons kernel generic
+	: $(ATA_ONLY)ata_adapter dpc $(IDE_ONLY)ide_adapter locked_pool mpu401
+		scsi_periph <module>tty ;
+AddFilesToHaikuImage system add-ons kernel partitioning_systems
+	: amiga_rdb apple efi_gpt intel session ;
+AddFilesToHaikuImage system add-ons kernel interrupt_controllers
+	: $(PPC_ONLY)openpic ;
+
+if $(TARGET_ARCH) = x86 {
+	AddFilesToHaikuImage system add-ons kernel cpu : generic_x86 ;
+}
+
+# drivers
+AddNewDriversToHaikuImage disk scsi	: scsi_cd scsi_disk ;
+AddNewDriversToHaikuImage power : $(X86_ONLY)enhanced_speedstep ;
+AddNewDriversToHaikuImage power : $(X86_ONLY)acpi_battery ;
+
+# legacy drivers
+AddDriversToHaikuImage				: console dprintf null
+									  random <driver>tty zero ;
+AddDriversToHaikuImage audio hmulti	: $(SYSTEM_ADD_ONS_DRIVERS_AUDIO) ;
+AddDriversToHaikuImage audio old	: $(SYSTEM_ADD_ONS_DRIVERS_AUDIO_OLD) ;
+AddDriversToHaikuImage midi			: $(SYSTEM_ADD_ONS_DRIVERS_MIDI) ;
+AddDriversToHaikuImage bus			: usb_raw fw_raw ;
+AddDriversToHaikuImage disk floppy	: $(X86_ONLY)pc_floppy ;
+AddDriversToHaikuImage disk usb		: usb_disk ;
+AddDriversToHaikuImage disk usb		: usb_floppy ;
+AddDriversToHaikuImage printer usb	: usb_printer ;
+AddDriversToHaikuImage disk virtual	: nbd ;
+AddDriversToHaikuImage dvb			: cx23882 ;
+AddDriversToHaikuImage graphics		: $(SYSTEM_ADD_ONS_DRIVERS_GRAPHICS) ;
+AddDriversToHaikuImage input		: ps2_hid usb_hid wacom ;
+AddDriversToHaikuImage misc			: <driver>poke <driver>mem ;
+AddDriversToHaikuImage net			: $(SYSTEM_ADD_ONS_DRIVERS_NET) ;
+AddDriversToHaikuImage ports		: usb_serial ;
+#AddDriversToHaikuImage power		: $(SYSTEM_ADD_ONS_DRIVERS_POWER) ;
+
+# kernel
+AddFilesToHaikuImage system : <revisioned>kernel_$(TARGET_ARCH) ;
+
+# libs
+AddLibrariesToHaikuHybridImage system lib
+	: $(SYSTEM_LIBS) $(PRIVATE_SYSTEM_LIBS) ;
+
+# libnetwork.so replaces quite a few libraries
+SYSTEM_LIBS_LIBNETWORK_ALIASES
+	= libsocket.so libbind.so libnet.so ;
+
+if $(HAIKU_GCC_VERSION[1]) = 2 {
+	local lib ;
+	for lib in $(SYSTEM_LIBS_LIBNETWORK_ALIASES) {
+		AddSymlinkToHaikuHybridImage system lib : libnetwork.so : $(lib)
+			: : true ;
+	}
+
+	AddSymlinkToHaikuHybridImage system lib : libbnetapi.so : libnetapi.so
+		: : true ;
+}
+
+
+# libGL.so has GLU (like BeOS) *and* GLUT API built-in
+SYSTEM_LIBS_LIBGL_ALIASES
+	= libGLU.so libglut.so ;
+
+if $(TARGET_ARCH) = x86 {
+	local lib ;
+	for lib in $(SYSTEM_LIBS_LIBGL_ALIASES) {
+		AddSymlinkToHaikuHybridImage system lib : libGL.so : $(lib) : : true ;
+	}
+}
+
+SYSTEM_LIBS_ALIASES =
+	$(SYSTEM_LIBS_LIBNETWORK_ALIASES)
+	libnetapi.so
+	$(SYSTEM_LIBS_LIBGL_ALIASES)
+;
+
+# servers
+AddFilesToHaikuImage system servers : $(SYSTEM_SERVERS) ;
+
+# apps
+AddFilesToHaikuImage system				: runtime_loader Deskbar Tracker ;
+AddFilesToHaikuImage system bin			: $(SYSTEM_BIN) consoled ;
+AddFilesToHaikuImage system apps		: $(SYSTEM_APPS) ;
+AddFilesToHaikuImage system preferences	: $(SYSTEM_PREFERENCES) ;
+AddFilesToHaikuImage system demos		: $(SYSTEM_DEMOS) ;
+
+SEARCH on which = [ FDirName $(HAIKU_TOP) data bin ] ;
+AddFilesToHaikuImage system bin			: which ;
+SEARCH on installoptionalpackage = [ FDirName $(HAIKU_TOP) data bin ] ;
+AddFilesToHaikuImage system bin			: installoptionalpackage ;
+SEARCH on install-wifi-firmwares.sh = [ FDirName $(HAIKU_TOP) data bin ] ;
+AddFilesToHaikuImage system bin			: install-wifi-firmwares.sh ;
+
+# Add the files to be used by installoptionalpackage.
+AddDirectoryToHaikuImage common data optional-packages ;
+local optional-pkg-files = OptionalBuildFeatures OptionalPackageDependencies
+	OptionalPackages OptionalLibPackages ;
+for name in $(optional-pkg-files) {
+	local file = [ FDirName $(HAIKU_TOP) build jam $(name) ] ;
+	AddFilesToHaikuImage common data optional-packages : $(file) ;
+}
+AddInstalledPackagesFileToHaikuImage ;
+
+AddSymlinkToHaikuImage system bin : bash : sh ;
+AddSymlinkToHaikuImage system bin : trash : untrash ;
+
+AddSymlinkToHaikuImage home Desktop : /boot/home : Home ;
+
+# Mailbox folders and symlink
+AddDirectoryToHaikuImage home mail draft ;
+AddDirectoryToHaikuImage home mail in ;
+AddDirectoryToHaikuImage home mail out ;
+
+# Deskbar Application links
+AddDirectoryToHaikuImage home config be Applications ;
+DESKBAR_APPLICATIONS = ActivityMonitor CharacterMap CodyCam CDPlayer DeskCalc
+	Devices DiskProbe DriveSetup DiskUsage Expander Icon-O-Matic Installer
+	Magnify	Mail MediaConverter MediaPlayer MidiPlayer People PoorMan
+	Screenshot SoundRecorder StyledEdit Terminal TV
+;
+local linkTarget ;
+for linkTarget in $(DESKBAR_APPLICATIONS) {
+	AddSymlinkToHaikuImage home config be Applications
+		: /boot/system/apps/$(linkTarget) : $(linkTarget) ;
+}
+
+# Deskbar Desktop applets links
+AddDirectoryToHaikuImage home config be Desktop\ applets ;
+DESKBAR_DESKTOP_APPLETS = LaunchBox NetworkStatus PowerStatus ProcessController
+	Workspaces
+;
+for linkTarget in $(DESKBAR_DESKTOP_APPLETS) {
+	AddSymlinkToHaikuImage home config be Desktop\ applets
+		: /boot/system/apps/$(linkTarget) : $(linkTarget) ;
+}
+
+# Deskbar Preferences links
+AddDirectoryToHaikuImage home config be Preferences ;
+DESKBAR_PREFERENCES = $(SYSTEM_PREFERENCES:B) ;
+for linkTarget in $(DESKBAR_PREFERENCES) {
+	AddSymlinkToHaikuImage home config be Preferences
+		: /boot/system/preferences/$(linkTarget) : $(linkTarget) ;
+}
+
+# Deskbar Demo links
+AddDirectoryToHaikuImage home config be Demos ;
+for linkTarget in $(SYSTEM_DEMOS) {
+	AddSymlinkToHaikuImage home config be Demos
+		: /boot/system/demos/$(linkTarget) : $(linkTarget) ;
+}
+
+AddSymlinkToHaikuImage system bin : bzip2 : bunzip2 ;
+AddSymlinkToHaikuImage system bin : less : more ;
+AddSymlinkToHaikuImage system bin : gzip : gunzip ;
+AddSymlinkToHaikuImage system bin : gzip : zcat ;
+AddSymlinkToHaikuImage system bin : zdiff : zcmp ;
+AddSymlinkToHaikuImage system bin : unzip : zipinfo ;
+AddSymlinkToHaikuImage system bin : gawk : awk ;
+AddSymlinkToHaikuImage system bin : grep : egrep ;
+AddSymlinkToHaikuImage system bin : grep : fgrep ;
+
+
+# scripts and data files
+local bootScripts = Bootscript Bootscript.cd SetupEnvironment Netscript
+	InstallerInitScript InstallerFinishScript ;
+SEARCH on $(bootScripts) = [ FDirName $(HAIKU_TOP) data system boot ] ;
+AddFilesToHaikuImage system boot : $(bootScripts) ;
+
+local userBootScripts = UserBootscript UserSetupEnvironment.sample ;
+SEARCH on $(userBootScripts) = [ FDirName $(HAIKU_TOP) data config boot ] ;
+AddFilesToHaikuImage home config boot : $(userBootScripts) ;
+
+# Add boot launch directory
+AddDirectoryToHaikuImage home config boot launch ;
+
+local logoArtwork =
+	$(HAIKU_INCLUDE_TRADEMARKS)"HAIKU logo - white on blue - big.png"
+	$(HAIKU_INCLUDE_TRADEMARKS)"HAIKU logo - white on blue - normal.png" ;
+SEARCH on $(logoArtwork) = [ FDirName $(HAIKU_TOP) data artwork ] ;
+AddFilesToHaikuImage system data artwork : $(logoArtwork) ;
+
+AddDirectoryToHaikuImage system data sounds ;
+
+# Add mail provider infos.
+AddFilesToHaikuImage home config settings Mail ProviderInfo :
+	$(HAIKU_PROVIDER_INFOS) ;
+
+# Mail spell check dictionaries
+local spellFiles = words geekspeak ;
+spellFiles = $(spellFiles:G=spell) ;
+SEARCH on $(spellFiles)
+	= [ FDirName $(HAIKU_TOP) src apps mail ] ;
+AddFilesToHaikuImage system data spell_check word_dictionary : $(spellFiles) ;
+
+local etcDir = [ FDirName $(HAIKU_TOP) data etc ] ;
+local etcFiles = inputrc profile ;
+etcFiles = $(etcFiles:G=etc) ;
+SEARCH on $(etcFiles) = [ FDirName $(etcDir) ] ;
+etcFiles += <etc>termcap <etc>sysless <etc>sysless.in ;
+AddFilesToHaikuImage common etc : $(etcFiles) ;
+
+local profileFiles = [ Glob $(etcDir)/profile.d : *.sh ] ;
+profileFiles = $(profileFiles:G=profile-d) ;
+AddDirectoryToHaikuImage common etc profile.d ;
+AddFilesToHaikuImage common etc profile.d : $(profileFiles) ;
+
+#local bashCompletionFiles = [ Glob $(etcDir)/bash_completion.d : * ] ;
+#local bashCompletionHelperFiles
+#    = [ Glob $(etcDir)/bash_completion.d/helpers : * ] ;
+#bashCompletionFiles = $(bashCompletionFiles:G=bash-completion) ;
+#bashCompletionHelperFiles = $(bashCompletionHelperFiles:G=bash-completion-hlp) ;
+#AddDirectoryToHaikuImage common etc bash_completion.d ;
+#AddDirectoryToHaikuImage common etc bash_completion.d helpers ;
+#AddFilesToHaikuImage common etc bash_completion.d : $(bashCompletionFiles) ;
+#AddFilesToHaikuImage common etc bash_completion.d helpers
+#    : $(bashCompletionHelperFiles) ;
+
+local dataFiles = teapot.data ;
+dataFiles = $(dataFiles:G=data) ;
+SEARCH on $(dataFiles) = [ FDirName $(HAIKU_TOP) data system data ] ;
+AddFilesToHaikuImage system data : $(dataFiles) ;
+
+local fortuneFiles = [ Glob $(HAIKU_TOP)/data/system/data/fortunes
+	: [a-zA-Z0-9]* ] ;
+fortuneFiles = $(fortuneFiles:G=data!fortunes) ;
+AddFilesToHaikuImage system data fortunes : $(fortuneFiles) ;
+
+local fontDir = [ FDirName $(HAIKU_TOP) data system data fonts ] ;
+local psFonts = [ Glob $(fontDir)/psfonts : *.afm *.pfb ] ;
+local ttFonts = [ Glob $(fontDir)/ttfonts : *.ttf ] ;
+AddFilesToHaikuImage system data fonts psfonts : $(psFonts) ;
+AddFilesToHaikuImage system data fonts ttfonts : $(ttFonts) ;
+
+local cannaDir = [ FDirName $(HAIKU_TOP) data system data Canna ] ;
+local cannaDefault = [ Glob $(cannaDir)/default : *.canna *.gz ] ;
+local cannaDic = [ Glob $(cannaDir)/dic : *.cbp ] ;
+local cannaDicCanna = [ Glob $(cannaDir)/dic/canna
+	: *.cld *.ctd *.cbd *.dir ] ;
+AddFilesToHaikuImage system data Canna default : $(cannaDefault) ;
+AddFilesToHaikuImage system data Canna dic : $(cannaDic) ;
+AddFilesToHaikuImage system data Canna dic canna : $(cannaDicCanna) ;
+AddDirectoryToHaikuImage system data Canna dic group ;
+AddDirectoryToHaikuImage system data Canna dic user ;
+
+local keymapFiles = [ Glob [ FDirName $(HAIKU_TOP) src data keymaps ]
+	: *.keymap ] ;
+keymapFiles = $(keymapFiles:BG=keymap) ;
+AddFilesToHaikuImage system data Keymaps : $(keymapFiles) ;
+AddSymlinkToHaikuImage system data Keymaps : Swedish : Finnish ;
+AddSymlinkToHaikuImage system data Keymaps : Slovene : Croatian ;
+AddSymlinkToHaikuImage system data Keymaps : US-International : Brazilian ;
+
+local keyboardLayoutsDir
+	= [ FDirName $(HAIKU_TOP) data system data KeyboardLayouts ] ;
+local keyboardLayouts = [ Glob $(keyboardLayoutsDir) : [^.]* ] ;
+AddFilesToHaikuImage system data KeyboardLayouts : $(keyboardLayouts) ;
+
+local driverSettingsFiles = <driver-settings>kernel ;
+SEARCH on $(driverSettingsFiles)
+	= [ FDirName $(HAIKU_TOP) data settings kernel drivers ] ;
+AddFilesToHaikuImage home config settings kernel drivers
+	: $(driverSettingsFiles) ;
+
+local networkSettingsFiles = <network-settings>services ;
+SEARCH on $(networkSettingsFiles)
+	= [ FDirName $(HAIKU_TOP) data settings network ] ;
+AddFilesToHaikuImage common settings network : $(networkSettingsFiles) ;
+
+# post install scripts and fresh install indicator file
+local postInstallFiles = add_catalog_entry_attributes.sh
+	default_deskbar_items.sh mime_update.sh ;
+postInstallFiles = $(postInstallFiles:G=post-install) ;
+SEARCH on $(postInstallFiles)
+	= [ FDirName $(HAIKU_TOP) data common boot post_install ] ;
+SEARCH on <post-install>fresh_install
+	= [ FDirName $(HAIKU_TOP) data common settings ] ;
+AddFilesToHaikuImage common boot post_install : $(postInstallFiles) ;
+AddFilesToHaikuImage common settings : <post-install>fresh_install ;
+
+# boot loader
+AddFilesToHaikuImage system : haiku_loader ;
+
+# boot module links
+AddBootModuleSymlinksToHaikuImage
+	$(X86_ONLY)acpi $(ATA_ONLY)ata pci $(X86_ONLY)isa config_manager dpc
+	$(IDE_ONLY)ide scsi usb
+	$(PPC_ONLY)openpic
+	$(ATA_ONLY)ata_adapter $(IDE_ONLY)ide_adapter locked_pool scsi_periph
+	ahci generic_ide_pci it8211 legacy_sata silicon_image_3112
+	$(X86_ONLY)ide_isa
+	<usb>uhci <usb>ohci <usb>ehci
+	scsi_cd scsi_disk usb_disk
+	intel
+	bfs
+;
+
+# add-ons
+AddFilesToHaikuImage system add-ons accelerants
+	: $(SYSTEM_ADD_ONS_ACCELERANTS) ;
+AddFilesToHaikuHybridImage system add-ons opengl
+	: Mesa\ Software\ Renderer : : true ;
+AddFilesToHaikuHybridImage system add-ons Translators
+	: $(SYSTEM_ADD_ONS_TRANSLATORS) : : true ;
+AddFilesToHaikuImage system add-ons locale catalogs
+	: $(SYSTEM_ADD_ONS_LOCALE_CATALOGS) ;
+AddFilesToHaikuHybridImage system add-ons locale catalogs
+	: $(SYSTEM_ADD_ONS_LOCALE_CATALOGS) : : true ;
+AddFilesToHaikuImage system add-ons mail_daemon inbound_protocols : POP3 IMAP ;
+AddFilesToHaikuImage system add-ons mail_daemon outbound_protocols : SMTP ;
+AddFilesToHaikuImage system add-ons mail_daemon inbound_filters
+	: MatchHeader SpamFilter NewMailNotification ;
+AddFilesToHaikuImage system add-ons mail_daemon outbound_filters : Fortune ;
+AddFilesToHaikuImage system add-ons media : $(SYSTEM_ADD_ONS_MEDIA) ;
+AddFilesToHaikuImage system add-ons media plugins
+	: $(SYSTEM_ADD_ONS_MEDIA_PLUGINS) ;
+AddFilesToHaikuImage system add-ons Tracker
+	: FileType-F Mark\ as… Mark\ as\ Read-R Open\ Target\ Folder-O
+	Open\ Terminal-T ZipOMatic-Z ;
+AddSymlinkToHaikuImage system add-ons Tracker
+	: /boot/system/preferences/Backgrounds : Background-B ;
+AddSymlinkToHaikuImage system add-ons Tracker
+	: /boot/system/apps/TextSearch : TextSearch-G ;
+AddSymlinkToHaikuImage system add-ons Tracker
+	: /boot/system/apps/DiskUsage : DiskUsage-I ;
+AddFilesToHaikuImage system add-ons input_server devices
+	: <input>keyboard <input>mouse <input>tablet <input>wacom ;
+AddFilesToHaikuImage system add-ons input_server filters
+	: screen_saver shortcut_catcher ;
+AddFilesToHaikuImage system add-ons kernel network
+	: <net>notifications stack ;
+AddFilesToHaikuImage system add-ons kernel network devices
+	: $(SYSTEM_NETWORK_DEVICES) ;
+AddFilesToHaikuImage system add-ons kernel network datalink_protocols
+	: $(SYSTEM_NETWORK_DATALINK_PROTOCOLS) ;
+AddFilesToHaikuImage system add-ons kernel network ppp
+	: $(SYSTEM_NETWORK_PPP) ;
+AddFilesToHaikuImage system add-ons kernel network protocols
+	: $(SYSTEM_NETWORK_PROTOCOLS) ;
+AddFilesToHaikuImage system add-ons Print : $(SYSTEM_ADD_ONS_PRINT) ;
+AddFilesToHaikuImage system add-ons Print transport
+	: $(SYSTEM_ADD_ONS_PRINT_TRANSPORT) ;
+AddFilesToHaikuImage system add-ons Screen\ Savers
+	: $(SYSTEM_ADD_ONS_SCREENSAVERS) ;
+
+AddFilesToHaikuImage system add-ons disk_systems
+	: <disk_system>intel <disk_system>bfs ;
+
+# decorators
+AddDirectoryToHaikuImage home config add-ons decorators ;
+#AddFilesToHaikuImage home config add-ons decorators : ;
+
+# create directories that will remain empty
+AddDirectoryToHaikuImage common bin ;
+AddDirectoryToHaikuImage common include ;
+AddDirectoryToHaikuImage common lib ;
+AddDirectoryToHaikuImage home Desktop ;
+AddDirectoryToHaikuImage home config bin ;
+AddDirectoryToHaikuImage home config lib ;
+AddDirectoryToHaikuImage home mail ;
+AddDirectoryToHaikuImage common var empty ;
+AddDirectoryToHaikuImage common var log ;
+AddDirectoryToHaikuImage common cache tmp ;
+
+AddDirectoryToHaikuImage home config add-ons kernel drivers bin ;
+AddDirectoryToHaikuImage home config add-ons kernel drivers dev ;
+AddDirectoryToHaikuImage home config add-ons input_server devices ;
+AddDirectoryToHaikuImage home config add-ons input_server filters ;
+AddDirectoryToHaikuImage home config add-ons input_server methods ;
+AddDirectoryToHaikuImage home config add-ons media plugins ;
+AddDirectoryToHaikuImage home config add-ons Tracker ;
+AddDirectoryToHaikuImage home config add-ons Print ;
+AddDirectoryToHaikuImage home config add-ons Screen\ Savers ;
+AddDirectoryToHaikuImage home config add-ons Translators ;
+AddDirectoryToHaikuImage system data synth ;
+AddDirectoryToHaikuImage system add-ons input_server methods ;
+
+# optional
+AddFilesToHaikuImage optional system add-ons input_server methods : canna ;
+
+# printers
+AddDirectoryToHaikuImage home config settings printers Preview
+	: home-config-settings-printers-preview.rdef ;
+AddDirectoryToHaikuImage home config settings printers "Save as PDF"
+	: home-config-settings-printers-save-as-pdf.rdef ;
+
+# PDF Writer enconding files
+CopyDirectoryToHaikuImage system data
+	: [ FDirName $(HAIKU_TOP) src add-ons print drivers pdf encoding ]
+	: "PDF Writer" : -x .svn -x Jamfile ;
+
+# Gutenprint data files
+CopyDirectoryToHaikuImage common data
+	: [ FDirName $(HAIKU_TOP) src libs print libgutenprint src xml ]
+	: gutenprint : -x .svn -x *.c -x Makefile.am -x Makefile.in ;
+
+# dvb channel settings
+CopyDirectoryToHaikuImage home config settings Media
+	: [ FDirName $(HAIKU_TOP) data settings media dvb ]
+	: dvb : -x .svn -x Jamfile ;
+
+# licenses
+CopyDirectoryToHaikuImage system data
+	: [ FDirName $(HAIKU_TOP) data system data licenses ]
+	: licenses : -x .svn ;
+
+# Copy documentation as per DiskUsage's license requirement.
+CopyDirectoryToHaikuImage system documentation
+	: [ FDirName $(HAIKU_TOP) docs apps diskusage ]
+	: diskusage : -x .svn ;
+
+# Copy documentation as per PDFlib Lite's license requirement.
+CopyDirectoryToHaikuImage system documentation
+	: [ FDirName $(HAIKU_TOP) src libs pdflib doc ]
+	: pdflib : -x .svn ;
+
+# Copy sample programs as per PDFlib Lite's license requirement.
+CopyDirectoryToHaikuImage develop sample-code
+	: [ FDirName $(HAIKU_TOP) src libs pdflib bind pdflib ]
+	: pdflib : -x .svn ;
+
+#pragma mark - Optional Packages
+
+
+HAIKU_IMAGE_OPTIONAL_PACKAGE_DESCRIPTIONS = ;
+
+include [ FDirName $(HAIKU_BUILD_RULES_DIR) OptionalPackages ] ;
+include [ FDirName $(HAIKU_BUILD_RULES_DIR) OptionalTestPackages ] ;
+include [ FDirName $(HAIKU_BUILD_RULES_DIR) OptionalLibPackages ] ;
+
+local optionalPackageDescriptions ;
+if $(HAIKU_IMAGE_OPTIONAL_PACKAGE_DESCRIPTIONS) {
+	optionalPackageDescriptions = <haiku-image>optional_package_descriptions ;
+	MakeLocate $(optionalPackageDescriptions)
+		: $(HAIKU_COMMON_PLATFORM_OBJECT_DIR) ;
+
+	Depends $(optionalPackageDescriptions)
+		: $(HAIKU_IMAGE_OPTIONAL_PACKAGE_DESCRIPTIONS) ;
+
+	actions together BuildOptionalPackageDescriptions
+	{
+		cat $(2) > $(1)
+	}
+
+	BuildOptionalPackageDescriptions $(optionalPackageDescriptions)
+		: $(HAIKU_IMAGE_OPTIONAL_PACKAGE_DESCRIPTIONS) ;
+}
+
+
+#pragma mark - Alternative GCC Libraries
+
+
+# We build a zip archive containing the libraries built with the alternative
+# GCC and unzip onto our image. Building the archive is done by a sub-jam.
+include [ FDirName $(HAIKU_BUILD_RULES_DIR) AlternativeGCCArchive ] ;
+
+if $(HAIKU_ADD_ALTERNATIVE_GCC_LIBS) = 1
+		&& $(HAIKU_ALTERNATIVE_GCC_OUTPUT_DIR) {
+	# let another jam build a zip with the system libraries
+	rule InvokeSubJam target : directory : jamLine
+	{
+		DIRECTORY on $(target) = $(directory) ;
+		COMMAND_LINE on $(target) = $(jamLine) ;
+		local optionalPackages = $(HAIKU_ADDED_OPTIONAL_PACKAGES:J=/) ;
+		OPTIONAL_PACKAGES on $(target) = $(optionalPackages:E="") ;
+		Always $(target) ;
+		InvokeSubJam1 $(target) ;
+	}
+
+	actions InvokeSubJam1
+	{
+		cd $(DIRECTORY)
+		export HAIKU_IGNORE_USER_BUILD_CONFIG=1
+		export HAIKU_ADD_OPTIONAL_PACKAGES=$(OPTIONAL_PACKAGES)
+		export HAIKU_PRIMARY_GCC=$(HAIKU_GCC_VERSION[1])
+		$(JAM:E=jam) -q $(COMMAND_LINE) ;
+	}
+
+	local otherAlternativeSystemLibsZip
+		= <other-image>alternative_system_libs.zip ;
+	MakeLocate $(otherAlternativeSystemLibsZip)
+		: $(HAIKU_ALTERNATIVE_GCC_OUTPUT_DIR) ;
+
+	InvokeSubJam $(otherAlternativeSystemLibsZip)
+		: $(HAIKU_ALTERNATIVE_GCC_OUTPUT_DIR)
+		: "haiku-alternative-gcc-archive" ;
+
+	# install the alternative libs in the right directory
+	ExtractArchiveToHaikuImage : $(otherAlternativeSystemLibsZip) ;
+}
+
+
+#pragma mark - User/Group Setup
+
+
+# add the root user and the root and users groups
+AddUserToHaikuImage $(HAIKU_ROOT_USER_NAME:E=baron) : 0 : 0 : /boot/home
+	: /bin/bash : $(HAIKU_ROOT_USER_REAL_NAME:E="Root User") ;
+AddGroupToHaikuImage root : 0 : ;
+AddGroupToHaikuImage users : 100 : ;
+
+
+#pragma mark - Host Name
+
+
+if $(HAIKU_IMAGE_HOST_NAME) {
+	actions BuildHaikuImageHostnameFile
+	{
+		echo "$(HAIKU_IMAGE_HOST_NAME)" > $(1)
+	}
+
+	local file = <haiku-image>hostname ;
+	Always $(file) ;
+	MakeLocate $(file) : $(HAIKU_COMMON_PLATFORM_OBJECT_DIR) ;
+	BuildHaikuImageHostnameFile $(file) ;
+	AddFilesToHaikuImage common settings network : $(file) ;
+}
+
+
+#pragma mark - Build The Image
+
+
+# Execute pre-image user config rules.
+UserBuildConfigRulePreImage	;
+
+# Set image name and directory defaults and locate the image.
+HAIKU_IMAGE_NAME ?= $(HAIKU_DEFAULT_IMAGE_NAME) ;
+HAIKU_IMAGE_DIR ?= $(HAIKU_DEFAULT_IMAGE_DIR) ;
+HAIKU_IMAGE = $(HAIKU_IMAGE_NAME) ;
+HAIKU_IMAGE_SIZE ?= $(HAIKU_DEFAULT_IMAGE_SIZE) ; # 230 MB
+HAIKU_IMAGE_LABEL ?= $(HAIKU_DEFAULT_IMAGE_LABEL) ;
+MakeLocate $(HAIKU_IMAGE) : $(HAIKU_IMAGE_DIR) ;
+
+# Set the default installation directory.
+HAIKU_INSTALL_DIR ?= $(HAIKU_DEFAULT_INSTALL_DIR) ;
+
+# the pseudo target all image contents is attached to
+NotFile $(HAIKU_IMAGE_CONTAINER_NAME) ;
+
+# Detect a hybrid GCC2/GCC4 image.
+local isHybridBuild ;
+if $(HAIKU_ADD_ALTERNATIVE_GCC_LIBS) = 1
+		&& $(HAIKU_ALTERNATIVE_GCC_OUTPUT_DIR) {
+	isHybridBuild = 1 ;
+}
+
+# prepare the script that initializes the shell variables
+HAIKU_IMAGE_INIT_VARIABLES_SCRIPT = <HaikuImage>haiku.image-init-vars ;
+local script = $(HAIKU_IMAGE_INIT_VARIABLES_SCRIPT) ;
+MakeLocate $(script) : $(HAIKU_OUTPUT_DIR) ;
+Always $(script) ;
+
+AddVariableToScript $(script) : sourceDir : $(HAIKU_TOP) ;
+AddVariableToScript $(script) : outputDir : $(HAIKU_OUTPUT_DIR) ;
+AddVariableToScript $(script) : tmpDir : $(HAIKU_TMP_DIR) ;
+AddVariableToScript $(script) : installDir : $(HAIKU_INSTALL_DIR) ;
+#AddVariableToScript $(script) : isImage : 1 ;
+AddVariableToScript $(script) : imageSize : $(HAIKU_IMAGE_SIZE) ;
+AddVariableToScript $(script) : imageLabel : $(HAIKU_IMAGE_LABEL) ;
+AddVariableToScript $(script) : addBuildCompatibilityLibDir
+	: $(HOST_ADD_BUILD_COMPATIBILITY_LIB_DIR) ;
+AddVariableToScript $(script) : dontClearImage : $(HAIKU_DONT_CLEAR_IMAGE) ;
+AddVariableToScript $(script) : updateOnly : [ IsUpdateHaikuImageOnly ] ;
+AddVariableToScript $(script) : stripOptionalPackageDebugSymbols
+	: $(HAIKU_STRIP_DEBUG_FROM_OPTIONAL_PACKAGES) ;
+AddTargetVariableToScript $(script) : <build>addattr ;
+AddTargetVariableToScript $(script) : <build>bfs_shell : bfsShell ;
+AddTargetVariableToScript $(script) : <build>fs_shell_command : fsShellCommand ;
+AddTargetVariableToScript $(script) : <build>copyattr ;
+AddTargetVariableToScript $(script) : <build>create_image : createImage ;
+AddTargetVariableToScript $(script) : <build>makebootable ;
+AddTargetVariableToScript $(script) : <build>rc ;
+AddTargetVariableToScript $(script) : <build>resattr ;
+AddTargetVariableToScript $(script) : <build>unzip ;
+AddTargetVariableToScript $(script) : <build>vmdkimage ;
+if $(HOST_RM_ATTRS_TARGET) {
+	AddTargetVariableToScript $(script) : $(HOST_RM_ATTRS_TARGET) : rmAttrs ;
+} else {
+	AddVariableToScript $(script) : rmAttrs : rm ;
+}
+if $(optionalPackageDescriptions) {
+	AddTargetVariableToScript $(script) : $(optionalPackageDescriptions)
+		: optionalPackageDescriptions ;
+}
+
+
+# create the other scripts
+HAIKU_IMAGE_MAKE_DIRS_SCRIPT = <HaikuImage>haiku.image-make-dirs ;
+HAIKU_IMAGE_COPY_FILES_SCRIPT = <HaikuImage>haiku.image-copy-files ;
+HAIKU_IMAGE_EXTRACT_FILES_SCRIPT = <HaikuImage>haiku.image-extract-files ;
+MakeLocate $(HAIKU_IMAGE_MAKE_DIRS_SCRIPT) $(HAIKU_IMAGE_COPY_FILES_SCRIPT)
+	$(HAIKU_IMAGE_EXTRACT_FILES_SCRIPT) : $(HAIKU_OUTPUT_DIR) ;
+
+CreateHaikuImageMakeDirectoriesScript $(HAIKU_IMAGE_MAKE_DIRS_SCRIPT) ;
+CreateHaikuImageCopyFilesScript $(HAIKU_IMAGE_COPY_FILES_SCRIPT) ;
+CreateHaikuImageExtractFilesScript $(HAIKU_IMAGE_EXTRACT_FILES_SCRIPT) ;
+
+# Convenience wrapper rule around BuildHaikuImage.
+rule _BuildHaikuImage image : isImage : isVMwareImage
+{
+	# _BuildHaikuImage <image target> : <isImage> : <isVMwareImage> ;
+	#
+
+	# build the image
+	# HAIKU_IMAGE_EARLY_USER_SCRIPTS, HAIKU_IMAGE_LATE_USER_SCRIPTS can be
+	# specified by the user.
+	BuildHaikuImage $(image) :
+		$(HAIKU_IMAGE_INIT_VARIABLES_SCRIPT)
+		$(HAIKU_IMAGE_EARLY_USER_SCRIPTS)
+		$(HAIKU_IMAGE_MAKE_DIRS_SCRIPT)
+		$(HAIKU_IMAGE_COPY_FILES_SCRIPT)
+		$(HAIKU_IMAGE_EXTRACT_FILES_SCRIPT)
+		$(HAIKU_IMAGE_LATE_USER_SCRIPTS)
+		: $(isImage)
+		: $(isVMwareImage)
+	;
+
+	# remove the scripts we have generated
+	RmTemps $(image) :
+		$(HAIKU_IMAGE_INIT_VARIABLES_SCRIPT)
+		$(HAIKU_IMAGE_MAKE_DIRS_SCRIPT)
+		$(HAIKU_IMAGE_COPY_FILES_SCRIPT)
+		$(HAIKU_IMAGE_EXTRACT_FILES_SCRIPT)
+	;
+}
+
+# build the image
+_BuildHaikuImage $(HAIKU_IMAGE) : true ;
+NotFile haiku-image ;
+Depends haiku-image : $(HAIKU_IMAGE) ;
+
+
+# install Haiku into a directory
+NotFile install-haiku ;
+_BuildHaikuImage install-haiku : 0 ;
+
+
+# build the VMware image
+HAIKU_VMWARE_IMAGE_NAME ?= $(HAIKU_DEFAULT_VMWARE_IMAGE_NAME) ;
+HAIKU_VMWARE_IMAGE = $(HAIKU_VMWARE_IMAGE_NAME) ;
+MakeLocate $(HAIKU_VMWARE_IMAGE) : $(HAIKU_IMAGE_DIR) ;
+
+_BuildHaikuImage $(HAIKU_VMWARE_IMAGE) : true : true ;
+NotFile haiku-vmware-image ;
+Depends haiku-vmware-image : $(HAIKU_VMWARE_IMAGE) ;
+
+# Execute post-image user config rules.
+UserBuildConfigRulePostImage ;

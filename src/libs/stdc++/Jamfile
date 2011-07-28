@@ -1,0 +1,9 @@
+SubDir HAIKU_TOP src libs stdc++ ;
+
+if $(HAIKU_GCC_VERSION[1]) = 2 || $(isHybridBuild) {
+	SubInclude HAIKU_TOP src libs stdc++ legacy ;
+}
+
+if $(HAIKU_GCC_VERSION[1]) = 4 || $(isHybridBuild) {
+	SubInclude HAIKU_TOP src libs stdc++ current ;
+}

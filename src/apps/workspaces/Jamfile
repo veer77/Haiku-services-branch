@@ -1,0 +1,23 @@
+SubDir HAIKU_TOP src apps workspaces ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+AddSubDirSupportedPlatforms libbe_test ;
+
+UsePrivateHeaders app interface ;
+
+Application Workspaces :
+	Workspaces.cpp 
+	: be $(HAIKU_LOCALE_LIBS) $(TARGET_LIBSUPC++)
+	: Workspaces.rdef 
+	;
+
+if $(TARGET_PLATFORM) = libbe_test {
+	HaikuInstall install-test-apps : $(HAIKU_APP_TEST_DIR) : Workspaces
+		: tests!apps ;
+}
+
+DoCatalogs Workspaces :
+	x-vnd.Be-WORK
+	:
+	Workspaces.cpp
+;

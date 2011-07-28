@@ -1,0 +1,17 @@
+1	lithuanian	x-vnd.Haiku-Terminal	2261470953
+Change directory	Terminal TermView		Keisti aplanką
+Copy	Terminal TermWindow		Kopijuoti
+Copy here	Terminal TermView		Kopijuoti čia
+Font:	Terminal AppearancePrefView		Rašmenys:
+Match case	Terminal FindWindow		Skirti lygius a<>A
+New Terminal	Terminal TermWindow		Naują terminalą
+Not found.	Terminal TermWindow		Nerasta.
+OK	Terminal PrefWindow		Gerai
+OK	Terminal TermWindow		Gerai
+Quit	Terminal TermWindow		Baigti
+Save to file…	Terminal PrefWindow		Išsaugoti bylon…
+Select all	Terminal TermWindow		Žymėti viską
+Switch Terminals	Terminal TermWindow		Perjugti terminalus
+Terminal couldn't start the shell. Sorry.	Terminal TermApp		Terminalas nepaleidžia apvalkalo. Apgailėtina.
+Text size	Terminal TermWindow		Rašmenų dydis
+Use default shell	Terminal Shell		Naudoti numatytąjį apvalkalą

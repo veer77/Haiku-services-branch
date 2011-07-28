@@ -1,0 +1,13 @@
+1	ukrainian	x-vnd.Haiku-TIFFTranslator	2714642295
+LZW	TIFFView		LZW
+None	TIFFView		Жоден
+RLE (Packbits)	TIFFView		RLE (Packbits)
+TIFF Image Translator	TIFFView		Перетворювач зображень TIFF
+TIFF Library:	TIFFView		Бібліотека TIFF:
+TIFF Settings	TIFFMain		Настройки TIFF
+TIFF image	TIFFTranslator		Зображення TIFF
+TIFF image translator	TIFFTranslator		Перетворювач зображень TIFF
+TIFF images	TIFFTranslator		Зображення TIFF
+TIFFTranslator Settings	TIFFTranslator		Настройки перетворювача TIFF
+Version %d.%d.%d %s	TIFFView		Версія %d.%d.%d %s
+ZIP (Deflate)	TIFFView		ZIP (Deflate)

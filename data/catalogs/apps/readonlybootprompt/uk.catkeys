@@ -1,0 +1,6 @@
+1	ukrainian	x-vnd.Haiku-ReadOnlyBootPrompt	1972532432
+Desktop (Live-CD)	BootPromptWindow		Робочий стіл (Live-CD)
+Keymap	BootPromptWindow		Розкладка
+Language	BootPromptWindow		Мова
+Run Installer	BootPromptWindow		Виконати встановлення
+Welcome to Haiku!	BootPromptWindow		Ласкаво просимо в Haiku!

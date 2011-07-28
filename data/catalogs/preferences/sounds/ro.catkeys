@@ -1,0 +1,15 @@
+1	romanian	x-vnd.Haiku-Sounds	4287885569
+<none>	HEventList		<nimic>
+<none>	HWindow		<nimic>
+About Sounds	SoundsHApp		Despre Sunete
+Event	HEventList		Eveniment
+No such file or directory	HEventList		Niciun astfel de fișier sau dosar
+OK	HEventList		OK
+OK	HWindow		OK
+OK	SoundsHApp		OK
+Other…	HWindow		Altele...
+Play	HWindow		Redă
+Sound	HEventList		Sunet
+Sound File:	HWindow		Fișier de sunet:
+Stop	HWindow		Oprește
+This is not an audio file.	HWindow		Acesta nu este un fișier audio.

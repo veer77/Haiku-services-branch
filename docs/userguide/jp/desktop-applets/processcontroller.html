@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+<head>
+<!-- 
+ *
+ * Copyright 2010-2011, Haiku. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ *
+ * Authors:
+ *		Maciej Bałuta  (Google Code-In student)
+ *		Humdinger <humdingerb@gmail.com>
+ * Translators:
+ *		pooper
+ *		mt
+ *
+-->
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta name="robots" content="all" />
+	<title>ProcessController</title>
+	<link rel="stylesheet" type="text/css" href="../../Haiku-doc.css" />
+</head>
+<body>
+
+<div id="banner">
+<div><span>ユーザーガイド</span></div>
+</div>
+
+<div class="nav">
+<div class="inner">
+<ul class="lang-menu">
+<li class="now"><img src="../../images/flags/jp.png" alt="" /> 日本語</li>
+<li><a href="../../fr/desktop-applets/processcontroller.html"><img src="../../images/flags/fr.png" alt="" />Français</a></li>
+<li><a href="../../de/desktop-applets/processcontroller.html"><img src="../../images/flags/de.png" alt="" />Deutsch</a></li>
+<li><a href="../../it/desktop-applets/processcontroller.html"><img src="../../images/flags/it.png" alt="" />Italiano</a></li>
+<li><a href="../../ru/desktop-applets/processcontroller.html"><img src="../../images/flags/ru.png" alt="" />Русский</a></li>
+<li><a href="../../es/desktop-applets/processcontroller.html"><img src="../../images/flags/es.png" alt="" />Español</a></li>
+<li><a href="../../sv_SE/desktop-applets/processcontroller.html"><img src="../../images/flags/sv_SE.png" alt="" />Svenska</a></li>
+<li><a href="../../uk/desktop-applets/processcontroller.html"><img src="../../images/flags/uk.png" alt="" />Українська</a></li>
+<li><a href="../../zh_CN/desktop-applets/processcontroller.html"><img src="../../images/flags/zh_CN.png" alt="" /> 中文 ［中文］</a></li>
+<li><a href="../../pt_PT/desktop-applets/processcontroller.html"><img src="../../images/flags/pt_PT.png" alt="" />Português</a></li>
+<li><a href="../../en/desktop-applets/processcontroller.html"><img src="../../images/flags/gb.png" alt="" />English</a></li>
+</ul>
+<span>
+ «  <a href="powerstatus.html">PowerStatus</a> 
+::  <a href="../desktop-applets.html" class="uplink">デスクトップアプレット</a> 
+::  <a href="workspaces.html">Workspaces</a>  »
+</span></div>
+</div>
+
+<div id="content">
+<div>
+
+<h2><img src="../../images/desktop-applets-images/processcontroller-icon_64.png" alt="processcontroller-icon_64.png" width="64" height="64" />ProcessController</h2>
+<table summary="layout" border="0" cellspacing="0" cellpadding="2">
+<tr><td>Deskbarメニュー:</td><td style="width:15px;"></td><td><span class="menu">デスクトップアプレット</span></td></tr>
+<tr><td>場所:</td><td></td><td><span class="path">/boot/system/apps/ProcessController</span></td></tr>
+<tr><td>設定ファイル:</td><td></td><td><i>なし</i></td></tr>
+</table>
+
+<p><img src="../images/processcontroller-images/applet.png" alt="ProcessController applet" style="float:left;margin: 0 1em 0 0" />ProcessController の目的は CPU と物理メモリの使用率を表示することです。それぞれのチームの観察、優先度の設定、クラッシュの場合に終了もできます。複数の CPU があると個々の CPU を有効・無効もできます。TrackerとDeskbar のクラッシュの場合に ProcessController のメニュから再起動することができます。</p>
+<p>左側の計器はそれぞれの CPU の使用率を表して右側の計器はメモリ使用量を表します。計器の数はシステムの CPU の数によってあります。</p>
+<p>ProcessController はまだ実行していない場合に、起動するときにウィンドウモードまたは Deskbar モードを選択してください。ウィンドウモードで、ウインドウのサイズを変更して、<a href="../gui.html#replicants">Replicant</a>を使って Desktop にドラッグすることもできます。<br />
+ProcessController はコンテキストメニュで使います。<br />
+コンテキストメニューの <span class="menu">Live in the Deskbar</span> のチェックボックスをオフにすると、ProcessController は Deskbar から削除されます。</p>
+<h2>Quit an application</h2>
+<img src="../images/processcontroller-images/quit.png" alt="ProcessController - Quit an application" />
+<p>アプリケーションを終了するには、<span class="menu">Quit an application</span> メニューでアプリケーション名をクリックしてください。この方法は強制終了ではなくて、「閉じる」ボタンをクリックみたいな方法です。でも、システムのプロセス （サーバーとデーモン） を終了しないように注意してください。その場合にシステム全体の実行の停止の可能性があります。</p>
+<h2>メモリ使用量</h2>
+<img src="../images/processcontroller-images/memory.png" alt="ProcessController - Memory usage" />
+<p>メモリ使用量の観察はかなり不正確です。</p>
+<p>このメニューはシステムでのチームのメモリ使用量を観察できます。チーム名のそばに二つの列がある。1番目の列は書き込み可能メモリの量で、2番目は読み込み専用メモリ（例えば共用ライブラリ）込みすべてのメモリ量です。</p>
+<p>一番目の行、<i>System resources &amp; caches...</i> はシステムおよびすべてのアプリケーションで使用されているメモリの数を表示します。青いバーの長さはコンピュータの物理メモリの数によります。次の行はそれぞれのプロセスを使用しているメモリの数を表示します。注：バーの長さはメモリを使用している部分だけによります。</p>
+<table>
+		<tr><td style="width:20px;height:20px;background:#1414E7"></td><td style="width:10px"></td><td>特定のアプリケーションだけが使用しているメモリ (書き込み権限あり)</td></tr>
+		<tr><td style="height:20px;background:#A4A4F5"></td><td></td><td>読み取り空間のメモリを含む (他のアプリケーションと共有可能)</td></tr>
+</table>
+
+<h2>スレッドと CPU 使用率</h2>
+<p>このメニューでスレッドの優先度の変更、チームの終了、デバッグもできます。</p>
+<div class="box-stop">このメニューのコマンドによる変更はシステムの奥深くに届き、データ損失とシステムの不安定性のを引き起こすかもしれません。マウスをしっかり握ってください !</div>
+<img src="../images/processcontroller-images/priority.png" alt="ProcessController - Priority" />
+<table>
+	<tr><td style="width:20px;height:20px;background:#1414E7"></td><td style="width:10px"></td><td>カーネルコード</td></tr>
+	<tr><td style="height:20px;background:#A4A4F5"></td><td></td><td>利用者コード</td></tr>
+	<tr><td style="height:20px;background:#6EBE6E"></td><td></td><td>待機スレッド</td></tr>
+</table>
+<p>最初のレベルはチームの名であって、クリックと全体のチームを終了します。ダークブルー部分はカーネルコードがかかった部分で、青の部分は利用者コードがかかった部分で、緑の部分は待機スレッドです。</p>
+<p>第二レベルはチームのスレッドを表示します。クリックして、デバッグまたは強制終了できます。</p>
+<p>最後のレベルはスレットの優先度を変更できます。一般的にアプリケーションの優先度を変更を変更しないほうが良いです。</p>
+
+</div>
+</div>
+
+<div class="nav">
+<div class="inner"><span>
+«  <a href="powerstatus.html">PowerStatus</a> 
+::  <a href="../desktop-applets.html" class="uplink">デスクトップアプレット</a> 
+::  <a href="workspaces.html">Workspaces</a>  »
+</span></div>
+</div>
+
+</body>
+</html>

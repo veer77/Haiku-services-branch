@@ -1,0 +1,13 @@
+SubDir HAIKU_TOP src system libroot posix arch arm ;
+
+local genericSources =
+;
+
+MergeObject posix_arch_$(TARGET_ARCH).o :
+	fenv.c
+
+	$(genericSources)
+;
+
+SEARCH on [ FGristFiles $(genericSources) ]
+	= [ FDirName $(SUBDIR) $(DOTDOT) generic ] ;

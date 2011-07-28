@@ -1,0 +1,38 @@
+1	ukrainian	x-vnd.Haiku-Pulse	628764229
+About Pulse…	CPUButton		Про Pulse…
+About Pulse…	PulseView		Про Pulse…
+Active color	ConfigView		Колір активності
+Bar colors	ConfigView		Кольори основи
+CPU progress bar	NormalPulseView		Шкала активності процесора
+Defaults	PrefsWindow		По замовчуванню
+Deskbar	CPUButton		Deskbar
+Deskbar menu	CPUButton		Меню Deskbar'a
+Deskbar mode	MiniPulseView		Deskbar режим
+Deskbar mode	NormalPulseView		Deskbar режим
+Deskbar mode	PrefsWindow		Deskbar режим
+Fade colors	ConfigView		Кольори затихання
+Frame color	ConfigView		Колір рамки
+Idle color	ConfigView		Колір вільного
+Info	CPUButton		Інформація
+Info	DeskbarPulseView		Інформація
+Mini mode	DeskbarPulseView		Міні режим
+Mini mode	NormalPulseView		Міні режим
+Mini mode	PrefsWindow		Міні режим
+Normal mode	DeskbarPulseView		Норм. режим
+Normal mode	MiniPulseView		Норм. режим
+Normal mode	PrefsWindow		Норм. режим
+OK	CPUButton		Гаразд
+OK	DeskbarPulseView		Гаразд
+OK	PrefsWindow		Гаразд
+OK	PulseApp		Гаразд
+OK	PulseView		Гаразд
+Pulse	NormalPulseView		Pulse
+Pulse settings	PulseWindow		Настройки Pulse
+Quit	DeskbarPulseView		Вийти
+Quit	MiniPulseView		Вийти
+Remove replicant	CPUButton		Видалити реплікант
+Settings…	PulseView		Настройки…
+Usage: Pulse [--mini] [-w width] [--width=width]\n\t[--deskbar] [--normal] [--framecolor 0xrrggbb]\n\t[--activecolor 0xrrggbb] [--idlecolor 0xrrggbb]\n	PulseApp		Використання: Pulse [--mini] [-w width] [--width=width]\n\t[--deskbar] [--normal] [--framecolor 0xrrggbb]\n\t[--activecolor 0xrrggbb] [--idlecolor 0xrrggbb]\n
+Width of icon:	ConfigView		Ширина іконки:
+You can't disable the last active CPU.	CPUButton		Неможливо усунути останній активний процесор.
+You can't disable the last active CPU.	PulseView		Неможливо усунути останній активний процесор.

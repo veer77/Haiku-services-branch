@@ -1,0 +1,34 @@
+1	german	x-vnd.Haiku-Sudoku	2463385585
+Abort	ProgressWindow		Abbrechen
+Advanced	SudokuWindow		Fortgeschritten
+Blank	SudokuWindow		Leer
+Copy	SudokuWindow		Kopieren
+Could not open \"%s\":\n%s\n	SudokuWindow		\"%s\" konnte nicht geöffnet werden:\n%s\n
+Could not set Sudoku:\n%s\n	SudokuWindow		Sudoku konnte nicht erstellt werden:\n%s\n
+Creating solvable field	SudokuGenerator		Lösbare Felder werden erstellt
+Easy	SudokuWindow		Einfach
+Export as…	SudokuWindow		Exportieren als...
+File	SudokuWindow		Datei
+HTML	SudokuWindow		HTML
+Hard	SudokuWindow		Schwer
+Help	SudokuWindow		Hilfe
+Mark invalid values	SudokuWindow		Falsche Zahlen markieren
+Mark valid hints	SudokuWindow		Gültige Zahlen hervorheben
+New	SudokuWindow		Neu
+OK	SudokuWindow		OK
+Open file…	SudokuWindow		Datei öffnen...
+Progress monitor	ProgressWindow		Fortschrittsanzeige
+Quit	SudokuWindow		Beenden
+Redo	SudokuWindow		Wiederholen
+Restore snapshot	SudokuWindow		Spielstand wiederherstellen
+Searching for removable values	SudokuGenerator		Suche nach entfernbaren Werten läuft
+Snapshot current	SudokuWindow		Spielstand merken
+Solve	SudokuWindow		Auflösen
+Solve single field	SudokuWindow		Ein Feld lösen
+Start again	SudokuWindow		Von vorn beginnen
+Sudoku	System name		Sudoku
+Sudoku request	SudokuWindow		Sudoku Anfrage
+Sudoku solved - congratulations!\n	SudokuWindow		Sudoku gelöst - Glückwunsch!\n
+Text	SudokuWindow		Text
+Undo	SudokuWindow		Rückgängig
+View	SudokuWindow		Ansicht

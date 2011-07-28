@@ -1,0 +1,16 @@
+SubDir HAIKU_TOP src add-ons media plugins mov_reader ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+UsePrivateHeaders media ;
+
+SubDirHdrs [ FDirName $(SUBDIR) libMOV ] ;
+
+Addon mov_reader :
+	mov_reader.cpp
+	:
+	libmovreader.a
+	libz.a be libmedia.so $(TARGET_LIBSTDC++)
+;
+
+SubInclude HAIKU_TOP src add-ons media plugins mov_reader libMOV ;

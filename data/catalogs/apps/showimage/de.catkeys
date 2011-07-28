@@ -1,0 +1,62 @@
+1	german	x-vnd.Haiku-ShowImage	886873119
+%SECONDS seconds	Menus	Don't translate %SECONDS	%SECONDS Sekunden
+Browse	Menus		Blättern
+Cancel	ClosePrompt		Abbrechen
+Clear selection	Menus		Auswahl aufheben
+Close	ClosePrompt		Schließen
+Close	Menus		Schließen
+Close document	ClosePrompt		Dokument schließen
+Copy	Menus		Kopieren
+Could not load image! Either the file or an image translator for it does not exist.	LoadAlerts		Das Bild konnte nicht geladen werden! Entweder die Datei selbst oder ein passender Translator existiert nicht.
+DPI:	PrintOptionsWindow		DPI:
+Edit	Menus		Bearbeiten
+File	Menus		Datei
+First page	Menus		Erste Seite
+Fit image to page	PrintOptionsWindow		Bild in Seite einpassen
+Fit to window	Menus		An Fenstergröße anpassen
+Flip left to right	Menus		Horizontal spiegeln
+Flip top to bottom	Menus		Vertikal spiegeln
+Full screen	Menus		Vollbild
+Go to page	Menus		Gehe zu Seite
+Height: 	PrintOptionsWindow		Höhe: 
+High-quality zooming	Menus		Zoomen mit hoher Qualität
+Image	Menus		Bild
+Job setup	PrintOptionsWindow		Druckauftrag bearbeiten
+Last page	Menus		Letzte Seite
+Leave full screen	Menus		Vollbild verlassen
+Next file	Menus		Nächste Datei
+Next page	Menus		Nächste Seite
+OK	Alerts		OK
+OK	SaveToFile		OK
+Open…	Menus		Öffnen...
+Original size	Menus		Originalgröße
+Page setup…	Menus		Seite einrichten...
+Previous file	Menus		Vorherige Datei
+Previous page	Menus		Vorherige Seite
+Print options	PrintOptionsWindow		Druckeinstellungen
+Print…	Menus		Drucken...
+Progress monitor	ProgressWindow		Fortschrittsanzeige
+Quit	Menus		Beenden
+Rating	Menus		Bewertung
+Resize to (in 1/72 inches):	PrintOptionsWindow		Größe ändern zu (in 1/72 Zoll):
+Rotate clockwise	Menus		Im Uhrzeigersinn rotieren
+Rotate counterclockwise	Menus		Gegen Uhrzeigersinn rotieren
+Save as…	Menus		Speichern unter...
+Select all	Menus		Alles auswählen
+Selection mode	Menus		Auswahlmodus
+Show caption in full screen mode	Menus		Im Vollbildmodus Dateiname zeigen
+Show tool bar	Menus		Werkzeugleiste zeigen
+ShowImage	System name		Bildbetrachter
+Slide delay	Menus		Verzögerung
+Slide show	Menus		Diashow
+Stretch to window	Menus		Auf Fenstergröße vergrößern
+The document '%s' (page %d) has been changed. Do you want to close the document?	ClosePrompt		Das Dokument '%s' (Seite %d) wurde verändert. Trotzdem schließen?
+The document '%s' has been changed. Do you want to close the document?	ClosePrompt		Das Bild '%s' wurde verändert. Trotzdem schließen?
+The file '%s' could not be written.	SaveToFile		Die Datei '%s' konnte nicht gespeichert werden.
+Undo	Menus		Rückgängig
+Use as background…	Menus		Als Hintergrund verwenden…
+View	Menus		Ansicht
+Width:	PrintOptionsWindow		Breite:
+Zoom factor in %:	PrintOptionsWindow		Vergrößerungsfaktor in %:
+Zoom in	Menus		Vergrößern
+Zoom out	Menus		Verkleinern

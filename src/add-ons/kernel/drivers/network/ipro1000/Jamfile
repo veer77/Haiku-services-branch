@@ -1,0 +1,38 @@
+SubDir HAIKU_TOP src add-ons kernel drivers network ipro1000 ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+# For ether_driver.h
+UsePrivateHeaders net ;
+
+KernelAddon beos_ipro1000 :
+	driver.c
+	device.c
+	if_compat.c
+	if_em.c
+	if_em_hw.c
+	if_em_osdep.c
+	mempool.c
+	timer.c
+	util.c
+	;
+
+Package haiku-networkingkit-cvs : beos_ipro1000 :
+	boot home config add-ons kernel drivers bin ;
+PackageDriverSymLink haiku-networkingkit-cvs : net beos_ipro1000 ;
+Package haiku-networkingkit-cvs : ipro1000.settings :
+	boot home config settings kernel drivers sample ;
+
+# Installation
+
+HaikuInstall install-networking : /boot/home/config/add-ons/kernel/drivers/bin : 
+	beos_ipro1000 
+;
+
+HaikuInstallRelSymLink install-networking : /boot/home/config/add-ons/kernel/drivers/dev/net : 
+	<installed>beos_ipro1000 : 
+	installed-symlink 
+;
+
+SubInclude HAIKU_TOP src add-ons kernel drivers network ipro1000 dev ;
+

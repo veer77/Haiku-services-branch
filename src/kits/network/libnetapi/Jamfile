@@ -1,0 +1,47 @@
+SubDir HAIKU_TOP src kits network libnetapi ;
+
+UsePrivateHeaders net shared ;
+
+UseHeaders [ FDirName $(HAIKU_TOP) src libs compat freebsd_network compat ]
+	: true ;
+UseHeaders [ FDirName $(HAIKU_TOP) src libs compat freebsd_wlan ] : true ;
+
+SharedLibrary libbnetapi.so :
+	init.cpp
+	DynamicBuffer.cpp
+	NetEndpoint.cpp
+	NetAddress.cpp
+	NetBuffer.cpp
+	NetDebug.cpp
+
+	NetworkAddress.cpp
+	NetworkAddressResolver.cpp
+	NetworkCookie.cpp
+	NetworkCookieJar.cpp
+	NetworkDevice.cpp
+	NetworkInterface.cpp
+	NetworkRoster.cpp
+
+	# TODO: The HTTP stuff should all go into an add-on. It needs linking
+	# against libcrypto.so and only the add-on should link against it.
+	# Building of the commented out files has not been completely tested after
+	# integrating the code from the GSoC 2010 "Services Kit" project and doing
+	# some renaming of types, constants and methods.
+#	HttpAuthentication.cpp
+#	HttpHeaders.cpp
+#	HttpForm.cpp
+	HttpTime.cpp
+
+	Url.cpp
+	UrlContext.cpp
+#	UrlProtocol.cpp
+#	UrlProtocolAsynchronousListener.cpp
+#	UrlProtocolDispatchingListener.cpp
+#	UrlProtocolHttp.cpp # TODO: -> add-on, See above.
+#	UrlProtocolListener.cpp
+#	UrlRequest.cpp
+#	UrlResult.cpp
+#	UrlSynchronousRequest.cpp
+
+	: be $(TARGET_NETWORK_LIBS) $(TARGET_LIBSUPC++) libshared.a
+;

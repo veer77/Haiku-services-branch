@@ -1,0 +1,64 @@
+SubDir HAIKU_TOP src add-ons mail_daemon inbound_protocols imap ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+if $(TARGET_PLATFORM) != haiku {
+	UsePublicHeaders mail ;
+}
+
+UsePublicHeaders [ FDirName add-ons mail_daemon ] ;
+UsePrivateHeaders mail shared ;
+SubDirHdrs [ FDirName $(SUBDIR) imap_lib ] ;
+
+UseLibraryHeaders linprog alm ;
+
+
+SubDirHdrs [ FDirName $(HAIKU_TOP) headers os add-ons mail_daemon ] ;
+
+local sources =
+	imap_config.cpp
+	IMAPInboundProtocol.cpp
+	IMAPRootInboundProtocol.cpp
+	IMAPFolderConfig.cpp
+	# imap_lib
+	IMAPFolders.cpp
+	IMAPHandler.cpp
+	IMAPMailbox.cpp
+	IMAPParser.cpp
+	IMAPProtocol.cpp
+	IMAPStorage.cpp
+;
+
+AddResources IMAP : IMAP.rdef ;
+
+if $(HAIKU_OPENSSL_ENABLED) {
+	SubDirC++Flags -DUSE_SSL ;
+	SetupFeatureObjectsDir ssl ;
+} else {
+	SetupFeatureObjectsDir no-ssl ;
+}
+
+Addon IMAP
+	:
+	$(sources)
+	:
+	be libmail.so $(HAIKU_LOCALE_LIBS) $(TARGET_NETWORK_LIBS) libalm.so
+		libshared.a $(TARGET_LIBSUPC++) $(TARGET_LIBSTDC++)
+;
+
+SEARCH on [ FGristFiles IMAPFolders.cpp IMAPHandler.cpp IMAPMailbox.cpp
+	IMAPParser.cpp IMAPProtocol.cpp IMAPStorage.cpp ServerConnection.cpp ]
+	= [ FDirName $(HAIKU_TOP) src add-ons mail_daemon inbound_protocols imap
+		imap_lib ] ;
+
+Package haiku-maildaemon-cvs :
+	IMAP :
+	boot home config add-ons mail_daemon inbound_protocols
+;
+
+DoCatalogs IMAP :
+	x-vnd.Haiku-IMAP
+	:
+	imap_config.cpp
+	IMAPFolderConfig.cpp
+;

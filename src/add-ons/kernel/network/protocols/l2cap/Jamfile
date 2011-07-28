@@ -1,0 +1,33 @@
+SubDir HAIKU_TOP src add-ons kernel network protocols l2cap ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+if $(TARGET_PLATFORM) != haiku {
+	UseHeaders [ FStandardOSHeaders ] : true ;
+		# Needed for <support/Errors.h> and maybe other stuff.
+	UseHeaders [ FDirName $(HAIKU_TOP) headers posix ] : true ;
+		# We need the public network headers also when not compiling for Haiku.
+		# Unfortunately we get more than we want, namely all POSIX headers.
+}
+
+UsePrivateKernelHeaders ;
+UsePrivateHeaders net bluetooth ;
+
+KernelAddon l2cap :
+	l2cap.cpp
+	l2cap_address.cpp
+	l2cap_command.cpp
+	l2cap_signal.cpp
+	l2cap_lower.cpp
+	l2cap_upper.cpp
+# Stack subModules
+    L2capEndpoint.cpp
+;
+
+# Installation
+HaikuInstall install-networking : /boot/home/config/add-ons/kernel/haiku_network/protocols
+	: l2cap ;
+
+Package haiku-networkingkit-cvs :
+	haiku :
+	boot home config add-ons kernel haiku_network protocols ;

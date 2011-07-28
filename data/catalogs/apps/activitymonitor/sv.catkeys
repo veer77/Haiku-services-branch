@@ -1,0 +1,48 @@
+1	swedish	x-vnd.Haiku-ActivityMonitor	3704566709
+%.1f KB/s	DataSource		%.1f KB/s
+%.1f MB	DataSource		%.1f MB
+%.1f faults/s	DataSource		%.1f fel/s
+%lld ms	SettingsWindow		%lld ms
+%lld sec.	SettingsWindow		%lld sek.
+ActivityMonitor	System name		AktivitetsÖvervakare
+Add graph	ActivityWindow		Lägg till graf
+Additional items	ActivityView		Ytterligare mätvärden
+Apps	DataSource		Program
+Block cache	DataSource		Blockbuffert
+Block cache memory	DataSource		Blockcacheminne
+CPU	DataSource		CPU
+CPU usage	DataSource		CPU användning
+CPU usage (combined)	DataSource		CPU användning (kombinerad)
+Cache	DataSource		Buffert
+Cached memory	DataSource		Buffertminne
+File	ActivityWindow		Arkiv
+Hide legend	ActivityView		Göm graftext
+MB	DataSource		MB
+Media nodes	DataSource		Medianoder
+Memory	DataSource		Minne
+Network receive	DataSource		Nätverk mottagning
+Network send	DataSource		Nätverk sändning
+P-faults	DataSource		P-fel
+Page faults	DataSource		Sidfel
+Ports	DataSource		Portar
+Quit	ActivityWindow		Avsluta
+RX	DataSource	Shorter version for Receiving.	RX
+Raw clipboard	DataSource		Urklipp rådata
+Receiving	DataSource		Tar emot
+Remove graph	ActivityView		Ta bort graf
+Running applications	DataSource		Aktiva program
+Semaphores	DataSource		Semaforer
+Sems	DataSource		Semaforer
+Sending	DataSource		Skickar
+Settings	ActivityWindow		Inställningar
+Settings…	ActivityWindow		Inställningar...
+Show legend	ActivityView		Visa graftext
+Swap	DataSource		Växling
+Swap space	DataSource		Växlingsutrymme
+TX	DataSource	Shorter version for Sending	TX
+Teams	DataSource		Processer
+Text clipboard	DataSource		Urklipp text
+Threads	DataSource		Trådar
+Update time interval:	SettingsWindow		Uppdateringsintervall:
+Used memory	DataSource		Minnesanvändning
+usage	DataSource		användning

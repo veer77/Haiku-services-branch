@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+<head>
+<!-- 
+ *
+ * Copyright 2008-2010, Haiku. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ *
+ * Authors:
+ *		Humdinger <humdingerb@gmail.com>
+ * Translators:
+ *		Pengphei Han
+ *
+-->
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta name="robots" content="all" />
+	<title>终端</title>
+	<link rel="stylesheet" type="text/css" href="../../Haiku-doc.css" />
+</head>
+<body>
+
+<div id="banner">
+<div><span>用户指南</span></div>
+</div>
+
+<div class="nav">
+<div class="inner">
+<ul class="lang-menu">
+<li class="now"><img src="../../images/flags/zh_CN.png" alt="" />  中文 ［中文］</li>
+<li><a href="../../fr/applications/terminal.html"><img src="../../images/flags/fr.png" alt="" />Français</a></li>
+<li><a href="../../de/applications/terminal.html"><img src="../../images/flags/de.png" alt="" />Deutsch</a></li>
+<li><a href="../../it/applications/terminal.html"><img src="../../images/flags/it.png" alt="" />Italiano</a></li>
+<li><a href="../../ru/applications/terminal.html"><img src="../../images/flags/ru.png" alt="" />Русский</a></li>
+<li><a href="../../es/applications/terminal.html"><img src="../../images/flags/es.png" alt="" />Español</a></li>
+<li><a href="../../sv_SE/applications/terminal.html"><img src="../../images/flags/sv_SE.png" alt="" />Svenska</a></li>
+<li><a href="../../jp/applications/terminal.html"><img src="../../images/flags/jp.png" alt="" />日本語</a></li>
+<li><a href="../../uk/applications/terminal.html"><img src="../../images/flags/uk.png" alt="" />Українська</a></li>
+<li><a href="../../pt_PT/applications/terminal.html"><img src="../../images/flags/pt_PT.png" alt="" />Português</a></li>
+<li><a href="../../en/applications/terminal.html"><img src="../../images/flags/gb.png" alt="" />English</a></li>
+</ul>
+<span>
+ «  <a href="stylededit.html">文本编辑器</a> 
+::  <a href="../applications.html#list-of-apps" class="uplink">应用程序</a> 
+::  <a href="textsearch.html">文本搜索</a>  »
+</span></div>
+</div>
+
+<div id="content">
+<div>
+
+<h2><img src="../../images/apps-images/terminal-icon_64.png" alt="terminal-icon_64.png" width="64" height="64" />终端</h2>
+<table summary="layout" border="0" cellspacing="0" cellpadding="2">
+<tr><td>桌面栏：</td><td style="width:15px;"></td><td><span class="menu">应用程序</span></td></tr>
+<tr><td>位置：</td><td></td><td><span class="path">/boot/system/apps/Terminal</span></td></tr>
+<tr><td>设置：</td><td></td><td><span class="path">~/config/settings/Terminal</span><br />
+<span class="path">~/.profile</span> - 添加或者覆盖默认的 <span class="path">/boot/common/etc/profile</span><br />
+<span class="path">~/.inputrc</span> - 添加或者覆盖默认的 <span class="path">/boot/common/etc/inputrc</span></td></tr>
+</table>
+<p><br /></p>
+<p>终端是Haiku中具有用户界面的bash，即 Bourne Again Shell。</p>
+<p>请参考 <a href="../bash-scripting.html">脚本</a> 这一主题获取有关Shell的在线教程，同时也可以阅读<a href="cli-apps.html">Haiku的命令行程序</a>。在本文中，我们重点关注终端本身的使用。</p>
+
+<h2>
+<a href="#"><img src="../../images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="windows-tabs" name="windows-tabs">窗口与标签</a></h2>
+<p>您可以根据需要打开任意数量的终端，可以简单的启动，或者从正在运行的终端中使用 <span class="key">ALT</span> <span class="key">N</span> 组合键来打开多个终端窗口。您也可以使用终端的标签视图方式，使用 <span class="key">ALT</span> <span class="key">T</span> 组合键打开新的终端标签。</p>
+<img src="../images/apps-images/terminal.png" alt="terminal.png" />
+<br />
+<p>双击标签栏的空白区域将打开一个新标签；双击标签将会打开一个对话框重命名标签标题。当您在文本域中悬停鼠标时，会有几个 %-指定变量 ，并且伴随着一个提示框，解释其含义。<br />
+
+默认情况下，<tt>%1d: %p</tt>，标签显示了当前目录和当前运行进程的名称，并且它们被 <tt>:</tt>所分隔（或者 <tt>--</tt>，如果它仅仅是一个运行的 bash ，或者空闲进程）。上面的屏幕截图中的第一个标签显示了 <span class="path">Desktop</span> 文件夹中的 FTP 会话，而第二个标签闲置于 <span class="path">home</span> 文件夹。<br />
+
+使用 <span class="menu">Edit|Window title...</span> 也可以以类似的方式编辑终端窗口的标题。</p>
+<p>右键点击标签将会出现一个右键菜单：<span class="menu">Close tab</span>，<span class="menu">Close other tabs</span> 或者，如双击，则显示 <span class="menu">Edit tab title...</span> 。</p>
+<p>终端的窗口和其他窗口一样可以调整尺寸，或者使用 <span class="menu">Settings | Window Size</span> 菜单中的预置尺寸。 <span class="key">ALT</span> <span class="key">ENTER</span> 组合键将会切换到全屏模式。</p>
+<p>调整的窗口尺寸和文字编码只有通过 <span class="menu">Settings | Save as default</span> 才可以进行保持不变。</p>
+
+<h2><a href="#"><img src="../../images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="settings" name="settings">设置</a></h2>
+<p><span class="menu">Settings | Settings...</span> 打开一个面板，用于配置终端的标准设置。</p>
+<img src="../images/apps-images/terminal-settings.png" alt="terminal-settings.png" />
+<br />
+<p>它以 "公式" 开始为标签和窗口标题进行命名。同时，提示框会显示可用的变量。在其下，您可以设置字体类型，字体大小和不同文本及其背景颜色。您可以选择一种预置的颜色方案，如 <span class="menu">Black on white</span> ， <span class="menu">White on black</span> 或者使用下面的颜色选择器 <span class="menu">自定义</span> 一种方案。<br />
+
+激活 <span class="menu">Confirm exit if active programs exist</span> 复选框，那么在程序运行过程中，尝试关闭终端窗口时，您将会获取一个警告。<br />
+
+您可以保存不同设置为独立的配置文件，当双击文件时将会打开相应配置的终端。<br />
+
+按下 <span class="button">OK</span> 将会保存当前设置为默认配置。</p>
+
+<h2>
+<a href="#"><img src="../../images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="shortcuts" name="shortcuts">快捷键</a></h2>
+<p>您可以在 <a href="../keyboard-shortcuts.html#terminal">快捷键和组合键</a> 主题中找到非常有用的快捷键的列表。</p>
+
+<h2>
+<a href="#"><img src="../../images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="customization" name="customization">Bash的定制</a></h2>
+<p>bash来自于Unix，它具有无数的可定制的方式。对于用户来讲，有两个文件至关重要： <span class="cli">.profile</span> 和 <span class="cli">.inputrc</span> 。
+<br />
+这两个文件可以在 <span class="path">home/</span> 文件夹中予以创建， 然后将会添加到或者覆盖在 <span class="path">/boot/common/etc/</span> 中系统默认定义的配置文件。</p>
+
+<h3>.profile</h3>
+<p>在您每次打开新的终端时， <span class="cli">.profile</span> 都会被载入程序。在该文件中，设置了所有影响到bash行为和外观的各种类型的设备接口和变量。你可以在网络上找到许多资源，它们将会给出所有可能性的详细介绍。</p>
+<p>Haiku/BeOS Tip Server提供了许多入门的技巧，例如：</p>
+<ul>
+<li><a href="http://betips.net/1997/09/09/customize-your-terminal-prompt/">定制终端的提示信息</a></li>
+<li><a href="http://betips.net/1997/09/09/more-prompt-customizations/">更多提示信息的定制</a></li>
+<li><a href="http://betips.net/1997/09/09/enhancing-bash/">bash的优化和增强</a></li>
+<li><a href="http://betips.net/1997/09/09/custom-keyboard-shortcuts/">定制快捷键</a></li>
+</ul>
+<p>还有很多类似的信息，<a href="http://betips.net/index.php?s=.profile">请参阅</a>。</p>
+
+<h3>.inputrc</h3>
+<p> <span class="cli">.inputrc</span> 用于处理键盘关联的配置。由于Haiku默认提供了非常有用的配置，您不需要修改相关的设置。如果您确实有特殊的需要，可以参考许多在线的资源，例如<a href="http://tiswww.case.edu/php/chet/readline/rluserman.html"> GNU 的命令行读取库</a> 。</p>
+
+<h2>
+<a href="#"><img src="../../images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="hints" name="hints">关于终端的提醒</a></h2>
+<ul><li><p>从Tracker窗口中拖拽文件或者文件夹到终端将会在光标的位置插入它的路径。而使用右键拖拽将会弹出一个右键菜单，显示附加的操作：</p>
+<table summary="layout" border="0" cellpadding="2" cellspacing="0">
+<tr><td><span class="menu">Insert Path</span></td><td> </td><td>插入一个文件的路径，与左键拖拽文件到终端类似。</td></tr>
+<tr><td><span class="menu">Change Directory</span></td><td> </td><td>切换到所拖拽文件所在的文件夹。</td></tr>
+<tr><td><span class="menu">Create Link Here</span></td><td> </td><td>在终端当前工作的目录为拖拽的文件创建链接。</td></tr>
+<tr><td><span class="menu">Move Here</span></td><td> </td><td>移动拖拽的文件到终端当前工作的目录。</td></tr>
+<tr><td><span class="menu">Copy Here</span></td><td> </td><td>复制拖拽的文件到终端当期工作的目录。</td></tr>
+</table></li>
+<li><p>您可以使用<span class="cli">open <i>[filename]</i></span> 命令以首选程序打开任何的文件。该命令也作用于当前文件夹（"<span class="cli">.</span>"）和父文件夹（"<span class="cli">..</span>"），它们分别以Tracker窗口打开。所以，如果希望打开当前工作的目录，您可以输入：</p>
+<pre class="terminal">open .</pre>
+</li></ul>
+
+
+</div>
+</div>
+
+<div class="nav">
+<div class="inner"><span>
+ «  <a href="stylededit.html">文本编辑器</a> 
+::  <a href="../applications.html#list-of-apps" class="uplink">应用程序</a> 
+::  <a href="textsearch.html">文本搜索</a>  »
+</span></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+1	finnish	x-vnd.Haiku-ActivityMonitor	3704566709
+%.1f KB/s	DataSource		%.1f kt/s
+%.1f MB	DataSource		%.1f Mt
+%.1f faults/s	DataSource		%.1f vikaa/s
+%lld ms	SettingsWindow		%lld ms
+%lld sec.	SettingsWindow		%lld s
+ActivityMonitor	System name		Aktiviteettivalvonta
+Add graph	ActivityWindow		Lisää kuvaaja
+Additional items	ActivityView		Lisäkohteet
+Apps	DataSource		Sovellukset
+Block cache	DataSource		Lohkovälimuisti
+Block cache memory	DataSource		Lohkovälimuisti
+CPU	DataSource		Suoritin
+CPU usage	DataSource		Suoritinkäyttö
+CPU usage (combined)	DataSource		Suoritinkäyttö (yhdistetty)
+Cache	DataSource		Välimuisti
+Cached memory	DataSource		Välimuistitettu muisti
+File	ActivityWindow		Tiedosto
+Hide legend	ActivityView		Piilota merkin selitys
+MB	DataSource		Mt
+Media nodes	DataSource		Mediasolmut
+Memory	DataSource		Muisti
+Network receive	DataSource		Verkkovastaanotto
+Network send	DataSource		Verkkolähetys
+P-faults	DataSource		P-viat
+Page faults	DataSource		Sivuvirheet
+Ports	DataSource		Portit
+Quit	ActivityWindow		Poistu
+RX	DataSource	Shorter version for Receiving.	Vast.
+Raw clipboard	DataSource		Raakadataleikepöytä
+Receiving	DataSource		Vastaanotetaan
+Remove graph	ActivityView		Poista kuvaaja
+Running applications	DataSource		Suoritetaan sovelluksia
+Semaphores	DataSource		Opastimet
+Sems	DataSource		Opastimet
+Sending	DataSource		Lähetetään
+Settings	ActivityWindow		Asetukset
+Settings…	ActivityWindow		Asetukset...
+Show legend	ActivityView		Näytä merkin selitys
+Swap	DataSource		Vaihda
+Swap space	DataSource		Vaihda tila
+TX	DataSource	Shorter version for Sending	Läh.
+Teams	DataSource		Ryhmät
+Text clipboard	DataSource		Tekstileikepöytä
+Threads	DataSource		Säikeet
+Update time interval:	SettingsWindow		Päivitä aikaväli:
+Used memory	DataSource		Käytetty muisti
+usage	DataSource		käyttö

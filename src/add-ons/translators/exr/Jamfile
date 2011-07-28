@@ -1,0 +1,36 @@
+SubDir HAIKU_TOP src add-ons translators exr ;
+
+SubDirSysHdrs [ FDirName $(SUBDIR) openexr half ] ;
+SubDirSysHdrs [ FDirName $(SUBDIR) openexr iex ] ;
+SubDirSysHdrs [ FDirName $(SUBDIR) openexr ilmimf ] ;
+SubDirSysHdrs [ FDirName $(SUBDIR) openexr imath ] ;
+
+SubDirHdrs [ FDirName $(SUBDIR) $(DOTDOT) shared ] ;
+
+AddResources EXRTranslator : EXRTranslator.rdef ;
+
+Translator EXRTranslator :
+	main.cpp
+	ConfigView.cpp
+	EXRGamma.cpp
+	EXRTranslator.cpp
+	IStreamWrapper.cpp
+	: be translation libilmimf.so $(TARGET_LIBSTDC++) libtranslatorsutils.a 
+	$(HAIKU_LOCALE_LIBS)
+	: true
+;
+
+DoCatalogs EXRTranslator :
+	x-vnd.Haiku-EXRTranslator
+	:
+	ConfigView.cpp
+	EXRTranslator.cpp
+	main.cpp
+;
+
+Package haiku-translationkit-cvs :
+	EXRTranslator :
+	boot home config add-ons Translators ;
+
+SubInclude HAIKU_TOP src add-ons translators exr openexr ;
+

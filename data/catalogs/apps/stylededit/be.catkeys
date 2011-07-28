@@ -1,0 +1,80 @@
+1	belarusian	x-vnd.Haiku-StyledEdit	1508367857
+???	LoadAlert		???
+Align	Menus		Раўнаванне
+Black	Menus		Чорны
+Blue	Menus		Сіні
+Bold	Menus		Тлусты
+Can't undo	Menus		Немагчыма адмяніць
+Cancel	FindandReplaceWindow		Адмена
+Cancel	QuitAlert		Скасаваць
+Cancel	RevertToSavedAlert		Скасаваць
+Cancel	SaveAlert		Адмена
+Cannot revert, file not found: \"%s\".	RevertToSavedAlert		Немагчыма вярнуцца, файл \"%s\" ня знойдзены.
+Case-sensitive	FindandReplaceWindow		З улікам рэгістру
+Center	Menus		Цэнтар
+Characters:	Statistics		Знакаў:
+Close	Menus		Закрыць
+Color	Menus		Колер
+Copy	Menus		Капіяваць
+Cut	Menus		Выразаць
+Cyan	Menus		Блакітны
+Default	Open_and_SaveAsPanel		Прадвызначаны
+Document	Menus		Дакумент
+Document statistics	Statistics		Статыстыка дакументу
+Don't save	QuitAlert		Не захоўваць
+Don't save	SaveAlert		Не захоўваць
+Edit	Menus		Рэдагаваць
+Encoding	Open_and_SaveAsPanel		Кадоўка
+Error loading \"%s\":\n\t%s	LoadAlert		Немагчыма загрузіць \"%s\":\n\t%s
+Error loading \"%s\":\n\tUnsupported format	LoadAlert		Немагчыма загрузіць \"%s\":\n\tГэты фармат не падтрымліваецца
+Error saving \"%s\":\n%s	SaveAlert		Немагчыма захаваць \"%s\":\n%s
+File	Menus		Файл
+Find	FindandReplaceWindow		Шукаць
+Find again	Menus		Шукаць далей
+Find selection	Menus		Шукаць пазначанае
+Find:	FindandReplaceWindow		Пошук:
+Find…	Menus		Пошук…
+Font	Menus		Шрыфт
+Green	Menus		Зялёны
+Italic	Menus		Нахілены
+Left	Menus		Левы
+Lines:	Statistics		Радкоў:
+Magenta	Menus		Пурпурны
+New	Menus		Новы
+OK	LoadAlert		Так
+OK	RevertToSavedAlert		ОК
+OK	SaveAlert		ОК
+OK	Statistics		ОК
+Open…	Menus		Адкрыць…
+Page setup…	Menus		Наладкі старонкі...
+Paste	Menus		Уставіць
+Print…	Menus		Друкаваць...
+Quit	Menus		Выйсці
+Red	Menus		Чырвоны
+Redo typing	QuitAlert		Паўтарыць увод
+Replace	FindandReplaceWindow		Замяніць
+Replace all	FindandReplaceWindow		Замяняць усё
+Replace in all windows	FindandReplaceWindow		Замяняць ва ўсіх вокнах
+Replace next	Menus		Замяніць наступны
+Replace with:	FindandReplaceWindow		Змяніць на:
+Replace…	Menus		Замяняць…
+Revert to saved…	Menus		Вярнуцца да захаванага…
+Revert to the last version of \"%s\"? 	RevertToSavedAlert		Вярнуцца да апошняй версіі \"%s\"? 
+Right	Menus		Права
+Save	Menus		Захаваць
+Save	QuitAlert		Захаваць
+Save	SaveAlert		Захаваць
+Save as…	Menus		Захаваць як...
+Save changes to the document \"%s\"? 	QuitAlert		Захаваць адрэдагаваны дакумент \"%s\"? 
+Search backwards	FindandReplaceWindow		Шукаць ў адваротным накірунку
+Select all	Menus		Абраць усё
+Size	Menus		Памер
+Statistics…	Menus		Статыстыка...
+StyledEdit	System name		Стыльны Рэдактар
+This file is marked Read-Only. Save changes to the document \"%s\"? 	SaveAlert		Гэты файл пазначаны толькі для чытання. Захаваць змены ў дакумент \"%s\"? 
+Undo typing	QuitAlert		Адмяніць увод
+Untitled 	StyledEditWindow		Без назвы
+Words:	Statistics		Словаў:
+Wrap lines	Menus		Пераносіць радкі
+Wrap-around search	FindandReplaceWindow		Пошук з пераходам
+Yellow	Menus		Жоўты

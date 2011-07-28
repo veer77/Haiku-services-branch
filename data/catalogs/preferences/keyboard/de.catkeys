@@ -1,0 +1,14 @@
+1	german	x-vnd.Haiku-Keyboard	1711838804
+Defaults	KeyboardWindow		Standardwerte
+Delay until key repeat	KeyboardView		Verzögerung bis Tastenwiederholung
+Fast	KeyboardView		Schnell
+Key repeat rate	KeyboardView		Tastenwiederholrate
+Keyboard	System name		Tastatur
+Long	KeyboardView		Lang
+OK	KeyboardApplication		OK
+Revert	KeyboardWindow		Anfangswerte
+Short	KeyboardView		Kurz
+Slow	KeyboardView		Langsam
+Something has gone wrong!	KeyboardApplication		Irgendwas lief schief!
+Typing test area	KeyboardView		Feld für Testeingaben
+Written by Andrew Edward McCall	KeyboardApplication		Von Andrew Edward McCall

@@ -1,0 +1,4 @@
+SubDir HAIKU_TOP src data ;
+
+HaikuSubInclude etc ;
+HaikuSubInclude keymaps ;

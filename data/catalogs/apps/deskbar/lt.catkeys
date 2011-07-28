@@ -1,0 +1,38 @@
+1	lithuanian	x-vnd.Be-TSKB	3232664655
+<Be folder is empty>	BeMenu		<Meniu aplankas tuščias>
+Always on top	PreferencesWindow		Visuomet viršuje
+Applications	PreferencesWindow		Programos
+Auto-raise	PreferencesWindow		Automatiškai iškilti
+Change time…	TimeView		Keisti laiką…
+Clock	PreferencesWindow		Laikrodis
+Close all	WindowMenu		Užverti visus
+Deskbar preferences	PreferencesWindow		Užduočių juostos parinktys
+Deskbar preferences…	BeMenu		Užduočių juostos parinktys…
+Edit menu…	PreferencesWindow		Taisyti meniu…
+Expand new applications	PreferencesWindow		Išskleisti paleidžiamas programas
+Find…	BeMenu		Ieškoti…
+Hide all	WindowMenu		Slėpti visus
+Hide time	TimeView		Nerodyti laikrodžio
+Menu	PreferencesWindow		Meniu
+Mount	BeMenu		Prijungti diską
+No windows	WindowMenu		Langų nėra
+Power off	BeMenu		Išjungti
+Quit application	WindowMenu		Užbaigti programos darbą
+Recent applications	BeMenu		Paskiausiai leistos programos
+Recent applications:	PreferencesWindow		Paskiausios programos:
+Recent documents	BeMenu		Paskiausiai atverti dokumentai
+Recent documents:	PreferencesWindow		Paskiausi dokumentai:
+Recent folders	BeMenu		Paskiausiai lankyti aplankai
+Recent folders:	PreferencesWindow		Paskiausi aplankai:
+Restart Tracker	BeMenu		Perleisti „Tracker“
+Restart system	BeMenu		Perleisti
+Show Time	Tray		Rodyti laikrodį
+Show all	WindowMenu		Rodyti visus
+Show application expander	PreferencesWindow		Rodyti programų skleistuką
+Show calendar…	TimeView		Rodyti kalendorių…
+Show replicants	BeMenu		Rodyti integravimo rankenėles
+Show seconds	PreferencesWindow		Rodyti sekundes
+Shutdown…	BeMenu		Kompiuterio išjungimas…
+Sort running applications	PreferencesWindow		Rikiuoti paleistas programas
+Tracker always first	PreferencesWindow		„Tracker“ rikiuoti pradžioje
+Window	PreferencesWindow		Langas

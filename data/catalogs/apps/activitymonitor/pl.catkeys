@@ -1,0 +1,36 @@
+1	polish	x-vnd.Haiku-ActivityMonitor	1437495034
+Add graph	ActivityWindow		Dodaj wykres
+Additional items	ActivityView		Dodatki
+Apps	DataSource		Aplikacje
+Block cache	DataSource		Blok pamięci cache
+Block cache memory	DataSource		Pamięć bloku cache
+CPU	DataSource		CPU
+CPU usage	DataSource		Użycie CPU
+CPU usage (combined)	DataSource		Użycie CPU (całkowite)
+Cache	DataSource		Cache
+Cached memory	DataSource		Pamięć cache
+File	ActivityWindow		Plik
+Hide legend	ActivityView		Ukryj legendę
+Media nodes	DataSource		Węzły multimedialne
+Memory	DataSource		Pamięć
+Network receive	DataSource		Odebrano
+Network send	DataSource		Wysłano
+P-faults	DataSource		P-błędy
+Page faults	DataSource		Błędy stronicowania
+Ports	DataSource		Porty
+Quit	ActivityWindow		Wyjdź
+Receiving	DataSource		Otrzymano
+Remove graph	ActivityView		Usuń wykres
+Running applications	DataSource		Uruchomione aplikacje
+Semaphores	DataSource		Semafory
+Sems	DataSource		Semy
+Sending	DataSource		Wysyłanie
+Settings	ActivityWindow		Ustawienia
+Settings…	ActivityWindow		Ustawienia...
+Show legend	ActivityView		Pokaż legendę
+Swap	DataSource		Swap
+Swap space	DataSource		Przestrzeń wymiany
+Teams	DataSource		Zespoły
+Threads	DataSource		Wątki
+Update time interval:	SettingsWindow		Częstotliwość odświeżania:
+Used memory	DataSource		Użyta pamięć

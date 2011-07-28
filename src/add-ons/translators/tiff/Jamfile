@@ -1,0 +1,35 @@
+SubDir HAIKU_TOP src add-ons translators tiff ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+UseLibraryHeaders tiff zlib ;
+
+SubDirHdrs [ FDirName $(SUBDIR) $(DOTDOT) shared ] ;
+
+AddResources TIFFTranslator : TIFFTranslator.rdef ;
+
+Translator TIFFTranslator : 
+	# [ FGristFiles $(tiff_files:S=$(SUFOBJ)) ]
+
+	# TIFFTranslator classes
+	TIFFMain.cpp
+	TIFFTranslator.cpp
+	TIFFView.cpp
+
+	: be libtiff.so translation libtranslatorsutils.a $(TARGET_LIBSUPC++)
+	$(HAIKU_LOCALE_LIBS)
+	: true
+;
+
+DoCatalogs TIFFTranslator :
+	x-vnd.Haiku-TIFFTranslator
+	:
+	TIFFMain.cpp
+	TIFFTranslator.cpp
+	TIFFView.cpp
+;
+
+Package haiku-translationkit-cvs :
+	TIFFTranslator :
+	boot home config add-ons Translators ;
+

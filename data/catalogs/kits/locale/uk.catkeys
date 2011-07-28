@@ -1,0 +1,15 @@
+1	ukrainian	system	845452856
+%.2f TiB	StringForSize		%.2f TiB
+%3.2f GiB	StringForSize		%3.2f GiB
+%3.2f KiB	StringForSize		%3.2f KiB
+%3.2f MiB	StringForSize		%3.2f MiB
+%d bytes	StringForSize		%d байт
+About…	AboutWindow		Про…
+Blue:	ColorControl		Синій:
+Close	AboutWindow		Закрити
+Copy	TextView		Копіювати
+Green:	ColorControl		Зелений:
+Red:	ColorControl		Червоний:
+Redo	TextView		Відмінити відміну
+Undo	TextView		Відмінити
+Written by:	AboutWindow		Автор:

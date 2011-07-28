@@ -1,0 +1,40 @@
+1	romanian	x-vnd.Haiku-Devices	2172461257
+ACPI Information	DeviceACPI		Informații ACPI
+ACPI controller	Device		Controler ACPI
+Basic information	DevicesView		Informații de bază
+Bridge	Device		Punte
+Bus	DevicesView		Magistrală
+Category	DevicesView		Categorie
+Communication controller	Device		Controler de comunicație
+Computer	Device		Calculator
+Connection	DevicesView		Conexiune
+Detailed	DevicesView		Detaliat
+Device name	Device		Nume dispozitiv
+Device name:	Device		Nume dispozitiv:
+Device paths	Device		Căi dispozitiv
+Devices	DevicesView		Dispozitive
+Display controller	Device		Controler de afișare
+Docking station	Device		Stație de andocare
+Driver used	Device		Driver utilizat
+Encryption controller	Device		Controler de criptare
+Generate system information	DevicesView		Generează informații de sistem
+Generic system peripheral	Device		Periferic generic de sistem
+Input device controller	Device		Controler dispozitiv de intrare
+Intelligent controller	Device		Controler inteligent
+Manufacturer	Device		Producător
+Manufacturer:	Device		Producător:
+Mass storage controller	Device		Controler de stocare
+Memory controller	Device		Controler de memorie
+Multimedia controller	Device		Controler multimedia
+Network controller	Device		Controler de rețea
+Order by:	DevicesView		Ordonează după:
+PCI Information	DevicePCI		Informații PCI
+Processor	Device		Procesor
+Quit	DevicesView		Părăsește
+Refresh devices	DevicesView		Reîmprospătează dispozitive
+Report compatibility	DevicesView		Raportează compatibilitate
+Satellite communications controller	Device		Controler de comunicații prin satelit
+Serial bus controller	Device		Controler de magistrală serială
+Signal processing controller	Device		Controler de procesare a semnalului
+Unclassified device	Device		Dispozitiv neclasificat
+Wireless controller	Device		Controler fără fir

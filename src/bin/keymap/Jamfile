@@ -1,0 +1,10 @@
+SubDir HAIKU_TOP src bin keymap ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+UsePrivateHeaders shared storage ;
+
+BinCommand keymap :
+	main.cpp
+	Keymap.cpp
+	: be libshared.a $(TARGET_LIBSUPC++)
+	: keymap.rdef ;

@@ -1,0 +1,100 @@
+1	polish	x-vnd.Haiku-Terminal	1196419230
+-h,     --help               print this help\n  -t,     --title              set window title\n  -f,     --fullscreen         start fullscreen\n	Terminal TermApp		-h, --help wydrukuj tę pomoc\n -t, --title ustaw tytuł okna\n -f, --fullscreen przejdź do pełnego ekranu\n
+Abort	Terminal Shell		Anuluj
+Appearance	Terminal PrefWindow		Wygląd
+Background	Terminal AppearancePrefView		Tło
+Black on White	Terminal colors schema		Czarny na Białym
+Cancel	Terminal PrefWindow		Anuluj
+Cancel	Terminal SetTitleWindow		Anuluj
+Cancel	Terminal TermView		Anuluj
+Cancel	Terminal TermWindow		Anuluj
+Cannot execute \"%command\":\n\t%error	Terminal Shell		Nie można wykonać \"%command\":\n\t%error
+Change directory	Terminal TermView		Zmień folder
+Clear all	Terminal TermWindow		Wyczyść wszystko
+Close	Terminal TermWindow		Zamknij
+Close active tab	Terminal TermWindow		Zamknij aktywną kartę
+Close other tabs	Terminal TermWindow		Zamknij pozostałe karty
+Close tab	Terminal TermWindow		Zamknij kartę
+Close window	Terminal TermWindow		Zamknij okno
+Color schema:	Terminal AppearancePrefView		Motyw kolorów:
+Color:	Terminal AppearancePrefView		Kolor:
+Confirm exit if active programs exist	Terminal AppearancePrefView		Potwierdź wyjście jeśli istnieją aktywne programy 
+Copy	Terminal TermWindow		Kopiuj
+Copy here	Terminal TermView		Kopiuj tutaj
+Create link here	Terminal TermView		Utwórz link tutaj
+Custom	Terminal colors schema		Niestandardowe
+Decrease	Terminal TermWindow		Zmniejsz
+Don't save	Terminal PrefWindow		Nie zapisuj
+Edit	Terminal TermWindow		Edytuj
+Edit tab title…	Terminal TermWindow		Edytuj nazwę karty...
+Error!	Terminal getString		Błąd!
+Find	Terminal FindWindow		Znajdź
+Find failed	Terminal TermWindow		Nie znaleziono
+Find next	Terminal TermWindow		Znajdź następny
+Find previous	Terminal TermWindow		Znajdź poprzedni
+Find…	Terminal TermWindow		Znajdź...
+Font:	Terminal AppearancePrefView		Czcionka:
+Full screen	Terminal TermWindow		Pełny ekran
+Haiku Terminal\nCopyright 2001-2009 Haiku, Inc.\nCopyright(C) 1999 Kazuho Okui and Takashi Murai.\n\nUsage: %s [OPTION] [SHELL]\n	Terminal TermApp		Haiku Terminal\nCopyright 2001-2009 Haiku, Inc.\nCopyright(C) 1999 Kazuho Okui i Takashi Murai.\n\nUżycie: %s [OPTION] [SHELL]\n
+Increase	Terminal TermWindow		Powiększ
+Insert path	Terminal TermView		Wstaw ścieżkę
+Match case	Terminal FindWindow		Dopasuj wielkość liter
+Match word	Terminal FindWindow		Dopasuj słowo
+Move here	Terminal TermView		Przenieś tutaj
+New Terminal	Terminal TermWindow		Nowy Terminal
+New tab	Terminal TermWindow		Nowa karta
+No search string was entered.	Terminal TermWindow		Nie podano ciągu znaków do wyszukania
+Not found.	Terminal TermWindow		Nie znaleziono.
+Nothing is selected.	Terminal TermWindow		Nic nie jest zaznaczone.
+OK	Terminal PrefWindow		OK
+OK	Terminal SetTitleWindow		OK
+OK	Terminal TermApp		OK
+OK	Terminal TermWindow		OK
+Page setup…	Terminal TermWindow		Ustawienia strony...
+Paste	Terminal TermWindow		Wklej
+Print	Terminal TermWindow		Drukuj
+Print cancelled.	Terminal TermWindow		Drukowanie anulowane.
+Quit	Terminal TermWindow		Wyjdź
+Really close?	Terminal TermWindow		Na pewno zamknąć?
+Save	Terminal PrefWindow		Zapisz
+Save as default	Terminal TermWindow		Zapisz jako domyślne
+Save changes to this settings panel?	Terminal PrefWindow		Zapisać zmiany w tym panelu?
+Save to file…	Terminal PrefWindow		Zapisz w pliku…
+Search forward	Terminal FindWindow		Szukaj dalej
+Select all	Terminal TermWindow		Zaznacz wszystko
+Selected background	Terminal AppearancePrefView		Wybrane tło
+Selected text	Terminal AppearancePrefView		Zaznaczony tekst
+Set tab title	Terminal TermWindow		Ustaw tytuł karty
+Set window title	Terminal TermWindow		Ustaw tytuł okna
+Settings	Terminal TermWindow		Ustawienia
+Settings…	Terminal TermWindow		Ustawienia...
+Shell 	Terminal TermWindow		Shell
+Size:	Terminal AppearancePrefView		Rozmiar:
+Switch Terminals	Terminal TermWindow		Przełącz Terminal
+Tab title:	Terminal AppearancePrefView		Tytuł karty:
+Tab title:	Terminal TermWindow		Tytuł karty:
+Terminal couldn't start the shell. Sorry.	Terminal TermApp		Terminal nie może uruchomić shella. Przepraszamy.
+Text	Terminal AppearancePrefView		Tekst
+Text encoding	Terminal TermWindow		Kodowanie tekstu
+Text not found.	Terminal TermWindow		Tekst nie znaleziony.
+Text size	Terminal TermWindow		Rozmiar tekstu
+The following processes are still running:\n\n\t%1\n\nIf you close the Terminal, the processes will be killed.	Terminal TermWindow		Następujące procesy są wciąż w użyciu:\n\n\t%1\n\nJeśli zamkniesz terminal, te procesy zostaną zatrzymane.
+The pattern specifying the current tab title. The following placeholders\ncan be used:\n	Terminal TermWindow		Wzór ustalający tytuł aktywnej karty. Następujące wyznaczniki\nmogą zostać użyte:\n
+The pattern specifying the tab titles. The following placeholders\ncan be used:\n	Terminal AppearancePrefView		Wzór ustalający tytuły kart. Następujące wyznaczniki\nmogą zostać użyte:\n
+The pattern specifying the window title. The following placeholders\ncan be used:\n	Terminal TermWindow		Wzór ustalający tytuł okna. Następujące wyznaczniki\nmogą zostać użyte:\n
+The pattern specifying the window titles. The following placeholders\ncan be used:\n	Terminal AppearancePrefView		Wzór ustalający tytuł aktywnego okna. Następujące wyznaczniki\nmogą zostać użyte:\n
+The process \"%1\" is still running.\nIf you close the Terminal, the process will be killed.	Terminal TermWindow		Proces \"%1\" jest wciąż w użyciu.\nJeśli zamkniesz terminal, proces zostanie zatrzymany.
+The process \"%1\" is still running.\nIf you close the tab, the process will be killed.	Terminal TermWindow		Proces \"%1\" jest wciąż w użyciu.\nJeśli zamkniesz kartę, proces zostanie zatrzymany.
+Unrecognized option \"%s\"\n	Terminal arguments parsing		Nieznana opcja \"%s\"\n
+Use default	Terminal SetTitleWindow		Użyj domyślnych
+Use default shell	Terminal Shell		Użyj domyślnego shella
+Use selection	Terminal FindWindow		Użyj zaznaczenia
+Use text:	Terminal FindWindow		Użyj tekstu:
+White on Black	Terminal colors schema		Biały na Czarnym
+Window size	Terminal TermWindow		Rozmiar okna
+Window title:	Terminal AppearancePrefView		Tytuł okna:
+Window title:	Terminal TermWindow		Tytuł okna:
+Window title…	Terminal TermWindow		Tytuł okna...
+\t%d\t-\tThe current working directory of the active process in the\n\t\t\tcurrent tab. Optionally the maximum number of path components\n\t\t\tcan be specified. E.g. '%2d' for at most two components.\n\t%i\t-\tThe index of the window.\n\t%p\t-\tThe name of the active process in the current tab.\n\t%t\t-\tThe title of the current tab.\n\t%%\t-\tThe character '%'.	Terminal ToolTips		\t%d\t-\tŚcieżka dostępu do aktywnych procesów w\n\t\t\taktywnej karcie. Opcjonalnie maksymalna liczba komponentów ścieżek która\n\t\t\tmoże zostać ustalona. Np. '%2d' dla maksymalnie dwóch komponentów.\n\t%i\t-\tIndeks okna.\n\t%p\t-\tNazwa aktywnego procesu w aktywnej karcie.\n\t%t\t-\tNazwa aktywnej karty.\n\t%%\t-\tZnak '%'.
+\t%d\t-\tThe current working directory of the active process.\n\t\t\tOptionally the maximum number of path components can be\n\t\t\tspecified. E.g. '%2d' for at most two components.\n\t%i\t-\tThe index of the tab.\n\t%p\t-\tThe name of the active process.\n\t%%\t-\tThe character '%'.	Terminal ToolTips		\t%d\t-\tŚcieżka dostępu do aktywnych procesów.\n\t\t\tOpcjonalnie maksymalna liczba komponentów ścieżek która może zostać\n\t\t\tustalona. Np. '%2d' dla najwyżej dwóch komponentów.\n\t%i\t-\tIndex karty.\n\t%p\t-\tNazwa aktywnego procesu.\n\t%%\t-\tZnak '%'.
+size	Terminal TermView		rozmiar

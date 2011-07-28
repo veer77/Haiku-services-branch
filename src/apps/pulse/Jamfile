@@ -1,0 +1,42 @@
+SubDir HAIKU_TOP src apps pulse ;
+
+UsePrivateSystemHeaders ;
+UsePrivateHeaders shared interface app ;
+if ! $(TARGET_PLATFORM_HAIKU_COMPATIBLE) {
+	UseHeaders [ FDirName $(HAIKU_TOP) headers os kernel ] : true ;
+}
+
+if $(TARGET_PLATFORM) = r5 {
+	SubDirC++Flags -DR5_COMPATIBLE ;
+}
+
+Application Pulse :
+	ConfigView.cpp
+	CPUButton.cpp
+	DeskbarPulseView.cpp
+	MiniPulseView.cpp
+	NormalPulseView.cpp
+	Prefs.cpp
+	PrefsWindow.cpp
+	ProgressBar.cpp
+	PulseApp.cpp
+	PulseView.cpp
+	PulseWindow.cpp
+
+	: be $(HAIKU_LOCALE_LIBS) $(TARGET_LIBSUPC++)
+	: Pulse.rdef
+;
+
+DoCatalogs Pulse :
+	x-vnd.Haiku-Pulse
+	:
+	PulseApp.cpp
+	PulseView.cpp
+	ConfigView.cpp
+	CPUButton.cpp
+	DeskbarPulseView.cpp
+	MiniPulseView.cpp
+	NormalPulseView.cpp
+	PrefsWindow.cpp
+	PulseWindow.cpp
+;

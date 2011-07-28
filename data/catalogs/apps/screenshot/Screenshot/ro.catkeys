@@ -1,0 +1,24 @@
+1	romanian	x-vnd.haiku-screenshot	4218712868
+Artwork folder	ScreenshotWindow		Dosar artwork
+Cancel	ScreenshotWindow		Anulează
+Capture active window	ScreenshotWindow		Capturează fereastra activă
+Choose folder	ScreenshotWindow		Alege dosar
+Choose folder...	ScreenshotWindow		Alege dosar...
+Copy to clipboard	ScreenshotWindow		Copiază la clipboard
+Delay:	ScreenshotWindow		Întârziere:
+Desktop	ScreenshotWindow		Desktop
+Home folder	ScreenshotWindow		Dosar personal
+Include mouse pointer	ScreenshotWindow		Include indicator maus
+Include window border	ScreenshotWindow		Include margine fereastră
+Name:	ScreenshotWindow		Nume:
+New screenshot	ScreenshotWindow		Captură de ecran nouă
+Please select	ScreenshotWindow		Alegeți
+Save	ScreenshotWindow		Salvează
+Save as:	ScreenshotWindow		Salvează ca:
+Save in:	ScreenshotWindow		Salvează în:
+Select	ScreenshotWindow		Selectează
+Settings…	ScreenshotWindow		Configurări...
+Translator Settings	ScreenshotWindow		Configurări traducător
+overwrite	ScreenshotWindow		suprascrie
+screenshot	Screenshot	Base filename of screenshot files	captură de ecran
+seconds	ScreenshotWindow		secunde

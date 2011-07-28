@@ -1,0 +1,36 @@
+1	ukrainian	x-vnd.Haiku-Devices	197304729
+ACPI controller	Device		ACPI контролер
+Basic information	DevicesView		Основна інформація
+Bridge	Device		Міст
+Bus	DevicesView		Шина
+Category	DevicesView		Категорії
+Communication controller	Device		Контролер зв’язку
+Computer	Device		Комп’ютер
+Connection	DevicesView		Підключенню
+Detailed	DevicesView		Докладно
+Device name	Device		Назва пристрою
+Device name:	Device		Назва пристрою:
+Device paths	Device		Шляхи пристрою
+Devices	DevicesView		Пристрої
+Display controller	Device		Контролер дисплея
+Docking station	Device		Док-станція
+Driver used	Device		Використовує драйвер
+Generate system information	DevicesView		Створення системної інформації
+Generic system peripheral	Device		Периферійні пристрої
+Input device controller	Device		Контролер ввідних пристроїв
+Intelligent controller	Device		Інтелектуальний контролер
+Manufacturer	Device		Виробник
+Manufacturer:	Device		Виробник:
+Mass storage controller	Device		Контролер накопичувачів
+Memory controller	Device		Контролер пам’яті
+Multimedia controller	Device		Мультимедійний контролер
+Network controller	Device		Мережевий контролер
+Order by:	DevicesView		Сортувати по:
+Processor	Device		Процесор
+Quit	DevicesView		Вийти
+Refresh devices	DevicesView		Оновлення пристроїв
+Report compatibility	DevicesView		Повідомити про сумісність
+Satellite communications controller	Device		Контроллер супутникового зв’язку
+Serial bus controller	Device		Контроллер послідовної шини
+Unclassified device	Device		Некласифіковані пристрої
+Wireless controller	Device		Бездротовий контролер

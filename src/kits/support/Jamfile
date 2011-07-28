@@ -1,0 +1,24 @@
+SubDir HAIKU_TOP src kits support ;
+
+SetSubDirSupportedPlatforms haiku libbe_test ;
+
+UsePrivateHeaders app interface media shared support ;
+
+MergeObject <libbe>support_kit.o :
+	Archivable.cpp
+	ArchivingManagers.cpp
+	Beep.cpp
+	BlockCache.cpp
+	ByteOrder.cpp
+	DataIO.cpp
+	DateTime.cpp
+	BufferIO.cpp
+	Flattenable.cpp
+	List.cpp
+	Locker.cpp
+	PointerList.cpp
+	Referenceable.cpp
+	StopWatch.cpp
+	String.cpp
+	Url.cpp
+;

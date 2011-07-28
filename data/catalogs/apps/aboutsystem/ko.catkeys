@@ -1,0 +1,25 @@
+1	korean	x-vnd.Haiku-About	3992500682
+%.2f GHz	AboutView		%.2f GHz
+%ld MHz	AboutView		%ld MHz
+%ld Processors:	AboutView		%ld 프로세서:
+About this system	AboutWindow		시스템 정보
+Contributors:\n	AboutView		공헌자:\n
+Current maintainers:\n	AboutView		현재 유지관리자:\n
+GCC %d Hybrid	AboutView		GCC %d 하이브리드
+Kernel:	AboutView		커널:
+License: 	AboutView		라이센스: 
+Licenses: 	AboutView		라이센스: 
+Memory:	AboutView		메모리:
+Michael Phipps (project founder)\n\n	AboutView		Michael Phipps (프로젝트 창시자)\n\n
+Past maintainers:\n	AboutView		과거 유지관리자:\n
+Processor:	AboutView		프로세서:
+Revision	AboutView		리비젼
+Source Code: 	AboutView		소스 코드: 
+The BeGeistert team\n	AboutView		BeGeistert 팀\n
+The Haiku-Ports team\n	AboutView		Haiku-Ports 팀\n
+Time running:	AboutView		실행 시간:
+Translations:\n	AboutView		번역자:\n
+Unknown	AboutView		알수 없음
+Version:	AboutView		버젼:
+\nCopyrights\n\n	AboutView		\n저작권\n\n
+\n\nSpecial thanks to:\n	AboutView		\n\n다음 분께 특별히 감사드립니다:\n

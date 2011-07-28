@@ -1,0 +1,40 @@
+1	lithuanian	x-vnd.Haiku-ShowImage	2416957986
+Browse	Menus		Naršyti
+Cancel	ClosePrompt		Atsisakyti
+Close	ClosePrompt		Uždaryti
+Close document	ClosePrompt		Uždaryti dokumentą
+Could not load image! Either the file or an image translator for it does not exist.	LoadAlerts		Paveikslėlis neatidaromas! Trūksta pačios bylos, arba transliatoriaus jai.
+DPI:	PrintOptionsWindow		Raiška (DPI):
+First page	Menus		Pirmasis puslapis
+Fit image to page	PrintOptionsWindow		Įtalpinti puslapin
+Flip left to right	Menus		Apversti kairę su dešine
+Flip top to bottom	Menus		Apversti viršų su apačia
+Full screen	Menus		Visu ekranu
+Go to page	Menus		Pereiti puslapin
+Height: 	PrintOptionsWindow		Aukštis: 
+High-quality zooming	Menus		Aukštos kokybės dida
+Image	Menus		Paveikslėlis
+Job setup	PrintOptionsWindow		Užduoties nustatymai
+Last page	Menus		Paskutinis puslapis
+Next file	Menus		Kita byla
+Next page	Menus		Kitas puslapis
+OK	SaveToFile		Gerai
+Original size	Menus		Pirminis dydis
+Previous file	Menus		Ankstesnis puslapis
+Previous page	Menus		Ankstesnis puslapis
+Print options	PrintOptionsWindow		Spaudos parinktys
+Resize to (in 1/72 inches):	PrintOptionsWindow		Keisti dydį (1/72 colių):
+Rotate clockwise	Menus		Pasukti pagal laikrodžio rodyklę
+Rotate counterclockwise	Menus		Pasukti prieš laikrodžio rodyklę
+Show caption in full screen mode	Menus		Rodyti pavadinimą viso ekrano rodoje
+Slide delay	Menus		Skaidrės užlaikymas
+Slide show	Menus		Skaidrių ratas
+The document '%s' (page %d) has been changed. Do you want to close the document?	ClosePrompt		Dokumentas „%s“ (puslapis %d) pakeistas. Norite uždaryti?
+The document '%s' has been changed. Do you want to close the document?	ClosePrompt		Dokumentas „%s“ pakeistas. Norite uždaryti?
+Undo	Menus		Atšaukti
+Use as background…	Menus		Padaryti darbastalio fonu…
+View	Menus		Roda
+Width:	PrintOptionsWindow		Plotis:
+Zoom factor in %:	PrintOptionsWindow		Didinimas %:
+Zoom in	Menus		Didinti
+Zoom out	Menus		Mažinti
