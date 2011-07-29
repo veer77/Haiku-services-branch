@@ -149,35 +149,34 @@ CardFBSet(uint8 crtid, display_mode *mode)
 
 	get_color_space_format(*mode, colorMode, bytesPerRow, bitsPerPixel);
 
-
-	#if 0
-	// TMDSAllIdle	// DVI / HDMI
-	// LVTMAAllIdle	// DVI
+	LVDSAllIdle();
+		// DVI / HDMI / LCD
+	TMDSAllIdle();
+		// DVI / HDMI
 	DACAllIdle();
+		// VGA
+
+	// framebuffersize = w * h * bpp  =  fb bits / 8 = bytes needed
+	//uint64 fbAddress = gInfo->shared_info->frame_buffer_phys;
+	uint64 fbAddressInt = gInfo->shared_info->frame_buffer_int;
 
 	// Set the inital frame buffer location in the memory controler
 	uint32 mcFbSize;
-	MCFBLocation(0, &mcFbSize);
-	MCFBSetup(Read32(OUT, R6XX_CONFIG_FB_BASE), mcFbSize);
-	#endif
+	MCFBLocation(fbAddressInt, &mcFbSize);
+	//MCFBSetup(gInfo->shared_info->frame_buffer_int, mcFbSize);
 
 	Write32(CRT, regs->grphUpdate, (1<<16));
 		// Lock for update (isn't this normally the other way around on VGA?
 
-	// framebuffersize = w * h * bpp  =  fb bits / 8 = bytes needed
-	uint64_t fbAddress = gInfo->shared_info->frame_buffer_phys;
-
 	// Tell GPU which frame buffer address to draw from
-	Write32(CRT, regs->grphPrimarySurfaceAddr,
-		fbAddress & 0xffffffff);
-	Write32(CRT, regs->grphSecondarySurfaceAddr,
-		fbAddress & 0xffffffff);
+	Write32(CRT, regs->grphPrimarySurfaceAddr, fbAddressInt & 0xffffffff);
+	Write32(CRT, regs->grphSecondarySurfaceAddr, fbAddressInt & 0xffffffff);
 
 	if (gInfo->shared_info->device_chipset >= (RADEON_R700 | 0x70)) {
 		Write32(CRT, regs->grphPrimarySurfaceAddrHigh,
-			(fbAddress >> 32) & 0xf);
+			(fbAddressInt >> 32) & 0xf);
 		Write32(CRT, regs->grphSecondarySurfaceAddrHigh,
-			(fbAddress >> 32) & 0xf);
+			(fbAddressInt >> 32) & 0xf);
 	}
 
 	Write32(CRT, regs->grphControl, 0);
@@ -249,9 +248,9 @@ CardModeSet(uint8 crtid, display_mode *mode)
 		displayTiming.h_total - 1);
 
 	// Blanking
-	uint16 blankStart = displayTiming.h_total
+	uint16 blankStart = displayTiming.h_total - displayTiming.h_sync_start;
+	uint16 blankEnd = displayTiming.h_total
 		+ displayTiming.h_display - displayTiming.h_sync_start;
-	uint16 blankEnd = displayTiming.h_total - displayTiming.h_sync_start;
 
 	Write32(CRT, regs->crtHBlank,
 		blankStart | (blankEnd << 16));
@@ -267,9 +266,10 @@ CardModeSet(uint8 crtid, display_mode *mode)
 	Write32(CRT, regs->crtVTotal,
 		displayTiming.v_total - 1);
 
-	blankStart = displayTiming.v_total
+	// Blanking
+	blankStart = displayTiming.v_total - displayTiming.v_sync_start;
+	blankEnd = displayTiming.v_total
 		+ displayTiming.v_display - displayTiming.v_sync_start;
-	blankEnd = displayTiming.v_total - displayTiming.v_sync_start;
 
 	Write32(CRT, regs->crtVBlank,
 		blankStart | (blankEnd << 16));
@@ -345,6 +345,9 @@ radeon_set_display_mode(display_mode *mode)
 	} else if ((gDisplay[display_id]->connection_type & CONNECTION_TMDS) != 0) {
 		TMDSSet(gDisplay[display_id]->connection_id, mode);
 		TMDSPower(gDisplay[display_id]->connection_id, RHD_POWER_ON);
+	} else if ((gDisplay[display_id]->connection_type & CONNECTION_LVDS) != 0) {
+		LVDSSet(gDisplay[display_id]->connection_id, mode);
+		LVDSPower(gDisplay[display_id]->connection_id, RHD_POWER_ON);
 	}
 
 	// Ensure screen isn't blanked
@@ -429,7 +432,8 @@ is_mode_supported(display_mode *mode)
 	uint32 crtid = 0;
 
 	// if we have edid info, check frequency adginst crt reported valid ranges
-	if (gInfo->shared_info->has_edid) {
+	if (gInfo->shared_info->has_edid
+		&& gDisplay[crtid]->found_ranges) {
 
 		uint32 hfreq = mode->timing.pixel_clock / mode->timing.h_total;
 		if (hfreq > gDisplay[crtid]->hfreq_max + 1
@@ -453,9 +457,10 @@ is_mode_supported(display_mode *mode)
 				mode->timing.h_display, mode->timing.v_display, crtid);
 			return false;
 		}
-		TRACE("%dx%d is within CRT %d's valid frequency range\n",
-			mode->timing.h_display, mode->timing.v_display, crtid);
 	}
+
+	TRACE("%dx%d is within CRT %d's valid frequency range\n",
+		mode->timing.h_display, mode->timing.v_display, crtid);
 
 	return true;
 }
