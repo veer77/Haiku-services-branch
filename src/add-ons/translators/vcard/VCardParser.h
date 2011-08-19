@@ -10,7 +10,7 @@
 #include <ContactField.h>
 #include <ObjectList.h>
 
-#include "lib/cardparser.h"
+#include "cardparser.h"
 
 
 class VCardParser {

@@ -15,20 +15,11 @@ public:
 					// Initialize the RawContact from
 					// a BMessage if it's valid.
 					BRawContact(BMessage* data);
-					// create a virtual raw contact
-					// stored in memory as a BMessage
-					// is possible to specify a optional
-					// final format in case the user
-					// want to store it into the disk
-					// in a readable form.
-					// Initialize the RawContact
-					// using a specified file if there
-					// is a suitable translator and
-					// the object is correct
-					// Another version of the constructor
-					// allow to specify a BPositionIO as destination
+
 					BRawContact(uint32 finalFormat = 0,
 						BPositionIO* destination = NULL);
+
+	// TODO add a entry_ref constructor
 
 					~BRawContact();
 
@@ -43,12 +34,12 @@ public:
 	int32			FinalFormat() const;
 
 	BPositionIO*	Destination() const;
-	status_t		SetDestination(BPositionIO* destination);
-
+	status_t		SetDestination(BPositionIO* destination, bool del);
 private:
 	void			_Init();
 	void			_InitTranslator();
 	bool			_CheckDestination(BPositionIO* destination);
+	status_t		_FindFormat();
 
 	BPositionIO*	fDest;
 

@@ -198,6 +198,8 @@ VCardParser::DataHandler(const CARD_Char *data, int len)
 		field = new BStringContactField(B_CONTACT_ORGANIZATION, str);
 	} else if (fLatestProp.ICompare(VCARD_NOTE) == 0) {
 		field = new BStringContactField(B_CONTACT_NOTE, str);
+	} else if (fLatestProp.ICompare(VCARD_TELEPHONE) == 0) {
+		field = new BStringContactField(B_CONTACT_PHONE, str);
 	} else if (fLatestProp.ICompare(VCARD_ADDRESS) == 0) {
 		field = new BAddressContactField(str, true);
 	}

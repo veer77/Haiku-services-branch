@@ -37,10 +37,12 @@ public:
 			int32			CountFields() const;
 			status_t		CopyFieldsFrom(BContact& contact);
 
+			status_t		CreateDefaultFields();
+
 	// for the moment it supports only a BRawContact, in future
 	// the following methods will help to merge many BRawContacts
 	// into a BContact.
-	//		status_t		Append(BRawContact* contact);
+			status_t		Append(BRawContact* contact);
 			const BRawContact&	RawContact() const;
 
 			status_t		Commit();

@@ -31,6 +31,7 @@ BRawContact::BRawContact(uint32 finalFormat, BPositionIO* destination)
 	fFormat(finalFormat)
 {
 	fRoster = BTranslatorRoster::Default();
+
 	_Init();
 	_InitTranslator();
 }
@@ -46,8 +47,13 @@ BRawContact::~BRawContact()
 void
 BRawContact::_Init()
 {
+	printf("init\n");
 	if (fFormat == 0 && fDest != NULL)
-		_FindFormat();
+		if (_FindFormat() == B_OK) {
+			return;
+		} else {
+			fFormat = B_CONTACT_FORMAT;
+		}
 
 	if (fDest == NULL && fFormat != B_PEOPLE_FORMAT) {
 		if (fFormat == 0)
@@ -57,8 +63,9 @@ BRawContact::_Init()
 	}
 
 	if (!_CheckDestination(fDest)) {
+		printf("checkdest failed\n");
 		fDest = NULL;
-		fInitCheck == B_BAD_VALUE;
+		fInitCheck = B_BAD_VALUE;
 	}
 }
 
@@ -70,11 +77,13 @@ BRawContact::_FindFormat()
 	status_t ret = fRoster->Identify(fDest, NULL, &info,
 		0, NULL, 0);
 
-	if (check != B_OK)
+	if (ret != B_OK)
 		return ret;
 
 	fFormat = info.type;
 	fTranslatorID = info.translator;
+
+	return B_OK;
 }
 
 
@@ -84,6 +93,7 @@ BRawContact::_InitTranslator()
 	// NOTA magari si potrebbe usare BContactRoster
 	// per questa funzione fornendo un metodo 
 	// che dato un formato restituisce l'id del translator
+	printf("init translator\n");
 	fTranslatorID = 0;
 	int32 num_translators;
 	translator_id* translators;
@@ -98,7 +108,7 @@ BRawContact::_InitTranslator()
 				&& format[j].type == fFormat) {
 				fTranslatorID = translators[i];
 				printf("Got a suitable Translator %d %s\n",
-					fTranslatorID, format[j].MIME);
+					(int)fTranslatorID, format[j].MIME);
 				break;
 			}
 		}
@@ -133,6 +143,7 @@ BRawContact::_CheckDestination(BPositionIO* destination)
 		else if (file->InitCheck() == B_OK)
 			return true;
 	}
+	return true;
 }
 
 
@@ -232,8 +243,11 @@ BRawContact::Destination() const
 
 
 status_t
-BRawContact::SetDestination(BPositionIO* destination)
+BRawContact::SetDestination(BPositionIO* destination, bool del)
 {
+	if (del)
+		delete fDest;
+
 	if (destination != NULL)
 		if (_CheckDestination(destination)) {
 			fDest = destination;

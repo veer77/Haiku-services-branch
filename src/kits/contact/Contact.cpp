@@ -40,6 +40,8 @@ BContact::BContact(BRawContact* contact)
 			return;
 		}
 	}
+
+	printf("%s\n", strerror(fRawContact->InitCheck()));
 	fInitCheck = B_ERROR;
 }
 
@@ -122,6 +124,16 @@ BContact::RawContact() const
 
 
 status_t
+BContact::Append(BRawContact* contact)
+{
+	delete fRawContact;
+	fRawContact = contact;
+
+	return B_OK;
+}
+
+
+status_t
 BContact::Commit()
 {
 	if (fInitCheck != B_OK)
@@ -184,6 +196,14 @@ BContact::HasField(BContactField* field)
 			return true;
 	}
 	return B_ERROR;
+}
+
+
+status_t
+BContact::CreateDefaultFields()
+{
+	
+	return B_OK;
 }
 
 
@@ -297,7 +317,7 @@ BContact::_UnflattenFields(BMessage* msg)
 			return ret;
 
 		BContactField* field = BContactField::UnflattenChildClass(data, size);
-		printf("%p\n", field);
+		printf("%p %s\n", field, field->Value().String());
 		fList->AddItem(field);
 	}
 	return ret;

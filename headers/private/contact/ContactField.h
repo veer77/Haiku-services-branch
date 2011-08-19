@@ -6,12 +6,12 @@
 #ifndef _CONTACTFIELD_H_
 #define _CONTACTFIELD_H_
 
+#include <Bitmap.h>
+#include <ContactDefs.h>
 #include <Flattenable.h>
 #include <Message.h>
 #include <String.h>
 #include <ObjectList.h>
-
-#include <list>
 
 enum {
 	B_CONTACT_FIELD_TYPE = 'CNFT'
@@ -19,10 +19,11 @@ enum {
 
 #define CONTACT_FIELD_IDENT "contactfield"
 
-
-class BContactFieldVisitor;
 class BAddressContactField;
+class BContactFieldVisitor;
+class BPhotoContactField;
 class BStringContactField;
+
 
 class BContactField : public virtual BFlattenable {
 public:
@@ -92,7 +93,7 @@ class BContactFieldVisitor {
 public:
 	virtual void 			Visit(BStringContactField* field) = 0;
 	virtual void 			Visit(BAddressContactField* field) = 0;
-//	virtual void 			Visit(BPhoneContactField* field) = 0;
+	virtual void 			Visit(BPhotoContactField* field) = 0;
 };
 
 
@@ -177,10 +178,44 @@ private:
 			BString			fCountry;
 			bool			fWellFormed;
 
-			BString			fValue;
+	mutable BString			fValue;
 			struct 			EqualityVisitor;
 };
 
+
+class BPhotoContactField : public virtual BContactField {
+public:
+							BPhotoContactField(int32 type = CONTACT_PHOTO_REF);
+	virtual					~BPhotoContactField();
+
+	virtual	void			Accept(BContactFieldVisitor* v);
+	virtual	bool			IsEqual(BContactField* field);
+/*
+			BBitmap*		Photo() const;
+			void			SetPhoto(BBitmap* photo);
+*/
+			const entry_ref& RefToPhoto();
+			void			SetRefToPhoto(const entry_ref& ref);
+
+	virtual void			SetValue(const BString& value) ;
+	virtual const BString&	Value() const;
+
+	virtual status_t		CopyDataFrom(BContactField* field);
+
+	virtual	ssize_t			FlattenedSize() const;
+	virtual	status_t		Flatten(void* buffer, ssize_t size) const;
+	virtual	status_t		Unflatten(type_code code, const void* buffer,
+								ssize_t size);
+protected:
+			void			_InitLabel();
+
+			struct 			EqualityVisitor;
+			//BBitmap*		fBitmap:
+			BString			fUrl;
+			int32			fPhotoType;
+
+			entry_ref* 		fEntry;
+};
 
 /*
 ATM i don't think it's needed, so i'm using

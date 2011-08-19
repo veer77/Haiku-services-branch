@@ -22,6 +22,7 @@ struct EqualityVisitorBase : public BContactFieldVisitor {
 
 	virtual void Visit(BStringContactField* field) {}
 	virtual void Visit(BAddressContactField* field) {}
+	virtual void Visit(BPhotoContactField* field) {}
 };
 /*
 struct CopyVisitor : public BContactFieldVisitor {
@@ -430,6 +431,10 @@ struct BStringContactField::EqualityVisitor : public EqualityVisitorBase {
 	virtual void Visit(BAddressContactField* field)
 	{
 	}
+
+	virtual void Visit(BPhotoContactField* field)
+	{
+	}
 };
 
 
@@ -575,6 +580,10 @@ struct BAddressContactField::EqualityVisitor : public EqualityVisitorBase {
 			if (fOwner->Usage() == field->Usage())
 				result = true;
 	}
+
+	virtual void Visit(BPhotoContactField* field)
+	{
+	}
 };
 
 /*
@@ -626,15 +635,16 @@ BAddressContactField::SetValue(const BString& value)
 const BString&
 BAddressContactField::Value() const
 {
-/*	// this is returning the address
+	// this is returning the address
 	// as described in the vcard-21 spec
-	BString str = BString(fPostalBox);
-	str << fPostalBox << ";" << fNeighbor << ";";
-	str << fStreet << ";" << fCity << ";" << fRegion;
-	str << ";" << fPostalCode << ";" << fCountry << ";"; 
 
-	return str.String();*/
-	return fPostalBox;
+	if (!fValue.IsEmpty()) return fValue;
+
+	fValue << fPostalBox << ";" << fNeighbor << ";";
+	fValue << fStreet << ";" << fCity << ";" << fRegion;
+	fValue << ";" << fPostalCode << ";" << fCountry << ";"; 
+
+	return fValue;
 }
 
 
@@ -722,6 +732,7 @@ BAddressContactField::Country() const
 void
 BAddressContactField::SetStreet(const BString& street)
 {
+	fValue = "";
 	fStreet.SetTo(street);
 }
 
@@ -729,6 +740,7 @@ BAddressContactField::SetStreet(const BString& street)
 void
 BAddressContactField::SetPostalBox(const BString& postBox)
 {
+	fValue = "";
 	fPostalBox.SetTo(postBox);
 }
 
@@ -736,6 +748,7 @@ BAddressContactField::SetPostalBox(const BString& postBox)
 void
 BAddressContactField::SetNeighborhood(const BString& neighbor)
 {
+	fValue = "";
 	fNeighbor.SetTo(neighbor);
 }
 
@@ -743,6 +756,7 @@ BAddressContactField::SetNeighborhood(const BString& neighbor)
 void
 BAddressContactField::SetCity(const BString& city)
 {
+	fValue = "";
 	fCity.SetTo(city);
 }
 
@@ -750,6 +764,7 @@ BAddressContactField::SetCity(const BString& city)
 void
 BAddressContactField::SetRegion(const BString& region)
 {
+	fValue = "";
 	fRegion.SetTo(region);
 }
 
@@ -757,6 +772,7 @@ BAddressContactField::SetRegion(const BString& region)
 void
 BAddressContactField::SetPostalCode(const BString& postalCode)
 {
+	fValue = "";
 	fPostalCode.SetTo(postalCode);
 }
 
@@ -764,6 +780,7 @@ BAddressContactField::SetPostalCode(const BString& postalCode)
 void
 BAddressContactField::SetCountry(const BString& country)
 {
+	fValue = "";
 	fCountry.SetTo(country);
 }
 
@@ -844,4 +861,142 @@ BAddressContactField::_PopValue(BString& str, BString& value)
 	}
 	str.MoveInto(value, 0, index);
 	str.Remove(0,1);
+}
+
+/** BPhotoContactField */
+
+BPhotoContactField::BPhotoContactField(int32 type)   
+	:
+	BContactField(B_CONTACT_PHOTO),
+	fPhotoType(type)
+{
+	_InitLabel();
+}
+
+
+BPhotoContactField::~BPhotoContactField()
+{	
+}
+
+
+struct BPhotoContactField::EqualityVisitor : public EqualityVisitorBase {
+
+	BPhotoContactField* fOwner;
+
+	EqualityVisitor(BPhotoContactField* owner)
+		:
+		EqualityVisitorBase(),
+		fOwner(owner) 
+		{
+		}
+
+	virtual void Visit(BStringContactField* field)
+	{
+	}
+
+	virtual void Visit(BAddressContactField* field)
+	{
+	}
+
+
+	virtual void Visit(BPhotoContactField* field)
+	{
+		/*if (fOwner->RefToPhoto() == field->RefToPhoto())
+			result = true;*/
+
+		if (field->Value().Compare(fOwner->Value()) == 0)
+			result = true;
+	}
+};
+
+
+void
+BPhotoContactField::Accept(BContactFieldVisitor* v)
+{ 
+	v->Visit(this);
+}
+
+
+bool
+BPhotoContactField::IsEqual(BContactField* field)
+{
+	BPhotoContactField::EqualityVisitor equalityChecker(this);
+	field->Accept(&equalityChecker);
+	return equalityChecker.result;
+}
+
+
+void
+BPhotoContactField::SetValue(const BString& value)
+{
+	fUrl.SetTo(value);	
+}
+
+
+const BString&
+BPhotoContactField::Value() const
+{
+	return fUrl;
+}
+
+
+status_t
+BPhotoContactField::CopyDataFrom(BContactField* field)
+{
+
+	return B_ERROR;
+}
+
+
+ssize_t
+BPhotoContactField::FlattenedSize() const
+{
+	ssize_t size = BContactField::FlattenedSize();
+
+	return size;
+}
+
+
+status_t
+BPhotoContactField::Flatten(void* buffer, ssize_t size) const
+{
+	if (size < FlattenedSize())
+		return B_ERROR;
+
+	BMemoryIO flatData(buffer, size);
+	status_t ret = BContactField::Flatten(&flatData);
+	if (ret != B_OK)
+		return ret;
+
+	ssize_t fRefLen = sizeof(fEntry);
+	flatData.Write(&fRefLen, sizeof(fRefLen));
+	flatData.Write(fEntry, fRefLen);
+
+	return B_OK;
+}
+
+
+status_t
+BPhotoContactField::Unflatten(type_code code,
+	const void* buffer,	ssize_t size)
+{
+	BMemoryIO data(buffer, size);
+	status_t ret = BContactField::Unflatten(code, &data);
+	if (ret != B_OK)
+		return ret;
+
+	ssize_t fRefLen;
+	data.Read(&fRefLen, sizeof(fRefLen));
+
+	if (fRefLen != 0)
+		data.Read(&fEntry, fRefLen);
+
+	return B_OK;
+}
+
+
+void
+BPhotoContactField::_InitLabel()
+{
+	SetLabel("Photo");
 }
