@@ -45,8 +45,9 @@ public:
 
 private:
 				PersonWindow*	_FindWindow(const entry_ref&) const;
-				PersonWindow*	_NewWindow(entry_ref* = NULL);
-				void			_AddAttributes(PersonWindow* window) const;
+				PersonWindow*	_NewWindow(const entry_ref* ref = NULL,
+					BFile* file = NULL);
+				void			_AddFields(PersonWindow* window) const;
 				void			_SavePreferences(BMessage* message) const;
 
 private:
@@ -54,13 +55,13 @@ private:
 				uint32			fWindowCount;
 				BRect			fPosition;
 
-				struct Attribute {
+/*				struct Attribute {
 					BString		attribute;
 					int32		width;
 					BString		name;
 				};
 
-				BObjectList<Attribute> fAttributes;
+				BObjectList<Attribute> fAttributes;*/
 };
 
 #endif // PEOPLE_APP_H

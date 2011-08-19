@@ -42,14 +42,12 @@
 
 
 PersonWindow::PersonWindow(BRect frame, const char* title,
-		const char* nameAttribute, const char* categoryAttribute,
-		const entry_ref* ref)
+	const entry_ref* ref, BContact* contact)
 	:
 	BWindow(frame, title, B_TITLED_WINDOW, B_NOT_RESIZABLE | B_NOT_ZOOMABLE
 		| B_AUTO_UPDATE_SIZE_LIMITS),
-	fRef(NULL),
-	fPanel(NULL),
-	fNameAttribute(nameAttribute)
+	fPanel(NULL)
+	//fNameAttribute(nameAttribute)
 {
 	BMenu* menu;
 	BMenuItem* item;
@@ -102,10 +100,12 @@ PersonWindow::PersonWindow(BRect frame, const char* title,
 	if (ref != NULL) {
 		SetTitle(ref->name);
 		_SetToRef(new entry_ref(*ref));
-	} else
+	} else {
 		_SetToRef(NULL);
+	}
+	//fView = new PersonView("PeopleView", categoryAttribute, fRef);
 
-	fView = new PersonView("PeopleView", categoryAttribute, fRef);
+	fView = new PersonView("PeopleView", contact);
 
 	BLayoutBuilder::Group<>(this, B_VERTICAL, 0)
 		.SetInsets(0, 0, 0, 0)
@@ -114,6 +114,7 @@ PersonWindow::PersonWindow(BRect frame, const char* title,
 
 	fRevert->SetTarget(fView);
 	selectAllItem->SetTarget(fView);
+
 }
 
 
@@ -146,6 +147,7 @@ PersonWindow::MenusBeginning()
 		fUndo->SetLabel(B_TRANSLATE("Redo"));
 	else
 		fUndo->SetLabel(B_TRANSLATE("Undo"));
+
 	fUndo->SetEnabled(undoEnabled);
 	fCut->SetEnabled(cutAndCopyEnabled);
 	fCopy->SetEnabled(cutAndCopyEnabled);
@@ -154,18 +156,18 @@ PersonWindow::MenusBeginning()
 	fPaste->SetEnabled(be_clipboard->Data()->HasData("text/plain", B_MIME_TYPE));
 	be_clipboard->Unlock();
 
-	fView->BuildGroupMenu();
+//	fView->BuildGroupMenu();
 }
 
 
 void
 PersonWindow::MessageReceived(BMessage* msg)
 {
-	char			str[256];
+//	char			str[256];
 	BDirectory		directory;
 	BEntry			entry;
 	BFile			file;
-	BNodeInfo		*node;
+//	BNodeInfo		*node;
 
 	switch (msg->what) {
 		case M_SAVE:
@@ -196,7 +198,7 @@ PersonWindow::MessageReceived(BMessage* msg)
 
 		case B_SAVE_REQUESTED:
 		{
-			entry_ref dir;
+			/*entry_ref dir;
 			if (msg->FindRef("directory", &dir) == B_OK) {
 				const char* name = NULL;
 				msg->FindString("name", &name);
@@ -219,11 +221,11 @@ PersonWindow::MessageReceived(BMessage* msg)
 						(new BAlert("", str, B_TRANSLATE("Sorry")))->Go();
 					}
 				}
-			}
+			}*/
 			break;
 		}
 
-		case B_NODE_MONITOR:
+		/*case B_NODE_MONITOR:
 		{
 			int32 opcode;
 			if (msg->FindInt32("opcode", &opcode) == B_OK) {
@@ -280,7 +282,7 @@ PersonWindow::MessageReceived(BMessage* msg)
 				}
 			}
 			break;
-		}
+		}*/
 
 		default:
 			BWindow::MessageReceived(msg);
@@ -298,9 +300,9 @@ PersonWindow::QuitRequested()
 							B_TRANSLATE("Cancel"), B_TRANSLATE("Quit"),
 							B_TRANSLATE("Save")))->Go();
 		if (result == 2) {
-			if (fRef)
+			if (fRef) {
 				fView->Save();
-			else {
+			} else {
 				SaveAs();
 				return false;
 			}
@@ -328,18 +330,18 @@ PersonWindow::Show()
 	BWindow::Show();
 }
 
-
+/*
 void
 PersonWindow::AddAttribute(const char* label, const char* attribute)
 {
 	fView->AddAttribute(label, attribute);
-}
+}*/
 
 
 void
 PersonWindow::SaveAs()
 {
-	char name[B_FILE_NAME_LENGTH];
+	/*char name[B_FILE_NAME_LENGTH];
 	_GetDefaultFileName(name);
 
 	if (fPanel == NULL) {
@@ -367,7 +369,7 @@ PersonWindow::SaveAs()
 		else
 			fPanel->Window()->Activate();
 		fPanel->Window()->Unlock();
-	}
+	}*/
 }
 
 
@@ -383,33 +385,28 @@ PersonWindow::RefersPersonFile(const entry_ref& ref) const
 void
 PersonWindow::_GetDefaultFileName(char* name)
 {
-	strncpy(name, fView->AttributeValue(fNameAttribute), B_FILE_NAME_LENGTH);
-	while (*name) {
-		if (*name == '/')
-			*name = '-';
-		name++;
-	}
+	strncpy(name, fRef->name, B_FILE_NAME_LENGTH);
 }
 
 
 void
 PersonWindow::_SetToRef(entry_ref* ref)
-{
+{/*
 	if (fRef != NULL) {
-		_WatchChanges(false);
+		//_WatchChanges(false);
 		delete fRef;
 	}
-
+*/
 	fRef = ref;
 
-	_WatchChanges(true);
+	//_WatchChanges(true);
 }
 
 
 void
 PersonWindow::_WatchChanges(bool enable)
 {
-	if (fRef == NULL)
+/*	if (fRef == NULL)
 		return;
 
 	node_ref nodeRef;
@@ -432,5 +429,5 @@ PersonWindow::_WatchChanges(bool enable)
 
 	if (watch_node(&nodeRef, flags, this) != B_OK) {
 		printf("Error %s node monitor.\n", action.String());
-	}
+	}*/
 }

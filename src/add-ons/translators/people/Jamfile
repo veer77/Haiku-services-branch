@@ -1,0 +1,18 @@
+SubDir HAIKU_TOP src add-ons translators people ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+UsePrivateHeaders contact ;
+
+SubDirHdrs [ FDirName $(SUBDIR) $(DOTDOT) shared ] ;
+
+AddResources PeopleTranslator : PeopleTranslator.rdef ;
+
+Translator PeopleTranslator :
+	PeopleMain.cpp
+	PeopleTranslator.cpp
+	PeopleView.cpp
+	: be translation libcontact.so libtranslatorsutils.a 
+	$(TARGET_LIBSUPC++) $(HAIKU_LOCALE_LIBS)
+	: true
+;

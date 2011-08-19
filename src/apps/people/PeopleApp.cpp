@@ -18,6 +18,7 @@
 #include <AutoDeleter.h>
 #include <Bitmap.h>
 #include <Catalog.h>
+#include <Contact.h>
 #include <Directory.h>
 #include <FindDirectory.h>
 #include <fs_index.h>
@@ -37,7 +38,7 @@
 #undef B_TRANSLATE_CONTEXT
 #define B_TRANSLATE_CONTEXT "People"
 
-
+/*
 struct DefaultAttribute {
 	const char*	attribute;
 	int32		width;
@@ -64,14 +65,14 @@ struct DefaultAttribute sDefaultAttributes[] = {
 	{ "META:url", 120, B_TRANSLATE("URL") },
 	{ kCategoryAttribute, 120, B_TRANSLATE("Group") },
 	{ NULL, 0, NULL }
-};
+};*/
 
 
 TPeopleApp::TPeopleApp()
 	:
 	BApplication(APP_SIG),
-	fWindowCount(0),
-	fAttributes(20, true)
+	fWindowCount(0)
+//	fAttributes(20, true)
 {
 	B_TRANSLATE_MARK_SYSTEM_NAME("People");
 
@@ -103,6 +104,8 @@ TPeopleApp::TPeopleApp()
 	// or if it contains no attribute definitions, install a "clean"
 	// person mime type from the hard-coded default attributes.
 
+	// TODO move this code into PeopleTranslator
+/*
 	bool valid = false;
 	BMimeType mime(B_PERSON_MIMETYPE);
 	if (mime.IsInstalled()) {
@@ -189,8 +192,7 @@ TPeopleApp::TPeopleApp()
 			fs_create_index(volume.Device(), attribute->attribute,
 				B_STRING_TYPE, 0);
 		}
-	}
-
+	}*/
 }
 
 
@@ -265,14 +267,13 @@ TPeopleApp::RefsReceived(BMessage* message)
 	while (message->HasRef("refs", index)) {
 		entry_ref ref;
 		message->FindRef("refs", index++, &ref);
-
 		PersonWindow* window = _FindWindow(ref);
-		if (window != NULL)
+		if (window != NULL) {
 			window->Activate(true);
-		else {
-			BFile file(&ref, B_READ_ONLY);
-			if (file.InitCheck() == B_OK)
-				_NewWindow(&ref);
+		} else {
+			BFile* file = new BFile(&ref, B_READ_WRITE);
+			if (file->InitCheck() == B_OK)
+				_NewWindow(&ref, file);
 		}
 	}
 }
@@ -290,13 +291,30 @@ TPeopleApp::ReadyToRun()
 
 
 PersonWindow*
-TPeopleApp::_NewWindow(entry_ref* ref)
+TPeopleApp::_NewWindow(const entry_ref* ref, BFile* file)
 {
-	PersonWindow* window = new PersonWindow(fPosition,
-		B_TRANSLATE("New person"), kNameAttribute,
-		kCategoryAttribute, ref);
+	printf("new window\n");
+	// using this BRawContact constructor, the class
+	// will detect automatically the format
+	BRawContact* rawContact;
+	if (file == NULL)
+		rawContact = new BRawContact(B_CONTACT_FORMAT, NULL);
+	 else
+		rawContact = new BRawContact(0, file);
 
-	_AddAttributes(window);
+	BContact* contact = new BContact(rawContact);
+
+
+	if (contact->InitCheck() != B_OK) {
+		printf("BContact initcheck error\n");
+		// BAlert here
+		return NULL;
+	}
+
+	PersonWindow* window = new PersonWindow(fPosition,
+		B_TRANSLATE("New person"), ref, contact);
+
+	//_AddFields(window);
 
 	window->Show();
 
@@ -316,9 +334,9 @@ TPeopleApp::_NewWindow(entry_ref* ref)
 
 
 void
-TPeopleApp::_AddAttributes(PersonWindow* window) const
+TPeopleApp::_AddFields(PersonWindow* window) const
 {
-	int32 count = fAttributes.CountItems();
+/*	int32 count = fAttributes.CountItems();
 	for (int32 i = 0; i < count; i++) {
 		Attribute* attribute = fAttributes.ItemAt(i);
 		const char* label = attribute->name;
@@ -326,7 +344,7 @@ TPeopleApp::_AddAttributes(PersonWindow* window) const
 			label = B_TRANSLATE("Name");
 
 		window->AddAttribute(label, attribute->attribute);
-	}
+	}*/
 }
 
 

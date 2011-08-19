@@ -12,6 +12,7 @@
 #define PERSON_WINDOW_H
 
 
+#include <Contact.h>
 #include <String.h>
 #include <Window.h>
 
@@ -24,25 +25,26 @@
 class PersonView;
 class BFilePanel;
 class BMenuItem;
+class BFile;
 
 
 class PersonWindow : public BWindow {
 public:
 
-								PersonWindow(BRect frame, const char* title,
-									const char* nameAttribute,
-									const char* categoryAttribute,
-									const entry_ref* ref);
+								PersonWindow(BRect frame,
+									const char* title,
+									const entry_ref* ref,
+									BContact* contact);
 	virtual						~PersonWindow();
 
 	virtual	void				MenusBeginning();
 	virtual	void				MessageReceived(BMessage* message);
 	virtual	bool				QuitRequested();
 	virtual	void				Show();
-
+/*
 			void				AddAttribute(const char* label,
 									const char* attribute);
-
+*/
 			void				SaveAs();
 
 			bool				RefersPersonFile(const entry_ref& ref) const;
@@ -53,7 +55,7 @@ private:
 			void				_WatchChanges(bool doIt);
 
 private:
-			entry_ref*			fRef;
+			const entry_ref*	fRef;
 
 			BFilePanel*			fPanel;
 			BMenuItem*			fCopy;
@@ -63,6 +65,7 @@ private:
 			BMenuItem*			fSave;
 			BMenuItem*			fUndo;
 			PersonView*			fView;
+			BFile*				fFile;
 
 			BString				fNameAttribute;
 };

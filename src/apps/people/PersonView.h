@@ -13,12 +13,17 @@
 #define PERSON_VIEW_H
 
 
+#include <ContactDefs.h>
+#include <Contact.h>
+#include <ContactField.h>
 #include <GridView.h>
 #include <ObjectList.h>
 #include <String.h>
+#include <TextControl.h>
 
 
-class AttributeTextControl;
+class AddressView;
+class ContactFieldTextControl;
 class BFile;
 class BPopUpMenu;
 class PictureView;
@@ -34,17 +39,16 @@ enum {
 class PersonView : public BGridView {
 public:
 								PersonView(const char* name,
-									const char* categoryAttribute,
-									const entry_ref* ref);
+									BContact* contact);
 	virtual						~PersonView();
 
 	virtual	void				MakeFocus(bool focus = true);
 	virtual	void				MessageReceived(BMessage* message);
 	virtual void				Draw(BRect updateRect);
-
+/*
 			void				AddAttribute(const char* label,
 									const char* attribute);
-
+*/
 			void				BuildGroupMenu();
 
 			void				CreateFile(const entry_ref* ref);
@@ -52,25 +56,31 @@ public:
 			bool				IsSaved() const;
 			void				Save();
 
-			const char*			AttributeValue(const char* attribute) const;
+			void				AddField(BContactField* field);
+			/*const char*			AttributeValue(const char* attribute) const;
 			void				SetAttribute(const char* attribute, bool update);
 			void				SetAttribute(const char* attribute,
-									const char* value, bool update);
+									const char* value, bool update);*/
 
 			void				UpdatePicture(const entry_ref* ref);
 
 			bool				IsTextSelected() const;
 
 private:
-			BFile*				fFile;
-			time_t				fLastModificationTime;
-			BPopUpMenu*			fGroups;
-			typedef BObjectList<AttributeTextControl> AttributeList;
-			AttributeList		fControls;
+			void				_LoadFieldsFromContact();
+
+//			time_t				fLastModificationTime;
+//			BPopUpMenu*			fGroups;
+			typedef BObjectList<ContactFieldTextControl> FieldList;
+			FieldList			fControls;
+
+			AddressView*		fAddrView;
 
 			BString				fCategoryAttribute;
 			PictureView*		fPictureView;
 			bool				fSaving;
+			BContact*			fContact;
+			int32				fCount;
 };
 
 #endif // PERSON_VIEW_H
