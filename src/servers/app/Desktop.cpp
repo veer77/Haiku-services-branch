@@ -1154,10 +1154,15 @@ Desktop::ActivateWindow(Window* window)
 
 
 void
-Desktop::SendWindowBehind(Window* window, Window* behindOf)
+Desktop::SendWindowBehind(Window* window, Window* behindOf, bool sendStack)
 {
 	if (!LockAllWindows())
 		return;
+
+	Window* orgWindow = window;
+	WindowStack* stack = window->GetWindowStack();
+	if (sendStack && stack != NULL)
+		window = stack->TopLayerWindow();
 
 	// TODO: should the "not in current workspace" be handled anyway?
 	//	(the code below would have to be changed then, though)
@@ -1185,10 +1190,13 @@ Desktop::SendWindowBehind(Window* window, Window* behindOf)
 	BRegion dummy;
 	_RebuildClippingForAllWindows(dummy);
 
-	// mark everything dirty that is no longer visible
-	BRegion clean(window->VisibleRegion());
-	dirty.Exclude(&clean);
-	MarkDirty(dirty);
+	// only redraw the top layer window to avoid flicker
+	if (sendStack) {
+		// mark everything dirty that is no longer visible
+		BRegion clean(window->VisibleRegion());
+		dirty.Exclude(&clean);
+		MarkDirty(dirty);
+	}
 
 	_UpdateFronts();
 	if (fSettings->MouseMode() == B_FOCUS_FOLLOWS_MOUSE)
@@ -1202,7 +1210,16 @@ Desktop::SendWindowBehind(Window* window, Window* behindOf)
 
 	_WindowChanged(window);
 
-	NotifyWindowSentBehind(window, behindOf);
+	if (sendStack && stack != NULL) {
+		for (int32 i = 0; i < stack->CountWindows(); i++) {
+			Window* stackWindow = stack->LayerOrder().ItemAt(i);
+			if (stackWindow == window)
+				continue;
+			SendWindowBehind(stackWindow, behindOf, false);
+		}
+	}
+
+	NotifyWindowSentBehind(orgWindow, behindOf);
 
 	UnlockAllWindows();
 
@@ -1251,7 +1268,7 @@ Desktop::ShowWindow(Window* window)
 
 
 void
-Desktop::HideWindow(Window* window)
+Desktop::HideWindow(Window* window, bool fromMinimize)
 {
 	if (window->IsHidden())
 		return;
@@ -1300,6 +1317,8 @@ Desktop::HideWindow(Window* window)
 		}
 	}
 
+	NotifyWindowHidden(window, fromMinimize);
+
 	UnlockAllWindows();
 
 	if (window == fWindowUnderMouse)
@@ -1314,7 +1333,7 @@ Desktop::MinimizeWindow(Window* window, bool minimize)
 		return;
 
 	if (minimize && !window->IsHidden()) {
-		HideWindow(window);
+		HideWindow(window, true);
 		window->SetMinimized(minimize);
 		NotifyWindowMinimized(window, minimize);
 	} else if (!minimize && window->IsHidden()) {
@@ -2643,7 +2662,7 @@ Desktop::AllWindows()
 Window*
 Desktop::WindowForClientLooperPort(port_id port)
 {
-	ASSERT(fWindowLock.IsReadLocked());
+	ASSERT_MULTI_LOCKED(fWindowLock);
 
 	for (Window* window = fAllWindows.FirstWindow(); window != NULL;
 			window = window->NextWindow(kAllWindowList)) {

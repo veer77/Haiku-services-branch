@@ -940,9 +940,9 @@ AboutView::_CreateCreditsView()
 	fCreditsView->SetFontAndColor(be_plain_font, B_FONT_ALL, &kDarkGrey);
 	fCreditsView->Insert(B_TRANSLATE("The copyright to the Haiku code is "
 		"property of Haiku, Inc. or of the respective authors where expressly "
-		"noted in the source. Haiku" B_UTF8_TRADEMARK
+		"noted in the source. Haiku" B_UTF8_REGISTERED
 		" and the HAIKU logo" B_UTF8_REGISTERED
-		" are (registered) trademarks of Haiku, Inc."
+		" are registered trademarks of Haiku, Inc."
 		"\n\n"));
 
 	fCreditsView->SetFontAndColor(be_plain_font, B_FONT_ALL, &kLinkBlue);
@@ -1236,12 +1236,12 @@ AboutView::_CreateCreditsView()
 		"respective license.]\n\n"));
 
 	// Haiku license
-	BString haikuLicense = B_TRANSLATE("The code that is unique to Haiku, "
+	BString haikuLicense = B_TRANSLATE_COMMENT("The code that is unique to Haiku, "
 		"especially the kernel and all code that applications may link "
 		"against, is distributed under the terms of the %MIT license%. "
 		"Some system libraries contain third party code distributed under the "
 		"LGPL license. You can find the copyrights to third party code below.\n"
-		"\n");
+		"\n", "%MIT license% isn't a variable and has to be translated.");
 	int32 licensePart1 = haikuLicense.FindFirst("%");
 	int32 licensePart2 = haikuLicense.FindLast("%");
 	BString part;

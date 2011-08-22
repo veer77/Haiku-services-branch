@@ -23,6 +23,7 @@
 #include <File.h>
 #include <NodeMonitor.h>
 #include <PropertyInfo.h>
+#include <private/interface/WindowPrivate.h>
 
 #include "AppGroupView.h"
 #include "AppUsage.h"
@@ -48,20 +49,20 @@ property_info main_prop_list[] = {
 const float kCloseSize				= 8;
 const float kExpandSize				= 8;
 const float kPenSize				= 1;
-const float kEdgePadding			= 5;
+const float kEdgePadding			= 2;
 const float kSmallPadding			= 2;
 
 NotificationWindow::NotificationWindow()
 	:
-	BWindow(BRect(10, 10, 30, 30), B_TRANSLATE_MARK("Notification"), 
-		B_BORDERED_WINDOW, B_AVOID_FRONT | B_AVOID_FOCUS | B_NOT_CLOSABLE 
+	BWindow(BRect(0, 0, 0, 0), B_TRANSLATE_MARK("Notification"), 
+		kLeftTitledWindowLook, B_FLOATING_ALL_WINDOW_FEEL, B_AVOID_FRONT | B_AVOID_FOCUS | B_NOT_CLOSABLE 
 		| B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE | B_NOT_RESIZABLE, 
 		B_ALL_WORKSPACES)
 {
 	fBorder = new BorderView(Bounds(), "Notification");
 
 	AddChild(fBorder);
-
+	
 	Show();
 	Hide();
 
@@ -362,13 +363,20 @@ NotificationWindow::ResizeAll()
 	}
 
 	ResizeTo(ViewWidth(), height);
-	PopupAnimation(Bounds().Width(), Bounds().Height());
+	PopupAnimation();
 }
 
 
 void
-NotificationWindow::PopupAnimation(float width, float height)
+NotificationWindow::SetPosition()
 {
+	BRect bounds = DecoratorFrame();
+	float width = bounds.Width();
+	float height = bounds.Height();
+	
+	float leftOffset = Frame().left - DecoratorFrame().left;
+	float topOffset = DecoratorFrame().top - Frame().top;
+	
 	float x = 0, y = 0, sx, sy;
 	float pad = 0;
 	BDeskbar deskbar;
@@ -377,10 +385,8 @@ NotificationWindow::PopupAnimation(float width, float height)
 	switch (deskbar.Location()) {
 		case B_DESKBAR_TOP:
 			// Put it just under, top right corner
-			sx = frame.right;
-			sy = frame.bottom + pad;
-			y = sy;
-			x = sx - width - pad;
+			y = frame.bottom + pad + topOffset;
+			x = frame.right - width;
 			break;
 		case B_DESKBAR_BOTTOM:
 			// Put it just above, lower left corner
@@ -392,14 +398,14 @@ NotificationWindow::PopupAnimation(float width, float height)
 		case B_DESKBAR_LEFT_TOP:
 			// Put it just to the right of the deskbar
 			sx = frame.right + pad;
-			sy = frame.top - height;
-			x = sx;
+			//sy = frame.top - height;
+			x = sx + leftOffset;
 			y = frame.top + pad;
 			break;
 		case B_DESKBAR_RIGHT_TOP:
 			// Put it just to the left of the deskbar
 			sx = frame.left - width - pad;
-			sy = frame.top - height;
+			//sy = frame.top - height;
 			x = sx;
 			y = frame.top + pad;
 			break;
@@ -407,7 +413,7 @@ NotificationWindow::PopupAnimation(float width, float height)
 			// Put it to the right of the deskbar.
 			sx = frame.right + pad;
 			sy = frame.bottom;
-			x = sx;
+			x = sx + leftOffset;
 			y = sy - height - pad;
 			break;
 		case B_DESKBAR_RIGHT_BOTTOM:
@@ -422,6 +428,12 @@ NotificationWindow::PopupAnimation(float width, float height)
 	}
 
 	MoveTo(x, y);
+}
+
+void
+NotificationWindow::PopupAnimation()
+{
+	SetPosition();
 
 	if (IsHidden() && fViews.size() != 0)
 		Show();
@@ -503,6 +515,13 @@ NotificationWindow::SaveAppFilters()
 		settings.AddFlat("app_usage", fIt->second);
 
 	settings.Flatten(&file);
+}
+
+
+void NotificationWindow::Show()
+{
+	BWindow::Show();
+	SetPosition();
 }
 
 

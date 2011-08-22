@@ -835,20 +835,16 @@ isochronous_transfer_data *
 EHCI::FindIsochronousTransfer(ehci_itd *itd)
 {
 	// Simply check every last descriptor of the isochronous transfer list
-	if (LockIsochronous()) {
-		isochronous_transfer_data *transfer = fFirstIsochronousTransfer;
-		if (transfer) {
-			while (transfer->descriptors[transfer->last_to_process]
-				!= itd) {
-				transfer = transfer->link;
-				if (!transfer)
-					break;
-			}
+	isochronous_transfer_data *transfer = fFirstIsochronousTransfer;
+	if (transfer) {
+		while (transfer->descriptors[transfer->last_to_process]
+			!= itd) {
+			transfer = transfer->link;
+			if (!transfer)
+				break;
 		}
-		UnlockIsochronous();
-		return transfer;
 	}
-	return NULL;
+	return transfer;
 }
 
 
@@ -1690,6 +1686,9 @@ EHCI::FinishIsochronousTransfers()
 				" at frame %ld\n", itd, itd->this_phy, itd->prev,
 				itd->prev != NULL ? itd->prev->this_phy : 0, currentFrame);
 
+			if (!LockIsochronous())
+				continue;
+
 			// Process the frame till it has isochronous descriptors in it.
 			while (!(itd->next_phy & EHCI_ITEM_TERMINATE) && itd->prev != NULL) {
 				TRACE("FinishIsochronousTransfers checking itd %p last_token"
@@ -1720,25 +1719,22 @@ EHCI::FinishIsochronousTransfers()
 					}
 
 					// Remove the transfer
-					if (LockIsochronous()) {
-						if (transfer == fFirstIsochronousTransfer) {
-							fFirstIsochronousTransfer = transfer->link;
-							if (transfer == fLastIsochronousTransfer)
-								fLastIsochronousTransfer = NULL;
-						} else {
-							isochronous_transfer_data *temp
-								= fFirstIsochronousTransfer;
-							while (temp != NULL && transfer != temp->link)
-								temp = temp->link;
+					if (transfer == fFirstIsochronousTransfer) {
+						fFirstIsochronousTransfer = transfer->link;
+						if (transfer == fLastIsochronousTransfer)
+							fLastIsochronousTransfer = NULL;
+					} else {
+						isochronous_transfer_data *temp
+							= fFirstIsochronousTransfer;
+						while (temp != NULL && transfer != temp->link)
+							temp = temp->link;
 
-							if (transfer == fLastIsochronousTransfer)
-								fLastIsochronousTransfer = temp;
-							if (temp != NULL && temp->link != NULL)
-								temp->link = temp->link->link;
-						}
-						transfer->link = NULL;
-						UnlockIsochronous();
+						if (transfer == fLastIsochronousTransfer)
+							fLastIsochronousTransfer = temp;
+						if (temp != NULL && temp->link != NULL)
+							temp->link = temp->link->link;
 					}
+					transfer->link = NULL;
 
 					transfer->transfer->Finished(B_OK, actualLength);
 
@@ -1758,6 +1754,8 @@ EHCI::FinishIsochronousTransfers()
 				}
 				itd = itd->prev;
 			}
+
+			UnlockIsochronous();
 
 			TRACE("FinishIsochronousTransfers next frame\n");
 

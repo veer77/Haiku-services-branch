@@ -10,6 +10,7 @@
 #define RADEON_HD_ACCELERANT_H
 
 
+#include "atom.h"
 #include "mode.h"
 #include "radeon_hd.h"
 #include "pll.h"
@@ -18,11 +19,22 @@
 #include "lvds.h"
 
 
+#include <ByteOrder.h>
 #include <edid.h>
 
 
 #define MAX_DISPLAY 2
 	// Maximum displays (more then two requires AtomBIOS)
+
+
+typedef struct {
+	uint32 d1vga_control;
+	uint32 d2vga_control;
+	uint32 vga_render_control;
+	uint32 vga_hdp_control;
+	uint32 d1crtc_control;
+	uint32 d2crtc_control;
+} gpu_mc_info;
 
 
 struct accelerant_info {
@@ -35,11 +47,16 @@ struct accelerant_info {
 	display_mode	*mode_list;		// cloned list of standard display modes
 	area_id			mode_list_area;
 
+	uint8*			rom;
+	area_id			rom_area;
+
 	edid1_info		edid_info;
 	bool			has_edid;
 
 	int				device;
 	bool			is_clone;
+
+	gpu_mc_info		*mc_info;		// used for last known mc state
 
 	// LVDS panel mode passed from the bios/startup.
 	display_mode	lvds_panel_mode;
@@ -53,8 +70,8 @@ struct register_info {
 	uint16	grphControl;
 	uint16	grphSwapControl;
 	uint16	grphPrimarySurfaceAddr;
-	uint16	grphPrimarySurfaceAddrHigh;
 	uint16	grphSecondarySurfaceAddr;
+	uint16	grphPrimarySurfaceAddrHigh;
 	uint16	grphSecondarySurfaceAddrHigh;
 	uint16	grphPitch;
 	uint16	grphSurfaceOffsetX;
@@ -74,6 +91,7 @@ struct register_info {
 	uint16	crtVBlank;
 	uint16	crtHTotal;
 	uint16	crtVTotal;
+	uint16	crtcOffset;
 	uint16	modeDesktopHeight;
 	uint16	modeDataFormat;
 	uint16	modeCenter;
@@ -83,6 +101,51 @@ struct register_info {
 	uint16	sclEnable;
 	uint16	sclTapControl;
 };
+
+
+struct pll_info {
+	/* reference frequency */
+	uint32 reference_freq;
+
+	/* fixed dividers */
+	uint32 reference_div;
+	uint32 post_div;
+
+	/* pll in/out limits */
+	uint32 pll_in_min;
+	uint32 pll_in_max;
+	uint32 pll_out_min;
+	uint32 pll_out_max;
+	uint32 lcd_pll_out_min;
+	uint32 lcd_pll_out_max;
+	uint32 best_vco;
+
+	/* divider limits */
+	uint32 min_ref_div;
+	uint32 max_ref_div;
+	uint32 min_post_div;
+	uint32 max_post_div;
+	uint32 min_feedback_div;
+	uint32 max_feedback_div;
+	uint32 min_frac_feedback_div;
+	uint32 max_frac_feedback_div;
+
+	/* flags for the current clock */
+	uint32 flags;
+
+	/* pll id */
+	uint32 id;
+};
+
+
+typedef struct {
+	bool valid;
+	uint16 line_mux;
+	uint16 devices;
+	uint32 connector_type;
+	// TODO struct radeon_i2c_bus_rec ddc_bus;
+	// TODO struct radeon_hpd hpd;
+} connector_info;
 
 
 typedef struct {
@@ -95,24 +158,22 @@ typedef struct {
 	uint32			vfreq_min;
 	uint32			hfreq_max;
 	uint32			hfreq_min;
+	pll_info		pll;
 } display_info;
 
 
-// display_info connection_type
-#define CONNECTION_DAC			0x0001
-#define CONNECTION_TMDS			0x0002
-#define CONNECTION_LVDS			0x0004
-
 // register MMIO modes
-#define OUT 0x1	// direct MMIO calls
-#define CRT 0x2	// crt controler calls
-#define VGA 0x3 // vga calls
+#define OUT 0x1	// Direct MMIO calls
+#define CRT 0x2	// Crt controller calls
+#define VGA 0x3 // Vga calls
 #define PLL 0x4 // PLL calls
-#define MC	0x5 // Memory Controler calls
+#define MC	0x5 // Memory controller calls
 
 
 extern accelerant_info *gInfo;
+extern atom_context *gAtomContext;
 extern display_info *gDisplay[MAX_DISPLAY];
+extern connector_info *gConnector[ATOM_MAX_SUPPORTED_DEVICE];
 
 
 // register access
@@ -131,19 +192,18 @@ _write32(uint32 offset, uint32 value)
 }
 
 
+// AtomBIOS cail register calls (are *4... no clue why)
 inline uint32
-_read32PLL(uint16 offset)
+Read32Cail(uint32 offset)
 {
-	_write32(CLOCK_CNTL_INDEX, offset & PLL_ADDR);
-	return _read32(CLOCK_CNTL_DATA);
+	return _read32(offset * 4);
 }
 
 
 inline void
-_write32PLL(uint16 offset, uint32 data)
+Write32Cail(uint32 offset, uint32 value)
 {
-	_write32(CLOCK_CNTL_INDEX, (offset & PLL_ADDR) | PLL_WR_EN);
-	_write32(CLOCK_CNTL_DATA, data);
+	_write32(offset * 4, value);
 }
 
 
@@ -154,13 +214,11 @@ Read32(uint32 subsystem, uint32 offset)
 		default:
 		case OUT:
 		case VGA:
-		case MC:
-			return _read32(offset);
 		case CRT:
-			return _read32(offset);
 		case PLL:
 			return _read32(offset);
-			//return _read32PLL(offset);
+		case MC:
+			return _read32(offset);
 	};
 }
 
@@ -172,15 +230,12 @@ Write32(uint32 subsystem, uint32 offset, uint32 value)
 		default:
 		case OUT:
 		case VGA:
-		case MC:
-			_write32(offset, value);
-			return;
 		case CRT:
-			_write32(offset, value);
-			return;
 		case PLL:
 			_write32(offset, value);
-			//_write32PLL(offset, value);
+			return;
+		case MC:
+			_write32(offset, value);
 			return;
 	};
 }

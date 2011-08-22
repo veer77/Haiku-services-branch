@@ -162,10 +162,12 @@ public:
 			void				SelectWindow(Window* window);
 			void				ActivateWindow(Window* window);
 			void				SendWindowBehind(Window* window,
-									Window* behindOf = NULL);
+									Window* behindOf = NULL,
+									bool sendStack = true);
 
 			void				ShowWindow(Window* window);
-			void				HideWindow(Window* window);
+			void				HideWindow(Window* window,
+									bool fromMinimize = false);
 			void				MinimizeWindow(Window* window, bool minimize);
 
 			void				MoveWindowBy(Window* window, float x, float y,
