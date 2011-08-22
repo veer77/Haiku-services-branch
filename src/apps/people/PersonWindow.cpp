@@ -46,8 +46,8 @@ PersonWindow::PersonWindow(BRect frame, const char* title,
 	:
 	BWindow(frame, title, B_TITLED_WINDOW, B_NOT_RESIZABLE | B_NOT_ZOOMABLE
 		| B_AUTO_UPDATE_SIZE_LIMITS),
+	fRef(NULL),
 	fPanel(NULL)
-	//fNameAttribute(nameAttribute)
 {
 	BMenu* menu;
 	BMenuItem* item;
@@ -99,13 +99,12 @@ PersonWindow::PersonWindow(BRect frame, const char* title,
 
 	if (ref != NULL) {
 		SetTitle(ref->name);
-		_SetToRef(new entry_ref(*ref));
-	} else {
-		_SetToRef(NULL);
+		fRef = new entry_ref(*ref);
+		_WatchChanges(true);
 	}
-	//fView = new PersonView("PeopleView", categoryAttribute, fRef);
 
-	fView = new PersonView("PeopleView", contact);
+	fView = new PersonView("PeopleView", contact,
+		new BFile(ref, B_READ_WRITE));
 
 	BLayoutBuilder::Group<>(this, B_VERTICAL, 0)
 		.SetInsets(0, 0, 0, 0)
@@ -163,7 +162,7 @@ PersonWindow::MenusBeginning()
 void
 PersonWindow::MessageReceived(BMessage* msg)
 {
-//	char			str[256];
+	char			str[256];
 	BDirectory		directory;
 	BEntry			entry;
 	BFile			file;
@@ -198,7 +197,7 @@ PersonWindow::MessageReceived(BMessage* msg)
 
 		case B_SAVE_REQUESTED:
 		{
-			/*entry_ref dir;
+			entry_ref dir;
 			if (msg->FindRef("directory", &dir) == B_OK) {
 				const char* name = NULL;
 				msg->FindString("name", &name);
@@ -206,10 +205,6 @@ PersonWindow::MessageReceived(BMessage* msg)
 				if (directory.InitCheck() == B_NO_ERROR) {
 					directory.CreateFile(name, &file);
 					if (file.InitCheck() == B_NO_ERROR) {
-						node = new BNodeInfo(&file);
-						node->SetType("application/x-person");
-						delete node;
-
 						directory.FindEntry(name, &entry);
 						entry.GetRef(&dir);
 						_SetToRef(new entry_ref(dir));
@@ -221,14 +216,15 @@ PersonWindow::MessageReceived(BMessage* msg)
 						(new BAlert("", str, B_TRANSLATE("Sorry")))->Go();
 					}
 				}
-			}*/
+			}
 			break;
 		}
 
-		/*case B_NODE_MONITOR:
+		case B_NODE_MONITOR:
 		{
 			int32 opcode;
 			if (msg->FindInt32("opcode", &opcode) == B_OK) {
+				msg->PrintToStream();
 				switch (opcode) {
 					case B_ENTRY_REMOVED:
 						// We lost our file. Close the window.
@@ -248,10 +244,11 @@ PersonWindow::MessageReceived(BMessage* msg)
 						int32 device;
 						msg->FindInt32("device", &device);
 
-						// Update our ref.
-						delete fRef;
-						fRef = new entry_ref(device, directory, name.String());
-
+						// Update our file
+						fRef = new entry_ref(device,
+							directory, name.String());
+						fFile = new BFile(fRef, B_READ_WRITE);
+						fView->UpdateData(fFile);
 						// And our window title.
 						SetTitle(name);
 
@@ -269,20 +266,13 @@ PersonWindow::MessageReceived(BMessage* msg)
 					}
 
 					case B_ATTR_CHANGED:
-					{
-						// An attribute was updated.
-						BString attr;
-						if (msg->FindString("attr", &attr) == B_OK)
-							fView->SetAttribute(attr.String(), true);
-						break;
-					}
 					case B_STAT_CHANGED:
-						fView->UpdatePicture(fRef);
+						fView->Reload();
 						break;
 				}
 			}
 			break;
-		}*/
+		}
 
 		default:
 			BWindow::MessageReceived(msg);
@@ -330,18 +320,11 @@ PersonWindow::Show()
 	BWindow::Show();
 }
 
-/*
-void
-PersonWindow::AddAttribute(const char* label, const char* attribute)
-{
-	fView->AddAttribute(label, attribute);
-}*/
-
 
 void
 PersonWindow::SaveAs()
 {
-	/*char name[B_FILE_NAME_LENGTH];
+	char name[B_FILE_NAME_LENGTH];
 	_GetDefaultFileName(name);
 
 	if (fPanel == NULL) {
@@ -369,7 +352,7 @@ PersonWindow::SaveAs()
 		else
 			fPanel->Window()->Activate();
 		fPanel->Window()->Unlock();
-	}*/
+	}
 }
 
 
@@ -385,28 +368,32 @@ PersonWindow::RefersPersonFile(const entry_ref& ref) const
 void
 PersonWindow::_GetDefaultFileName(char* name)
 {
+	if (fRef == NULL) {
+		strncpy(name, "No Name", B_FILE_NAME_LENGTH);
+		return;
+	}
 	strncpy(name, fRef->name, B_FILE_NAME_LENGTH);
 }
 
 
 void
 PersonWindow::_SetToRef(entry_ref* ref)
-{/*
+{
 	if (fRef != NULL) {
-		//_WatchChanges(false);
+		_WatchChanges(false);
 		delete fRef;
 	}
-*/
+
 	fRef = ref;
 
-	//_WatchChanges(true);
+	_WatchChanges(true);
 }
 
 
 void
 PersonWindow::_WatchChanges(bool enable)
 {
-/*	if (fRef == NULL)
+	if (fRef == NULL)
 		return;
 
 	node_ref nodeRef;
@@ -429,5 +416,5 @@ PersonWindow::_WatchChanges(bool enable)
 
 	if (watch_node(&nodeRef, flags, this) != B_OK) {
 		printf("Error %s node monitor.\n", action.String());
-	}*/
+	}
 }

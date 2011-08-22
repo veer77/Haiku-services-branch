@@ -75,6 +75,7 @@ private:
 
 			status_t _InitializeAttributes(BFile* file);
 			status_t _CheckPeople(BPositionIO* people);
+			void	 _AddPicture(BFile* file, BMessage* msg);
 };
 
 #endif // #ifndef _People_TRANSLATOR_H

@@ -2,7 +2,12 @@
 #include "AddressView.h"
 
 #include <ControlLook.h>
+#include <ContactDefs.h>
+#include <ContactField.h>
+#include <LayoutBuilder.h>
+#include <TextControl.h>
 
+#include <stdio.h>
 
 AddressView::AddressView(BAddressContactField* field)
 	:
@@ -15,7 +20,6 @@ AddressView::AddressView(BAddressContactField* field)
 	fPostalCode(NULL),
 	fCountry(NULL),
 	fCount(0),
-	fCheck(false),
 	fField(field)
 {
 	SetFlags(Flags() | B_WILL_DRAW);
@@ -25,67 +29,57 @@ AddressView::AddressView(BAddressContactField* field)
 	layout->SetInsets(spacing, spacing, spacing, spacing);
 
 	if (field != NULL) {
-		_AddControl("Street", field->Street(), fStreet);
-		_AddControl("PostalBox", field->PostalBox(), fPostalBox);
-		_AddControl("Neighborhood", field->Neighborhood(), fNeighbor);
-		_AddControl("City", field->City(), fCity);
-		_AddControl("Region", field->Region(), fRegion);
-		_AddControl("Postal Code", field->PostalCode(), fPostalCode);
-		_AddControl("Country", field->Country(), fCountry);
-		fCheck = true;
-		delete fCountry;
-		fCountry = new BTextControl("lol", "lol", NULL);
-		BGridLayout* layout = GridLayout();
-
-
-	layout->AddItem(fCountry->CreateLabelLayoutItem(), 1, fCount);
-	layout->AddItem(fCountry->CreateTextViewLayoutItem(), 2, fCount);
+		fStreet = _AddControl("Street", field->Street());
+		fPostalBox = _AddControl("PostalBox", field->PostalBox());
+		fNeighbor = _AddControl("Neighborhood", field->Neighborhood());
+		fCity = _AddControl("City", field->City());
+		fRegion = _AddControl("Region", field->Region());
+		fPostalCode = _AddControl("Postal Code", field->PostalCode());
+		fCountry = _AddControl("Country", field->Country());
 	}
 }
 
 
 AddressView::~AddressView()
 {
-
 }
 
 
 bool
 AddressView::HasChanged()
 {
-	if (!fCheck)
+	if (fField == NULL)
 		return false;
 
-	printf("%p\n", fStreet);
 	if (fField->Street() != fStreet->Text())
-		return false;
+		return true;
 
 	if (fField->PostalBox() != fPostalBox->Text())
-		return false;
+		return true;
 
 	if (fField->Neighborhood() != fNeighbor->Text())
-		return false;
+		return true;
 
 	if (fField->City() != fCity->Text())
-		return false;
+		return true;
 
 	if (fField->Region() != fRegion->Text())
-		return false;
+		return true;
 
 	if (fField->PostalCode() != fPostalCode->Text())
-		return false;
+		return true;
 
 	if (fField->Country() != fCountry->Text())
-		return false;
+		return true;
 
-	return true;
+	return false;
 }
 
 
 void
-AddressView::Revert()
+AddressView::Reload()
 {
-	if (!fCheck)
+	if (fField == NULL)
 		return;
 
 	fStreet->SetText(fField->Street());
@@ -99,9 +93,9 @@ AddressView::Revert()
 
 
 void
-AddressView::Update()
+AddressView::UpdateAddressField()
 {
-	if (!fCheck)
+	if (fField == NULL)
 		return;
 
 	fField->SetStreet(fStreet->Text());
@@ -117,21 +111,30 @@ AddressView::Update()
 BString
 AddressView::Value() const
 {
-	if (!fCheck)
+	if (fField)
 		return "";
 
 	return fField->Value();
 }
 
 
-void
-AddressView::_AddControl(const char* label, const char* value, BTextControl* control)
+BTextControl*
+AddressView::_AddControl(const char* label, const char* value)
 {
-	control = new BTextControl(label, value, NULL);
-	printf("%s %s\n", label, value);
+	BTextControl* control = new BTextControl(label, value, NULL);
+	control->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
 	BGridLayout* layout = GridLayout();
 	fCount += 1;
 
-	layout->AddItem(control->CreateLabelLayoutItem(), 1, fCount);
-	layout->AddItem(control->CreateTextViewLayoutItem(), 2, fCount);
+	layout->AddItem(control->CreateLabelLayoutItem(), 0, fCount);
+	layout->AddItem(control->CreateTextViewLayoutItem(), 1, fCount);
+
+	return control;
+}
+
+
+BAddressContactField*
+AddressView::Field() const
+{
+	return fField;
 }

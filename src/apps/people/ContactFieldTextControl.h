@@ -22,8 +22,8 @@ public:
 					~ContactFieldTextControl();
 
 	bool			HasChanged();
-	void			Revert();
-	void			Update();
+	void			Reload();
+	void			UpdateField();
 
 	BString			Value() const;
 

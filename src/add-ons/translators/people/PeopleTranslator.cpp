@@ -1,8 +1,9 @@
 #include "PeopleTranslator.h"
 
 #include <shared/AutoDeleter.h>
-#include "ContactDefs.h"
-#include "ContactField.h"
+#include <BitmapStream.h>
+#include <ContactDefs.h>
+#include <ContactField.h>
 #include <fs_attr.h>
 #include <MimeType.h>
 #include <Node.h>
@@ -74,6 +75,35 @@ const uint32 kNumOutputFormats = sizeof(sOutputFormats)
 const uint32 kNumDefaultSettings = sizeof(sDefaultSettings)
 	/ sizeof(TranSetting);
 
+/*
+struct DefaultAttribute {
+	const char*	attribute;
+	int32		width;
+	const char*	name;
+};
+
+// TODO: Add flags in attribute info message to find these.
+static const char* kNameAttribute = "META:name";
+static const char* kCategoryAttribute = "META:group";
+
+struct DefaultAttribute sDefaultAttributes[] = {
+	{ kNameAttribute, 120, B_TRANSLATE("Contact name") },
+	{ "META:nickname", 120, B_TRANSLATE("Nickname") },
+	{ "META:company", 120, B_TRANSLATE("Company") },
+	{ "META:address", 120, B_TRANSLATE("Address") },
+	{ "META:city", 90, B_TRANSLATE("City") },
+	{ "META:state", 50, B_TRANSLATE("State") },
+	{ "META:zip", 50, B_TRANSLATE("Zip") },
+	{ "META:country", 120, B_TRANSLATE("Country") },
+	{ "META:hphone", 90, B_TRANSLATE("Home phone") },
+	{ "META:wphone", 90, B_TRANSLATE("Work phone") },
+	{ "META:fax", 90, B_TRANSLATE("Fax") },
+	{ "META:email", 120, B_TRANSLATE("E-mail") },
+	{ "META:url", 120, B_TRANSLATE("URL") },
+	{ kCategoryAttribute, 120, B_TRANSLATE("Group") },
+	{ NULL, 0, NULL }
+};*/
+
 
 struct PeopleVisitor : public BContactFieldVisitor {
 public:
@@ -112,34 +142,40 @@ public:
 		case B_CONTACT_PHONE:
 			str = _TranslatePhone(field);
 		break;
-/*		case B_CONTACT_PHOTO:
 
-		break;
-		case B_CONTACT_GROUP:
+//		case B_CONTACT_GROUP:
 					
-		break;
-		*/
+//		break;
+
 		}		
 		_WriteAttribute(str.String(), field->Value()); 
 	}
 
 	virtual void 	Visit(BAddressContactField* field)
 	{
-		if (field->IsWellFormed()) {
-			_WriteAttribute(B_PEOPLE_ADDRESS, field->Street());
-			_WriteAttribute(B_PEOPLE_CITY, field->City());
-			_WriteAttribute(B_PEOPLE_STATE, field->Region());
-			_WriteAttribute(B_PEOPLE_ZIP, field->PostalCode());
-			_WriteAttribute(B_PEOPLE_COUNTRY, field->Country());
-		}
+		_WriteAttribute(B_PEOPLE_ADDRESS, field->Street());
+		_WriteAttribute(B_PEOPLE_CITY, field->City());
+		_WriteAttribute(B_PEOPLE_STATE, field->Region());
+		_WriteAttribute(B_PEOPLE_ZIP, field->PostalCode());
+		_WriteAttribute(B_PEOPLE_COUNTRY, field->Country());
 	}
 
-/*
 	virtual void 	Visit(BPhotoContactField* field)
 	{
-		BString str << B_PEOPLE_NAME;
-		_WriteAttribute(str, field->Value()); 
-	}*/
+		BBitmap* picture = field->Photo();
+		if (picture) {
+			fDest->Seek(SEEK_SET, 0);
+			BBitmapStream stream(picture);
+			// Detach *our* bitmap from stream to avoid its deletion
+			// at stream object destruction
+			stream.DetachBitmap(&picture);
+
+			BTranslatorRoster* roster = BTranslatorRoster::Default();
+			roster->Translate(&stream, NULL, NULL, fDest,
+				field->PictureType(), B_TRANSLATOR_BITMAP,
+				NULL);
+		}
+	}
 
 	void	WriteType()
 	{
@@ -179,6 +215,7 @@ private:
 		fDest->WriteAttr(attrName, B_STRING_TYPE, 0,
 		value.String(), value.Length() + 1);
 	}
+
 	BFile* fDest;
 };
 
@@ -240,14 +277,13 @@ status_t
 PeopleTranslator::Translate(BPositionIO* inSource, const translator_info* info,
 	BMessage* ioExtension, uint32 outType, BPositionIO* outDestination)
 {
-	printf("translate\n");
 	if (!outType)
 		outType = B_CONTACT_FORMAT;
 
 	if (outType != B_CONTACT_FORMAT && outType != B_PEOPLE_FORMAT)
 		return B_NO_TRANSLATOR;
 
-	// add no translation
+	// TODO add no translation
 	BMessage msg;
 	if (outType == B_PEOPLE_FORMAT && msg.Unflatten(inSource) == B_OK) {
 		if (outDestination == NULL)
@@ -326,7 +362,7 @@ PeopleTranslator::TranslatePeople(BPositionIO* inSource,
 			// TODO use a std::map here since it's just mapping
 			// strings to enum values. Maybe use 2 maps, one for address fields
 			// one for string fields.
-
+			
 			BContactField* field = NULL;
 			if (strcmp(buf, B_PEOPLE_NAME) == 0) {
 				field = new BStringContactField(B_CONTACT_NAME, value);
@@ -371,6 +407,8 @@ PeopleTranslator::TranslatePeople(BPositionIO* inSource,
 		if (addressField->Value().Length() > 0) {
 			_AddField(addressField, &msg);
 		}
+
+		_AddPicture(file, &msg);
 
 		msg.PrintToStream();
 		outDestination->Seek(0, SEEK_SET);
@@ -453,3 +491,147 @@ PeopleTranslator::_AddField(BContactField* field, BMessage* msg)
 	}
 	return B_ERROR;
 }
+
+
+void
+PeopleTranslator::_AddPicture(BFile* file, BMessage* msg)
+{
+	off_t fileSize;
+	status_t status = file->GetSize(&fileSize);
+		if (status != B_OK)
+			return;
+
+		if (fileSize < 1)
+			return;
+
+	translator_info info;
+	memset(&info, 0, sizeof(translator_info));
+	BMessage ioExtension;
+
+	BTranslatorRoster* roster = BTranslatorRoster::Default();
+
+	if (roster == NULL)
+		return;
+
+	status = roster->Identify(file, &ioExtension, &info, 0, NULL,
+		B_TRANSLATOR_BITMAP);
+
+	BBitmapStream stream;
+
+	if (status == B_OK) {
+		status = roster->Translate(file, &info, &ioExtension, &stream,
+			B_TRANSLATOR_BITMAP);
+	}
+	if (status != B_OK)
+		return;
+
+	BBitmap* picture = NULL;
+	if (stream.DetachBitmap(&picture) != B_OK
+		|| picture == NULL)
+		return;
+
+	BPhotoContactField* field = new BPhotoContactField(picture);
+
+	// Remember image format so we could store using the same
+	//field->SetMIMEType(info.MIME);
+	field->SetPictureType(info.type);
+
+	_AddField(field, msg);
+}
+
+
+// Read attributes from person mime type. If it does not exist,
+// or if it contains no attribute definitions, install a "clean"
+// person mime type from the hard-coded default attributes.
+/*
+status_t
+PeopleTranslator::_InitAttr()
+{
+	bool valid = false;
+	BMimeType mime(B_PERSON_MIMETYPE);
+	if (mime.IsInstalled()) {
+		BMessage info;
+		if (mime.GetAttrInfo(&info) == B_NO_ERROR) {
+			int32 index = 0;
+			while (true) {
+				int32 type;
+				if (info.FindInt32("attr:type", index, &type) != B_OK)
+					break;
+				bool editable;
+				if (info.FindBool("attr:editable", index, &editable) != B_OK)
+					break;
+
+				// TODO: Support other types besides string attributes.
+				if (type != B_STRING_TYPE || !editable)
+					break;
+
+				Attribute* attribute = new Attribute();
+				ObjectDeleter<Attribute> deleter(attribute);
+				if (info.FindString("attr:public_name", index,
+						&attribute->name) != B_OK) {
+					break;
+				}
+				if (info.FindString("attr:name", index,
+						&attribute->attribute) != B_OK) {
+					break;
+				}
+
+				if (!fAttributes.AddItem(attribute))
+					break;
+
+				deleter.Detach();
+				index++;
+			}
+		}
+		if (fAttributes.CountItems() == 0) {
+			valid = false;
+			mime.Delete();
+		} else
+			valid = true;
+	}
+	if (!valid) {
+		mime.Install();
+		mime.SetShortDescription(B_TRANSLATE_WITH_CONTEXT("Person",
+			"Short mimetype description"));
+		mime.SetLongDescription(B_TRANSLATE_WITH_CONTEXT(
+			"Contact information for a person.",
+			"Long mimetype description"));
+		mime.SetIcon(kPersonIcon, sizeof(kPersonIcon));
+		mime.SetPreferredApp(APP_SIG);
+
+		// add default person fields to meta-mime type
+		BMessage fields;
+		for (int32 i = 0; sDefaultAttributes[i].attribute; i++) {
+			fields.AddString("attr:public_name", sDefaultAttributes[i].name);
+			fields.AddString("attr:name", sDefaultAttributes[i].attribute);
+			fields.AddInt32("attr:type", B_STRING_TYPE);
+			fields.AddBool("attr:viewable", true);
+			fields.AddBool("attr:editable", true);
+			fields.AddInt32("attr:width", sDefaultAttributes[i].width);
+			fields.AddInt32("attr:alignment", B_ALIGN_LEFT);
+			fields.AddBool("attr:extra", false);
+
+			// Add the default attribute to the attribute list, too.
+			Attribute* attribute = new Attribute();
+			attribute->name = sDefaultAttributes[i].name;
+			attribute->attribute = sDefaultAttributes[i].attribute;
+			if (!fAttributes.AddItem(attribute))
+				delete attribute;
+		}
+
+		mime.SetAttrInfo(&fields);
+	}
+
+	// create indices on all volumes for the found attributes.
+
+	int32 count = fAttributes.CountItems();
+	BVolumeRoster volumeRoster;
+	BVolume volume;
+	while (volumeRoster.GetNextVolume(&volume) == B_OK) {
+		for (int32 i = 0; i < count; i++) {
+			Attribute* attribute = fAttributes.ItemAt(i);
+			fs_create_index(volume.Device(), attribute->attribute,
+				B_STRING_TYPE, 0);
+		}
+	}
+}*/

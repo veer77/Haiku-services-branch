@@ -14,11 +14,12 @@
 
 BContact::BContact(BRawContact* contact)
 	:
-	fInitCheck(B_OK)
+	fInitCheck(B_OK),
+	fList(20, true)
 {
 	// fID = BContactRoster::GetFreeID();
 
-	fList = new BObjectList<BContactField>(20, true);
+	//fList = new BObjectList<BContactField>(20, true);
 
 	if (contact == NULL) {
 		// We create a memory RawContact
@@ -41,20 +42,19 @@ BContact::BContact(BRawContact* contact)
 		}
 	}
 
-	printf("%s\n", strerror(fRawContact->InitCheck()));
 	fInitCheck = B_ERROR;
 }
 
 
 BContact::BContact(BMessage* data)
 	:
-	fInitCheck(B_OK)
-//	fList(true)
+	fInitCheck(B_OK),
+	fList(20, true)
 {
-	fList = new BObjectList<BContactField> (20, true);
+	//fList = new BObjectList<BContactField> (20, true);
 	BMessage msg;
 	fInitCheck = data->FindMessage("RawContact", &msg);
-//	fRawContact = BRawContact::Instantiate(&msg);
+
 	fRawContact = new BRawContact(&msg);
 
 	_UnflattenFields(data);
@@ -63,8 +63,8 @@ BContact::BContact(BMessage* data)
 
 BContact::~BContact()
 {
-	delete fList;
-//	delete fRawContact;
+	//delete fList;
+	delete fRawContact;
 }
 
 
@@ -134,6 +134,24 @@ BContact::Append(BRawContact* contact)
 
 
 status_t
+BContact::Reload()
+{
+	if (fRawContact->InitCheck() != B_OK)
+		return B_ERROR;
+		
+	if (fList.CountItems() != 0) {
+		fList.MakeEmpty();
+	}
+	BMessage msg;
+
+	fRawContact->Read(&msg);
+	msg.PrintToStream();
+	_UnflattenFields(&msg);
+	return B_OK;
+}
+
+
+status_t
 BContact::Commit()
 {
 	if (fInitCheck != B_OK)
@@ -153,7 +171,7 @@ BContact::AddField(BContactField* field)
 	if (fInitCheck != B_OK)
 		return fInitCheck;
 
-	if (fList->AddItem(field))
+	if (fList.AddItem(field))
 		return B_OK;
 
 	return B_ERROR;	
@@ -166,11 +184,11 @@ BContact::ReplaceField(BContactField* field)
 	if (fInitCheck != B_OK)
 		return fInitCheck;
 
-	int count = fList->CountItems();
+	int count = fList.CountItems();
 	for (int i = 0; i < count; i++) {
-		BContactField* ret = fList->ItemAt(i);
+		BContactField* ret = fList.ItemAt(i);
 		if (ret->IsEqual(field)) {
-			if (fList->ReplaceItem(i, field))
+			if (fList.ReplaceItem(i, field))
 				return B_OK;
 			else
 				return B_ERROR;
@@ -188,10 +206,10 @@ BContact::HasField(BContactField* field)
 	if (fInitCheck != B_OK)
 		return fInitCheck;
 
-	int count = fList->CountItems();
+	int count = fList.CountItems();
 	BContactField* ret;
 	for (int i = 0; i < count; i++) {
-		ret = fList->ItemAt(i);
+		ret = fList.ItemAt(i);
 		if (ret->IsEqual(field))
 			return true;
 	}
@@ -199,10 +217,49 @@ BContact::HasField(BContactField* field)
 }
 
 
+BContactField*
+BContact::GetField(type_code type)
+{
+	if (fInitCheck != B_OK)
+		return NULL;
+
+	int count = fList.CountItems();
+	BContactField* ret;
+	for (int i = 0; i < count; i++) {
+		ret = fList.ItemAt(i);
+		if (ret->FieldType() == type)
+			return ret;
+	}
+	return NULL;
+}
+
 status_t
 BContact::CreateDefaultFields()
 {
+	fList.AddItem(new BStringContactField(B_CONTACT_NAME));
+	fList.AddItem(new BStringContactField(B_CONTACT_NICKNAME));
+	fList.AddItem(new BStringContactField(B_CONTACT_EMAIL));
+	fList.AddItem(new BStringContactField(B_CONTACT_ORGANIZATION));
+//	fList.AddItem(new BStringContactField(B_CONTACT_IM));
+	fList.AddItem(new BStringContactField(B_CONTACT_URL));
+	BStringContactField* homePhone 
+		= new BStringContactField(B_CONTACT_PHONE);
 	
+	homePhone->SetUsage(CONTACT_DATA_HOME);
+	fList.AddItem(homePhone);
+
+	BStringContactField* workPhone 
+		= new BStringContactField(B_CONTACT_PHONE);
+	workPhone->SetUsage(CONTACT_DATA_WORK);
+	fList.AddItem(workPhone);
+
+	BStringContactField* fax 
+		= new BStringContactField(B_CONTACT_PHONE);
+	fax->SetUsage(CONTACT_PHONE_FAX_WORK);
+	fList.AddItem(fax);
+
+	fList.AddItem(new BAddressContactField());
+
 	return B_OK;
 }
 
@@ -214,10 +271,10 @@ BContact::RemoveEquivalentFields(BContactField* field)
 		return fInitCheck;
 
 	BContactField* ret;
-	for (int i = 0; i < fList->CountItems(); i++) {
-		ret = fList->ItemAt(i);
+	for (int i = 0; i < fList.CountItems(); i++) {
+		ret = fList.ItemAt(i);
 		if (ret->IsEqual(field))
-			fList->RemoveItemAt(i);
+			fList.RemoveItemAt(i);
 	}
 	return B_OK;
 }
@@ -229,7 +286,7 @@ BContact::RemoveField(BContactField* field)
 	if (fInitCheck != B_OK)
 		return fInitCheck;
 
-	if (fList->RemoveItem(field) == 0)
+	if (fList.RemoveItem(field) == 0)
 		return B_NAME_NOT_FOUND;
 
 	return B_OK;
@@ -242,7 +299,7 @@ BContact::GetField(int index)
 	if (fInitCheck != B_OK)
 		return NULL;
 
-	return fList->ItemAt(index);
+	return fList.ItemAt(index);
 }
 
 
@@ -250,7 +307,7 @@ BContact::GetField(int index)
 int32
 BContact::CountFields() const
 {
-	return fList->CountItems();
+	return fList.CountItems();
 }
 
 
@@ -262,7 +319,7 @@ BContact::CopyFieldsFrom(BContact& contact)
 		if (field == NULL)
 			return B_ERROR;
 
-		fList->AddItem(field);
+		fList.AddItem(field);
 	}
 	return B_OK;
 }
@@ -271,11 +328,11 @@ BContact::CopyFieldsFrom(BContact& contact)
 status_t
 BContact::_FlattenFields(BMessage* msg)
 {
-	int count = fList->CountItems();
+	int count = fList.CountItems();
 	status_t ret;
 
 	for (int i = 0; i < count; i++) {
-		BContactField* object = fList->ItemAt(i);
+		BContactField* object = fList.ItemAt(i);
 		ssize_t size = object->FlattenedSize();
 
 		void* buffer = new char[size];
@@ -302,7 +359,6 @@ BContact::_UnflattenFields(BMessage* msg)
 	type_code code = B_CONTACT_FIELD_TYPE;
 
 	ret = msg->GetInfo(CONTACT_FIELD_IDENT, &code, &count);
-	printf("%s\n", strerror(ret));
 	if (ret != B_OK)
 		return ret;
 
@@ -312,13 +368,16 @@ BContact::_UnflattenFields(BMessage* msg)
 
 		ret = msg->FindData(CONTACT_FIELD_IDENT, code,
 			i, &data, &size);
-		printf("%d %s\n", i, strerror(ret));
+
 		if (ret != B_OK)
 			return ret;
 
 		BContactField* field = BContactField::UnflattenChildClass(data, size);
-		printf("%p %s\n", field, field->Value().String());
-		fList->AddItem(field);
+
+		if (field) 
+			fList.AddItem(field);
+		else
+			continue;
 	}
 	return ret;
 }

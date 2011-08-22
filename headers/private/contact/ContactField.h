@@ -47,9 +47,7 @@ public:
 			const BString&	Label() const;
 			void			SetLabel(const BString& label);
 
-			// NOTA probabilmente
-			// questo è inutile allo stato attuale
-			// conviene sostituirlo con un SetType / GetType
+			// these functions will be removed probably
 			bool			AddParameter(const BString& property);
 
 			bool			AddParameterAt(const BString& property,
@@ -112,6 +110,8 @@ public:
 	virtual bool 			IsEqual(BContactField* field);
 	virtual void			SetValue(const BString& value);
 	virtual const BString&	Value() const;
+
+			void			SetUsage(int32 usage);
 
 	virtual status_t		CopyDataFrom(BContactField* field);
 
@@ -185,17 +185,18 @@ private:
 
 class BPhotoContactField : public virtual BContactField {
 public:
-							BPhotoContactField(int32 type = CONTACT_PHOTO_REF);
+							BPhotoContactField(BBitmap* bitmap = NULL);
 	virtual					~BPhotoContactField();
 
 	virtual	void			Accept(BContactFieldVisitor* v);
 	virtual	bool			IsEqual(BContactField* field);
-/*
+
 			BBitmap*		Photo() const;
 			void			SetPhoto(BBitmap* photo);
-*/
+/*
 			const entry_ref& RefToPhoto();
 			void			SetRefToPhoto(const entry_ref& ref);
+*/
 
 	virtual void			SetValue(const BString& value) ;
 	virtual const BString&	Value() const;
@@ -206,15 +207,19 @@ public:
 	virtual	status_t		Flatten(void* buffer, ssize_t size) const;
 	virtual	status_t		Unflatten(type_code code, const void* buffer,
 								ssize_t size);
+
+			uint32			PictureType() const;
+			void			SetPictureType(uint32 type);
 protected:
 			void			_InitLabel();
 
 			struct 			EqualityVisitor;
-			//BBitmap*		fBitmap:
+			BBitmap*		fBitmap;
 			BString			fUrl;
 			int32			fPhotoType;
 
 			entry_ref* 		fEntry;
+			uint32			fPictureType;
 };
 
 /*

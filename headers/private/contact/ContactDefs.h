@@ -7,10 +7,14 @@
 
 #include <Errors.h>
 
+enum ContactGroupDefs {
+	B_CONTACT_GROUP_DEFAULT = 'BCGD'
+};
+
 enum ContactFieldType {
 	B_CONTACT_NAME 			= 'BCNN', //BString
 	B_CONTACT_NICKNAME 		= 'BCNK', // *
-	B_CONTACT_PHOTO 		= 'BCNP', // image
+	B_CONTACT_PHOTO 		= 'BCNH', // image
 	B_CONTACT_ADDRESS 		= 'BCNA', // BAddress
 	B_CONTACT_PHONE			= 'BCNP', // BPhone
 	B_CONTACT_EMAIL			= 'BCNE', // string

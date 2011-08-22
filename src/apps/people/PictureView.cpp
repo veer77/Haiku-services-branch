@@ -113,6 +113,46 @@ PictureView::PictureView(float width, float height, const entry_ref* ref)
 	Update(ref);
 }
 
+// TODO create private methods for constructor
+PictureView::PictureView(float width, float height, BBitmap* bitmap)
+	:
+	BView("pictureview", B_WILL_DRAW | B_FULL_UPDATE_ON_RESIZE | B_NAVIGABLE),
+	fPicture(NULL),
+	fOriginalPicture(NULL),
+	fDefaultPicture(NULL),
+	fShowingPopUpMenu(false),
+	fPictureType(0),
+	fFocusChanging(false),
+	fOpenPanel(new BFilePanel(B_OPEN_PANEL))
+{
+	SetViewColor(255, 255, 255);
+
+	SetToolTip(B_TRANSLATE(
+		"Drop an image here,\n"
+		"or use the contextual menu."));
+
+	BSize size(width + 2 * kPictureMargin, height + 2 * kPictureMargin);
+	SetExplicitMinSize(size);
+	SetExplicitMaxSize(size);
+
+	BMimeType mime(B_PERSON_MIMETYPE);
+	uint8* iconData;
+	size_t iconDataSize;
+	if (mime.GetIcon(&iconData, &iconDataSize) == B_OK) {
+		float size = width < height ? width : height;
+		fDefaultPicture = new BBitmap(BRect(0, 0, size, size),
+			B_RGB32);
+		if (fDefaultPicture->InitCheck() != B_OK
+			|| BIconUtils::GetVectorIcon(iconData, iconDataSize,
+				fDefaultPicture) != B_OK) {
+			delete fDefaultPicture;
+			fDefaultPicture = NULL;
+		}
+	}
+
+	Update(bitmap);
+}
+
 
 PictureView::~PictureView()
 {
@@ -160,6 +200,21 @@ PictureView::Update(const entry_ref* ref)
 		return;
 
 	if (_LoadPicture(ref) == B_OK) {
+		delete fOriginalPicture;
+		fOriginalPicture = fPicture;
+	}
+}
+
+
+void
+PictureView::Update(BBitmap* bitmap)
+{
+	// Don't update when user has modified the picture
+	if (HasChanged())
+		return;
+
+	if (bitmap != NULL) {
+		fPicture = bitmap;
 		delete fOriginalPicture;
 		fOriginalPicture = fPicture;
 	}

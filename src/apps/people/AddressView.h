@@ -11,12 +11,11 @@
 #ifndef ADDRESS_VIEW_H
 #define ADDRESS_VIEW_H
 
-#include <ContactDefs.h>
-#include <ContactField.h>
 #include <String.h>
-#include <TextControl.h>
 #include <GridView.h>
 
+class BTextControl;
+class BAddressContactField;
 
 class AddressView : public BGridView {
 public:
@@ -25,15 +24,14 @@ public:
 	virtual					~AddressView();
 
 			bool			HasChanged();
-			void			Revert();
-			void			Update();
+			void			Reload();
+			void			UpdateAddressField();
 
 			BString			Value() const;
 
-			BContactField*	Field() const { return fField; }
+			BAddressContactField* Field() const;
 private:
-			void			_AddControl(const char* label, const char* value,
-								BTextControl* control);
+			BTextControl*	_AddControl(const char* label, const char* value);
 
 			BTextControl*	fStreet;
 			BTextControl*	fPostalBox;
@@ -44,8 +42,6 @@ private:
 			BTextControl*	fCountry;
 
 			int32			fCount;
-
-			bool			fCheck;
 
 			BAddressContactField*	fField;
 };

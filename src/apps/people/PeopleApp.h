@@ -17,8 +17,10 @@
 #include <ObjectList.h>
 #include <String.h>
 
-
+// TODO move it to ContactDefs.h and update
+// the code to use it
 #define	B_PERSON_MIMETYPE	"application/x-person"
+#define	B_VCARD_MIMETYPE	"text/x-vCard"
 #define APP_SIG				"application/x-vnd.Be-PEPL"
 
 
@@ -47,21 +49,12 @@ private:
 				PersonWindow*	_FindWindow(const entry_ref&) const;
 				PersonWindow*	_NewWindow(const entry_ref* ref = NULL,
 					BFile* file = NULL);
-				void			_AddFields(PersonWindow* window) const;
 				void			_SavePreferences(BMessage* message) const;
 
 private:
 				BFile*			fPrefs;
 				uint32			fWindowCount;
 				BRect			fPosition;
-
-/*				struct Attribute {
-					BString		attribute;
-					int32		width;
-					BString		name;
-				};
-
-				BObjectList<Attribute> fAttributes;*/
 };
 
 #endif // PEOPLE_APP_H

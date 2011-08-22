@@ -302,18 +302,26 @@ BContactField::UnflattenChildClass(const void* from, ssize_t size)
 			child = new BStringContactField(childType);
 			break;
 		case B_CONTACT_ADDRESS:
-			printf("address\n");
 			child = new BAddressContactField();
 			break;
+		case B_CONTACT_PHOTO:
+			child = new BPhotoContactField();
+			break;
+
+		default:
+			return NULL;
 	}
 
-	/*if (child != NULL 
-		&& child->Unflatten(B_CONTACT_FIELD_TYPE, from, size) != B_OK)
-			return NULL;*/
+	if (child == NULL)
+		return NULL;
 
 	status_t ret = child->Unflatten(B_CONTACT_FIELD_TYPE, from, size);
-	printf("%s\n", strerror(ret));
-	return child;
+
+	if (ret == B_OK)
+		return child;
+
+	delete child;
+	return NULL;
 }
 
 
@@ -337,6 +345,9 @@ BContactField::Duplicate(BContactField* from)
 			break;
 		case B_CONTACT_ADDRESS:
 			child = new BAddressContactField();
+			break;
+		case B_CONTACT_PHOTO:
+			child = new BPhotoContactField();
 			break;
 	}
 
@@ -461,12 +472,33 @@ BStringContactField::SetValue(const BString& value)
 }
 
 
+void
+BStringContactField::SetUsage(int32 usage)
+{
+	fUsage = usage;
+	// TODO support more usages here
+	switch (usage) {
+		case CONTACT_DATA_HOME:
+			fLabel.Prepend("Home ");
+		break;
+		case CONTACT_DATA_WORK:
+			fLabel.Prepend("Work ");
+		break;
+		
+		case CONTACT_PHONE_FAX_WORK:
+			fLabel.SetTo("Work Fax");
+		case CONTACT_PHONE_FAX_HOME:
+			fLabel.SetTo("Home Fax");
+		break;
+	}
+}
+
+
 const BString&
 BStringContactField::Value() const
 {
 	return fValue;
 }
-
 
 // this method should take a BStringContactField
 status_t
@@ -521,7 +553,7 @@ BStringContactField::Unflatten(type_code code,
 		return ret;
 
 	fValue = _ReadStringFromBuffer(&data);
-
+	SetUsage(fUsage);
 	return B_OK;
 }
 
@@ -552,7 +584,7 @@ BStringContactField::_InitLabel()
 			SetLabel("URL");
 		break;
 		case B_CONTACT_PHONE:
-			SetLabel("Phone Number");
+			SetLabel("Phone");
 		break;
 	}
 }
@@ -865,14 +897,37 @@ BAddressContactField::_PopValue(BString& str, BString& value)
 
 /** BPhotoContactField */
 
-BPhotoContactField::BPhotoContactField(int32 type)   
+BPhotoContactField::BPhotoContactField(BBitmap* bitmap)   
 	:
 	BContactField(B_CONTACT_PHOTO),
-	fPhotoType(type)
+	fBitmap(bitmap),
+	fUrl(),
+	fPhotoType(CONTACT_PHOTO_BITMAP),
+	fPictureType(0)
 {
 	_InitLabel();
 }
 
+/*
+BPhotoContactField::BPhotoContactField(const char* url)   
+	:
+	BContactField(B_CONTACT_PHOTO),
+	fPhotoType(CONTACT_PHOTO_URL)
+{
+	_InitLabel();
+}
+
+
+
+BPhotoContactField::BPhotoContactField(entry_ref* ref)   
+	:
+	BContactField(B_CONTACT_PHOTO),
+	fPhotoType(CONTACT_PHOTO_REF)
+{
+	_InitLabel();
+}
+
+*/
 
 BPhotoContactField::~BPhotoContactField()
 {	
@@ -904,8 +959,8 @@ struct BPhotoContactField::EqualityVisitor : public EqualityVisitorBase {
 		/*if (fOwner->RefToPhoto() == field->RefToPhoto())
 			result = true;*/
 
-		if (field->Value().Compare(fOwner->Value()) == 0)
-			result = true;
+		/*if (field->Value().Compare(fOwner->Value()) == 0)
+			result = true;*/
 	}
 };
 
@@ -926,6 +981,25 @@ BPhotoContactField::IsEqual(BContactField* field)
 }
 
 
+BBitmap*
+BPhotoContactField::Photo() const
+{
+	if (fBitmap)
+		return fBitmap;
+//	else
+//		return _BitmapFromRef();
+	return NULL;
+}
+
+
+void
+BPhotoContactField::SetPhoto(BBitmap* photo)
+{
+	fBitmap = photo;
+	//_Clean();
+}
+
+
 void
 BPhotoContactField::SetValue(const BString& value)
 {
@@ -937,6 +1011,20 @@ const BString&
 BPhotoContactField::Value() const
 {
 	return fUrl;
+}
+
+
+uint32
+BPhotoContactField::PictureType() const
+{
+	return fPictureType;
+}
+
+
+void
+BPhotoContactField::SetPictureType(uint32 type)
+{
+	fPictureType = type;
 }
 
 
@@ -953,6 +1041,12 @@ BPhotoContactField::FlattenedSize() const
 {
 	ssize_t size = BContactField::FlattenedSize();
 
+	if (fBitmap) {
+		BMessage msg;
+		fBitmap->Archive(&msg);
+		size += msg.FlattenedSize();
+		size += sizeof(ssize_t);
+	}
 	return size;
 }
 
@@ -968,9 +1062,22 @@ BPhotoContactField::Flatten(void* buffer, ssize_t size) const
 	if (ret != B_OK)
 		return ret;
 
-	ssize_t fRefLen = sizeof(fEntry);
-	flatData.Write(&fRefLen, sizeof(fRefLen));
-	flatData.Write(fEntry, fRefLen);
+	ssize_t destSize;
+
+	if (fBitmap != NULL) {
+		BMessage msg;
+		BMallocIO dest;
+
+		fBitmap->Archive(&msg);
+		destSize = msg.FlattenedSize();
+		msg.Flatten(&dest);
+
+		flatData.Write(&destSize, sizeof(destSize));
+		flatData.Write(dest.Buffer(), destSize);
+	} else {
+		size = 0;
+		flatData.Write(&size, sizeof(destSize));
+	}
 
 	return B_OK;
 }
@@ -985,13 +1092,24 @@ BPhotoContactField::Unflatten(type_code code,
 	if (ret != B_OK)
 		return ret;
 
-	ssize_t fRefLen;
-	data.Read(&fRefLen, sizeof(fRefLen));
+	BMessage msg;
+	ssize_t destSize;
+	data.Read(&destSize, sizeof(destSize));
 
-	if (fRefLen != 0)
-		data.Read(&fEntry, fRefLen);
+	if (destSize < 1) {
+		fBitmap = NULL;
+		return B_OK;
+	}
 
-	return B_OK;
+	void* buf = malloc(destSize);
+	data.Read(buf, destSize);
+
+	BMemoryIO dest(buf, destSize);
+	msg.Unflatten(&dest);
+
+	fBitmap = new BBitmap(&msg);
+
+	return fBitmap->InitCheck();
 }
 
 

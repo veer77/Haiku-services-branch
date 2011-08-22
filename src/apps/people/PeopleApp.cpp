@@ -6,6 +6,7 @@
  *		Robert Polic
  *		Axel Dörfler, axeld@pinc-software.de
  *		Stephan Aßmus <superstippi@gmx.de>
+ *		Casalinuovo Dario barrett666@gmail.com
  *
  * Copyright 1999, Be Incorporated.   All Rights Reserved.
  * This file may be used under the terms of the Be Sample Code License.
@@ -33,46 +34,16 @@
 #include "PersonIcons.h"
 
 #include <string.h>
+#include <stdio.h>
 
 
 #undef B_TRANSLATE_CONTEXT
 #define B_TRANSLATE_CONTEXT "People"
 
-/*
-struct DefaultAttribute {
-	const char*	attribute;
-	int32		width;
-	const char*	name;
-};
-
-// TODO: Add flags in attribute info message to find these.
-static const char* kNameAttribute = "META:name";
-static const char* kCategoryAttribute = "META:group";
-
-struct DefaultAttribute sDefaultAttributes[] = {
-	{ kNameAttribute, 120, B_TRANSLATE("Contact name") },
-	{ "META:nickname", 120, B_TRANSLATE("Nickname") },
-	{ "META:company", 120, B_TRANSLATE("Company") },
-	{ "META:address", 120, B_TRANSLATE("Address") },
-	{ "META:city", 90, B_TRANSLATE("City") },
-	{ "META:state", 50, B_TRANSLATE("State") },
-	{ "META:zip", 50, B_TRANSLATE("Zip") },
-	{ "META:country", 120, B_TRANSLATE("Country") },
-	{ "META:hphone", 90, B_TRANSLATE("Home phone") },
-	{ "META:wphone", 90, B_TRANSLATE("Work phone") },
-	{ "META:fax", 90, B_TRANSLATE("Fax") },
-	{ "META:email", 120, B_TRANSLATE("E-mail") },
-	{ "META:url", 120, B_TRANSLATE("URL") },
-	{ kCategoryAttribute, 120, B_TRANSLATE("Group") },
-	{ NULL, 0, NULL }
-};*/
-
-
 TPeopleApp::TPeopleApp()
 	:
 	BApplication(APP_SIG),
 	fWindowCount(0)
-//	fAttributes(20, true)
 {
 	B_TRANSLATE_MARK_SYSTEM_NAME("People");
 
@@ -99,100 +70,6 @@ TPeopleApp::TPeopleApp()
 			fPrefs = NULL;
 		}
 	}
-
-	// Read attributes from person mime type. If it does not exist,
-	// or if it contains no attribute definitions, install a "clean"
-	// person mime type from the hard-coded default attributes.
-
-	// TODO move this code into PeopleTranslator
-/*
-	bool valid = false;
-	BMimeType mime(B_PERSON_MIMETYPE);
-	if (mime.IsInstalled()) {
-		BMessage info;
-		if (mime.GetAttrInfo(&info) == B_NO_ERROR) {
-			int32 index = 0;
-			while (true) {
-				int32 type;
-				if (info.FindInt32("attr:type", index, &type) != B_OK)
-					break;
-				bool editable;
-				if (info.FindBool("attr:editable", index, &editable) != B_OK)
-					break;
-
-				// TODO: Support other types besides string attributes.
-				if (type != B_STRING_TYPE || !editable)
-					break;
-
-				Attribute* attribute = new Attribute();
-				ObjectDeleter<Attribute> deleter(attribute);
-				if (info.FindString("attr:public_name", index,
-						&attribute->name) != B_OK) {
-					break;
-				}
-				if (info.FindString("attr:name", index,
-						&attribute->attribute) != B_OK) {
-					break;
-				}
-
-				if (!fAttributes.AddItem(attribute))
-					break;
-
-				deleter.Detach();
-				index++;
-			}
-		}
-		if (fAttributes.CountItems() == 0) {
-			valid = false;
-			mime.Delete();
-		} else
-			valid = true;
-	}
-	if (!valid) {
-		mime.Install();
-		mime.SetShortDescription(B_TRANSLATE_WITH_CONTEXT("Person",
-			"Short mimetype description"));
-		mime.SetLongDescription(B_TRANSLATE_WITH_CONTEXT(
-			"Contact information for a person.",
-			"Long mimetype description"));
-		mime.SetIcon(kPersonIcon, sizeof(kPersonIcon));
-		mime.SetPreferredApp(APP_SIG);
-
-		// add default person fields to meta-mime type
-		BMessage fields;
-		for (int32 i = 0; sDefaultAttributes[i].attribute; i++) {
-			fields.AddString("attr:public_name", sDefaultAttributes[i].name);
-			fields.AddString("attr:name", sDefaultAttributes[i].attribute);
-			fields.AddInt32("attr:type", B_STRING_TYPE);
-			fields.AddBool("attr:viewable", true);
-			fields.AddBool("attr:editable", true);
-			fields.AddInt32("attr:width", sDefaultAttributes[i].width);
-			fields.AddInt32("attr:alignment", B_ALIGN_LEFT);
-			fields.AddBool("attr:extra", false);
-
-			// Add the default attribute to the attribute list, too.
-			Attribute* attribute = new Attribute();
-			attribute->name = sDefaultAttributes[i].name;
-			attribute->attribute = sDefaultAttributes[i].attribute;
-			if (!fAttributes.AddItem(attribute))
-				delete attribute;
-		}
-
-		mime.SetAttrInfo(&fields);
-	}
-
-	// create indices on all volumes for the found attributes.
-
-	int32 count = fAttributes.CountItems();
-	BVolumeRoster volumeRoster;
-	BVolume volume;
-	while (volumeRoster.GetNextVolume(&volume) == B_OK) {
-		for (int32 i = 0; i < count; i++) {
-			Attribute* attribute = fAttributes.ItemAt(i);
-			fs_create_index(volume.Device(), attribute->attribute,
-				B_STRING_TYPE, 0);
-		}
-	}*/
 }
 
 
@@ -293,17 +170,18 @@ TPeopleApp::ReadyToRun()
 PersonWindow*
 TPeopleApp::_NewWindow(const entry_ref* ref, BFile* file)
 {
-	printf("new window\n");
-	// using this BRawContact constructor, the class
-	// will detect automatically the format
+
 	BRawContact* rawContact;
-	if (file == NULL)
+	if (file == NULL) {
 		rawContact = new BRawContact(B_CONTACT_FORMAT, NULL);
-	 else
+	} else {
+		// using this BRawContact constructor, the class
+		// will detect automatically the final format
 		rawContact = new BRawContact(0, file);
+	}
 
 	BContact* contact = new BContact(rawContact);
-
+	//ObjectDeleter<BContact> deleter(contact);
 
 	if (contact->InitCheck() != B_OK) {
 		printf("BContact initcheck error\n");
@@ -313,8 +191,6 @@ TPeopleApp::_NewWindow(const entry_ref* ref, BFile* file)
 
 	PersonWindow* window = new PersonWindow(fPosition,
 		B_TRANSLATE("New person"), ref, contact);
-
-	//_AddFields(window);
 
 	window->Show();
 
@@ -330,21 +206,6 @@ TPeopleApp::_NewWindow(const entry_ref* ref, BFile* file)
 		fPosition.OffsetTo(6, fPosition.top);
 
 	return window;
-}
-
-
-void
-TPeopleApp::_AddFields(PersonWindow* window) const
-{
-/*	int32 count = fAttributes.CountItems();
-	for (int32 i = 0; i < count; i++) {
-		Attribute* attribute = fAttributes.ItemAt(i);
-		const char* label = attribute->name;
-		if (attribute->attribute == kNameAttribute)
-			label = B_TRANSLATE("Name");
-
-		window->AddAttribute(label, attribute->attribute);
-	}*/
 }
 
 

@@ -60,37 +60,40 @@ static const translation_format sOutputFormats[] = {
 static const TranSetting sDefaultSettings[] = {
 };
 
-const uint32 kNumInputFormats = sizeof(sInputFormats) / sizeof(translation_format);
-const uint32 kNumOutputFormats = sizeof(sOutputFormats) / sizeof(translation_format);
-const uint32 kNumDefaultSettings = sizeof(sDefaultSettings) / sizeof(TranSetting);
+const uint32 kNumInputFormats = sizeof(sInputFormats) 
+	/ sizeof(translation_format);
+const uint32 kNumOutputFormats = sizeof(sOutputFormats)
+	/ sizeof(translation_format);
+const uint32 kNumDefaultSettings = sizeof(sDefaultSettings)
+	/ sizeof(TranSetting);
 
 
 struct VCardVisitor : public BContactFieldVisitor {
 public:
-						VCardVisitor(BPositionIO* destination)
-						:
-						fDest(destination)
-						{
-						}
-	virtual		 		~VCardVisitor()
-						{
-						}
+					VCardVisitor(BPositionIO* destination)
+					:
+					fDest(destination)
+					{
+					}
+	virtual		 	~VCardVisitor()
+					{
+					}
 
-	void				WriteBegin()
+	void			WriteBegin()
 	{
 		fDest->Seek(0, SEEK_SET);
 		const char data[] = "BEGIN:VCARD\nVERSION:2.1\n";
 		fDest->Write(data, strlen(data));
 	}
 
-	void				WriteEnd()
+	void			WriteEnd()
 	{
 		// TODO VC 3.0 support
 		const char data[] = "END:VCARD\n";
 		fDest->Write(data, strlen(data));	
 	}
 
-	virtual void 		Visit(BStringContactField* field)
+	virtual void 	Visit(BStringContactField* field)
 	{
 		BString str;
 		switch (field->FieldType()) {
@@ -177,6 +180,11 @@ public:
 			str << ":" << field->Value() << "\n";
 			fDest->Write(str.String(), str.Length());
 		}
+	}
+
+	virtual void 	Visit(BPhotoContactField* field)
+	{
+	
 	}
 
 	/*virtual void 		Visit(BUrlContactField* field)

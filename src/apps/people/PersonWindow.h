@@ -41,10 +41,7 @@ public:
 	virtual	void				MessageReceived(BMessage* message);
 	virtual	bool				QuitRequested();
 	virtual	void				Show();
-/*
-			void				AddAttribute(const char* label,
-									const char* attribute);
-*/
+
 			void				SaveAs();
 
 			bool				RefersPersonFile(const entry_ref& ref) const;

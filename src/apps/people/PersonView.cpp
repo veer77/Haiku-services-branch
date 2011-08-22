@@ -42,28 +42,33 @@
 #define B_TRANSLATE_CONTEXT "People"
 
 
-PersonView::PersonView(const char* name, BContact* contact)
+PersonView::PersonView(const char* name, BContact* contact, BFile* file)
 	:
-	BGridView(),
+	BGroupView(B_VERTICAL),
 //	fGroups(NULL),
 	fControls(20, false),
 	fAddrView(NULL),
-//	fPictureView(NULL),
+	fPictureView(NULL),
 	fSaving(false),
 	fContact(contact),
-	fCount(0)
+	fPhotoField(NULL),
+	fFile(file)
 {
 	SetName(name);
 	SetFlags(Flags() | B_WILL_DRAW);
 
+	fGridView = new BGridView();
 	float spacing = be_control_look->DefaultItemSpacing();
-	BGridLayout* layout = GridLayout();
-	layout->SetInsets(spacing, spacing, spacing, spacing);
 
-/*
+	BGridLayout* layout = fGridView->GridLayout();
+	layout->SetInsets(spacing);
+
+	GroupLayout()->AddView(fGridView);
+
 	if (fFile)
 		fFile->GetModificationTime(&fLastModificationTime);
-*/
+
+	UpdatePicture(NULL);
 	_LoadFieldsFromContact();
 }
 
@@ -77,34 +82,40 @@ PersonView::~PersonView()
 void
 PersonView::AddField(BContactField* field)
 {
-	printf("addfield\n");
-	for (int32 i = fControls.CountItems() - 1; i >= 0; i--) {
-		if (fControls.ItemAt(i)->Value() == field->Value()) {
-			return;
-		}
-	}
+	if (field == NULL)
+		return;
 
-	BGridLayout* layout = GridLayout();
-	int32 row = 0;
-
-	if (field != NULL && field->FieldType() == B_CONTACT_ADDRESS) {
+	// consider using a contactfieldvisitor here
+	if (field->FieldType() == B_CONTACT_ADDRESS) {
 		if (fAddrView != NULL 
 			&& fAddrView->Field()->Value() == field->Value())
 				return;
-		fCount += 1;
 
 		fAddrView = new AddressView(
 			dynamic_cast<BAddressContactField*>(field));
 
-		row = fControls.CountItems() + fCount;
-		layout->AddItem(fAddrView->GridLayout(), 1, row);
+		BBox* box = new BBox("addrbox", B_WILL_DRAW,
+			B_FANCY_BORDER, fAddrView);
+
+		box->SetLabel("Postal Address");
+		GroupLayout()->AddView(box);
+		return;
+	} else if (field->FieldType() == B_CONTACT_PHOTO) {
+		fPhotoField = dynamic_cast<BPhotoContactField*>(field);
+		if (fPhotoField != NULL) {
+			BBitmap* bitmap = fPhotoField->Photo();
+			UpdatePicture(bitmap);
+		}
 		return;
 	}
+
+	BGridLayout* layout = fGridView->GridLayout();
+	int32 row = 0;
 
 	ContactFieldTextControl* control = new ContactFieldTextControl(field);
 	fControls.AddItem(control);
 
-	row = fControls.CountItems() + fCount;
+	row = fControls.CountItems();
 
 	layout->AddItem(control->CreateLabelLayoutItem(), 1, row);
 	layout->AddItem(control->CreateTextViewLayoutItem(), 2, row);
@@ -130,14 +141,14 @@ PersonView::MessageReceived(BMessage* msg)
 			break;
 
 		case M_REVERT:
-		/*	if (fPictureView)
-				fPictureView->Revert();*/
+			if (fPictureView)
+				fPictureView->Revert();
 
 			if (fAddrView)
-				fAddrView->Revert();
+				fAddrView->Reload();
 
 			for (int32 i = fControls.CountItems() - 1; i >= 0; i--)
-				fControls.ItemAt(i)->Revert();
+				fControls.ItemAt(i)->Reload();
 			break;
 
 		case M_SELECT:
@@ -161,26 +172,26 @@ PersonView::MessageReceived(BMessage* msg)
 	}
 }
 
-
+/*
 void
 PersonView::Draw(BRect updateRect)
 {
-/*if (!fPictureView)
+	if (!fPictureView)
 		return;
 
 	// Draw a alert/get info-like strip
 	BRect stripeRect = Bounds();
-	stripeRect.right = GridLayout()->HorizontalSpacing()
+	stripeRect.right = fGridView->GridLayout()->HorizontalSpacing()
 		+ fPictureView->Bounds().Width() / 2;
 	SetHighColor(tint_color(ViewColor(), B_DARKEN_1_TINT));
-	FillRect(stripeRect);*/
-}
+	FillRect(stripeRect);
+}*/
 
-
+/*
 void
 PersonView::BuildGroupMenu()
 {
-/*	if (fGroups == NULL)
+	if (fGroups == NULL)
 		return;
 
 	BMenuItem* item;
@@ -255,15 +266,17 @@ PersonView::BuildGroupMenu()
 		item->SetEnabled(false);
 	}
 
-	fGroups->SetTargetForItems(this);*/
-}
+	fGroups->SetTargetForItems(this);
+}*/
 
 
 void
 PersonView::CreateFile(const entry_ref* ref)
 {
-	// passing true as second argument the method delete the old object
-	fContact->Append(new BRawContact(0, new BFile(ref,
+	// TODO At the moment People save the files into the People format,
+	// this should be changed to something that can support every
+	// translator
+	fContact->Append(new BRawContact(B_PEOPLE_FORMAT, new BFile(ref,
 		B_READ_WRITE | B_CREATE_FILE)));
 
 	Save();
@@ -273,17 +286,18 @@ PersonView::CreateFile(const entry_ref* ref)
 bool
 PersonView::IsSaved() const
 {
-//	if (fPictureView && fPictureView->HasChanged())
-//		return false;
-
-	if (fAddrView != NULL && fAddrView->HasChanged())
+	if (fPictureView && fPictureView->HasChanged())
 		return false;
 
+	printf("1\n");
+	if (fAddrView != NULL && fAddrView->HasChanged())
+		return false;
+	printf("2\n");
 	for (int32 i = fControls.CountItems() - 1; i >= 0; i--) {
 		if (fControls.ItemAt(i)->HasChanged())
 			return false;
 	}
-	printf("true\n");
+	printf("3\n");
 	return true;
 }
 
@@ -296,58 +310,57 @@ PersonView::Save()
 	int32 count = fControls.CountItems();
 	for (int32 i = 0; i < count; i++) {
 		ContactFieldTextControl* control = fControls.ItemAt(i);
-		control->Update();
+		control->UpdateField();
 	}
 
-	if (fAddrView)
-		fAddrView->Update();
-/*
-	// Write the picture, if any, in the person file content
-	if (fPictureView) {
-		// Trim any previous content
-		fFile->Seek(0, SEEK_SET);
-		fFile->SetSize(0);
+	if (fAddrView != NULL)
+		fAddrView->UpdateAddressField();
 
-		BBitmap* picture = fPictureView->Bitmap();
-		if (picture) {
-			BBitmapStream stream(picture);
-			// Detach *our* bitmap from stream to avoid its deletion
-			// at stream object destruction
-			stream.DetachBitmap(&picture);
-
-			BTranslatorRoster* roster = BTranslatorRoster::Default();
-			roster->Translate(&stream, NULL, NULL, fFile,
-				fPictureView->SuggestedType(), B_TRANSLATOR_BITMAP,
-				fPictureView->SuggestedMIMEType());
-
-		}
-
+	if (fPictureView && fPictureView->HasChanged()) {
 		fPictureView->Update();
+		BBitmap* bitmap = fPictureView->Bitmap();
+
+		if (fPhotoField == NULL) {
+			fPhotoField = new BPhotoContactField(bitmap);
+			fContact->AddField(fPhotoField);
+		} else {
+			fPhotoField->SetPhoto(bitmap);
+		}
 	}
 
 	fFile->GetModificationTime(&fLastModificationTime);
-*/
-	fSaving = false;
 
-	status_t ret = fContact->Commit();
-	printf("%s\n", strerror(ret));
+	fContact->Commit();
+	// TODO alert here if error
+
+	fSaving = false;
 }
 
 
 void
-PersonView::UpdatePicture(const entry_ref* ref)
+PersonView::UpdateData(BFile* file)
 {
-/*	if (fPictureView == NULL) {
-		fPictureView = new PictureView(70, 90, ref);
-		layout->AddView(fPictureView, 0, 0, 1, 5);
-		layout->ItemAt(0, 0)->SetExplicitAlignment(
-		BAlignment(B_ALIGN_CENTER, B_ALIGN_TOP));
+	fFile = file;
+	fContact->Append(new BRawContact(B_PEOPLE_FORMAT, file));
+}
+
+
+void
+PersonView::UpdatePicture(BBitmap* bitmap)
+{
+	if (fPictureView == NULL) {
+		fPictureView = new PictureView(70, 90, bitmap);
+
+		fGridView->GridLayout()->AddView(fPictureView, 0, 0, 1, 5);
+		fGridView->GridLayout()->ItemAt(0, 0)->SetExplicitAlignment(
+			BAlignment(B_ALIGN_CENTER, B_ALIGN_TOP));
+
 		return;
 	}
 
 	if (fSaving)
 		return;
-
+/*
 	time_t modificationTime = 0;
 	BEntry entry(ref);
 	entry.GetModificationTime(&modificationTime);
@@ -355,9 +368,9 @@ PersonView::UpdatePicture(const entry_ref* ref)
 	if (entry.InitCheck() == B_OK
 		&& modificationTime <= fLastModificationTime) {
 		return;
-	}
+	}*/
 
-	fPictureView->Update(ref);*/
+	fPictureView->Update(bitmap);
 }
 
 
@@ -373,6 +386,13 @@ PersonView::IsTextSelected() const
 			return true;
 	}
 	return false;
+}
+
+
+void
+PersonView::Reload()
+{
+
 }
 
 

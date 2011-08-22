@@ -46,7 +46,7 @@ ContactFieldTextControl::HasChanged()
 
 
 void
-ContactFieldTextControl::Revert()
+ContactFieldTextControl::Reload()
 {
 	if (HasChanged())
 		SetText(fField->Value());
@@ -54,7 +54,7 @@ ContactFieldTextControl::Revert()
 
 
 void
-ContactFieldTextControl::Update()
+ContactFieldTextControl::UpdateField()
 {
 	fField->SetValue(Text());
 }
