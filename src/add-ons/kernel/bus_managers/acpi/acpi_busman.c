@@ -90,6 +90,7 @@ acpi_std_ops(int32 op,...)
 			void *settings;
 			bool acpiDisabled = false;
 			bool acpiAvoidFullInit = false;
+			AcpiGbl_CopyDsdtLocally = true;
 
 			settings = load_driver_settings("kernel");
 			if (settings != NULL) {

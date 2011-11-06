@@ -35,8 +35,14 @@
 #include "atom-bits.h"
 
 
-#undef TRACE
+/* AtomBIOS loop detection
+ * Number of repeat AtomBIOS jmp operations
+ * before bailing due to stuck in a loop
+ */
+#define ATOM_OP_JMP_TIMEOUT 128
 
+// *** Tracing
+#undef TRACE
 //#define TRACE_ATOM
 #ifdef TRACE_ATOM
 #   define TRACE(x...) _sPrintf("radeon_hd: " x)
@@ -44,6 +50,7 @@
 #   define TRACE(x...) ;
 #endif
 
+#define ERROR(x...) _sPrintf("radeon_hd: " x)
 
 #define ATOM_COND_ABOVE		0
 #define ATOM_COND_ABOVEOREQUAL	1
@@ -62,6 +69,7 @@
 
 #define PLL_INDEX	2
 #define PLL_DATA	3
+
 
 typedef struct {
 	atom_context *ctx;
@@ -238,6 +246,13 @@ atom_get_src_int(atom_exec_context *ctx, uint8 attr, int *ptr,
 			idx = U8(*ptr);
 			(*ptr)++;
 			val = gctx->scratch[((gctx->fb_base + idx) / 4)];
+			if ((gctx->fb_base + (idx * 4)) > gctx->scratch_size_bytes) {
+				ERROR("%s: fb tried to read beyond scratch region!"
+					" %" B_PRIu32 " vs. %" B_PRIu32 "\n", __func__,
+					gctx->fb_base + (idx * 4), gctx->scratch_size_bytes);
+				val = 0;
+			} else
+				val = gctx->scratch[(gctx->fb_base / 4) + idx];
 			break;
 		case ATOM_ARG_IMM:
 			switch(align) {
@@ -455,7 +470,12 @@ atom_put_dst(atom_exec_context *ctx, int arg, uint8 attr,
 		case ATOM_ARG_FB:
 			idx = U8(*ptr);
 			(*ptr)++;
-			gctx->scratch[((gctx->fb_base + idx) / 4)] = val;
+			if ((gctx->fb_base + (idx * 4)) > gctx->scratch_size_bytes) {
+				ERROR("%s: fb tried to write beyond scratch region! "
+					"%" B_PRIu32 " vs. %" B_PRIu32 "\n", __func__,
+					gctx->fb_base + (idx * 4), gctx->scratch_size_bytes);
+			} else
+				gctx->scratch[(gctx->fb_base / 4) + idx] = val;
 			break;
 		case ATOM_ARG_PLL:
 			idx = U8(*ptr);
@@ -640,9 +660,10 @@ atom_op_jump(atom_exec_context *ctx, int *ptr, int arg)
 
 	if (execute) {
 		if (ctx->last_jump == (ctx->start + target)) {
-			if (ctx->last_jump_count > 128) {
-				TRACE("%s: DANGER! AtomBIOS stuck in infinite loop"
-					" for more then 128 jumps... abort!\n", __func__);
+			if (ctx->last_jump_count > ATOM_OP_JMP_TIMEOUT) {
+				ERROR("%s: DANGER! AtomBIOS stuck in loop"
+					" for more then %d jumps... abort!\n",
+					__func__, ATOM_OP_JMP_TIMEOUT);
 				ctx->abort = true;
 			} else {
 				ctx->last_jump_count++;
@@ -1146,7 +1167,7 @@ atom_execute_table_locked(atom_context *ctx, int index, uint32 * params)
 			TRACE("%s: unknown (0x%" B_PRIX16 ")\n", __func__, ptr - 1);
 
 		if (ectx.abort == true) {
-			TRACE("AtomBios parser was aborted executing (0x%" B_PRIX16 ")\n",
+			ERROR("AtomBios parser was aborted executing (0x%" B_PRIX16 ")\n",
 				ptr - 1);
 			free(ectx.ws);
 			return B_ERROR;
@@ -1172,7 +1193,7 @@ atom_execute_table(atom_context *ctx, int index, uint32 *params)
 {
 	if (acquire_sem_etc(ctx->exec_sem, 1, B_RELATIVE_TIMEOUT, 5000000)
 		!= B_NO_ERROR) {
-		TRACE("%s: Timeout to obtain semaphore!\n", __func__);
+		ERROR("%s: Timeout to obtain semaphore!\n", __func__);
 		return B_ERROR;
 	}
 	/* reset reg block */
@@ -1206,12 +1227,12 @@ atom_index_iio(atom_context *ctx, int base)
 
 
 atom_context*
-atom_parse(card_info *card, void *bios)
+atom_parse(card_info *card, uint8 *bios)
 {
 	atom_context *ctx = (atom_context*)malloc(sizeof(atom_context));
 
 	if (ctx == NULL) {
-		TRACE("%s: Error: No memory for atom_context mapping\n", __func__);
+		ERROR("%s: Error: No memory for atom_context mapping\n", __func__);
 		return NULL;
 	}
 
@@ -1219,13 +1240,13 @@ atom_parse(card_info *card, void *bios)
 	ctx->bios = bios;
 
 	if (CU16(0) != ATOM_BIOS_MAGIC) {
-		TRACE("Invalid BIOS magic.\n");
+		ERROR("Invalid BIOS magic.\n");
 		free(ctx);
 		return NULL;
 	}
 	if (strncmp(CSTR(ATOM_ATI_MAGIC_PTR), ATOM_ATI_MAGIC,
 		strlen(ATOM_ATI_MAGIC))) {
-		TRACE("Invalid ATI magic.\n");
+		ERROR("Invalid ATI magic.\n");
 		free(ctx);
 		return NULL;
 	}
@@ -1233,7 +1254,7 @@ atom_parse(card_info *card, void *bios)
 	int base = CU16(ATOM_ROM_TABLE_PTR);
 	if (strncmp(CSTR(base + ATOM_ROM_MAGIC_PTR), ATOM_ROM_MAGIC,
 		strlen(ATOM_ROM_MAGIC))) {
-		TRACE("Invalid ATOM magic.\n");
+		ERROR("Invalid ATOM magic.\n");
 		free(ctx);
 		return NULL;
 	}
@@ -1346,8 +1367,7 @@ atom_allocate_fb_scratch(atom_context *ctx)
 
 	if (atom_parse_data_header(ctx, index, NULL, NULL, NULL, &data_offset)
 		== B_OK) {
-		firmware = (_ATOM_VRAM_USAGE_BY_FIRMWARE *)
-			((uint16*)ctx->bios + data_offset);
+		firmware = (_ATOM_VRAM_USAGE_BY_FIRMWARE *)(ctx->bios + data_offset);
 
 		TRACE("Atom firmware requested 0x%" B_PRIX32 " %" B_PRIu16 "kb\n",
 			firmware->asFirmwareVramReserveInfo[0].ulStartAddrUsedByFirmware,
@@ -1356,6 +1376,7 @@ atom_allocate_fb_scratch(atom_context *ctx)
 		usage_bytes
 			= firmware->asFirmwareVramReserveInfo[0].usFirmwareUseInKb * 1024;
 	}
+	ctx->scratch_size_bytes = 0;
 	if (usage_bytes == 0)
 		usage_bytes = 20 * 1024;
 	/* allocate some scratch memory */
@@ -1363,5 +1384,6 @@ atom_allocate_fb_scratch(atom_context *ctx)
 	if (!ctx->scratch)
 		return B_NO_MEMORY;
 
+	ctx->scratch_size_bytes = usage_bytes;
 	return B_OK;
 }

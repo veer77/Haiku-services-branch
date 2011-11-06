@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 Haiku, Inc. All Rights Reserved.
+ * Copyright 2006-2011 Haiku, Inc. All Rights Reserved.
  * Copyright 1997, 1998 R3 Software Ltd. All Rights Reserved.
  * Distributed under the terms of the MIT License.
  *
@@ -19,6 +19,7 @@
 #include <Dragger.h>
 #include <Screen.h>
 
+#include "CalcOptions.h"
 #include "CalcView.h"
 
 
@@ -29,14 +30,16 @@
 CalcWindow::CalcWindow(BRect frame, BMessage* settings)
 	:
 	BWindow(frame, B_TRANSLATE_SYSTEM_NAME("DeskCalc"), B_TITLED_WINDOW,
-	B_ASYNCHRONOUS_CONTROLS)
+		B_ASYNCHRONOUS_CONTROLS | B_NOT_ANCHORED_ON_ACTIVATE)
 {
 	// create calculator view with calculator description and
 	// desktop background color
 	BScreen screen(this);
 	rgb_color baseColor = screen.DesktopColor();
 
-	SetSizeLimits(100.0, 400.0, 100.0, 400.0);
+	// Size Limits are defined in CalcView.h
+	SetSizeLimits(kMinimumWidthBasic, kMaximumWidthBasic,
+				  kMinimumHeightBasic, kMaximumHeightBasic);
 
 	frame.OffsetTo(B_ORIGIN);
 	fCalcView = new CalcView(frame, baseColor, settings);
@@ -57,11 +60,50 @@ CalcWindow::CalcWindow(BRect frame, BMessage* settings)
 		SetFrame(rect);
 	else
 		SetFrame(frame, true);
+
+	// Add shortcut keys to menu options
+	AddShortcut('0', B_COMMAND_KEY,
+		new BMessage(MSG_OPTIONS_KEYPAD_MODE_COMPACT));
+	AddShortcut('1', B_COMMAND_KEY,
+		new BMessage(MSG_OPTIONS_KEYPAD_MODE_BASIC));
+	AddShortcut('2', B_COMMAND_KEY,
+		new BMessage(MSG_OPTIONS_KEYPAD_MODE_SCIENTIFIC));
 }
 
 
 CalcWindow::~CalcWindow()
 {
+}
+
+
+void
+CalcWindow::MessageReceived(BMessage* msg)
+{
+	switch (msg->what) {
+		case MSG_OPTIONS_AUTO_NUM_LOCK:
+			fCalcView->ToggleAutoNumlock();
+			break;
+
+		case MSG_OPTIONS_AUDIO_FEEDBACK:
+			fCalcView->ToggleAudioFeedback();
+			break;
+
+		case MSG_OPTIONS_KEYPAD_MODE_COMPACT:
+			fCalcView->SetKeypadMode(KEYPAD_MODE_COMPACT);
+			break;
+
+		case MSG_OPTIONS_KEYPAD_MODE_BASIC:
+			fCalcView->SetKeypadMode(KEYPAD_MODE_BASIC);
+			break;
+
+		case MSG_OPTIONS_KEYPAD_MODE_SCIENTIFIC:
+			fCalcView->SetKeypadMode(KEYPAD_MODE_SCIENTIFIC);
+			break;
+
+		default:
+			BWindow::MessageReceived(msg);
+			break;
+	}
 }
 
 

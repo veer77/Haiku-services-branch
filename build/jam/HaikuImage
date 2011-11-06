@@ -104,7 +104,7 @@ PRIVATE_SYSTEM_LIBS =
 ;
 SYSTEM_SERVERS = app_server cddb_daemon debug_server input_server mail_daemon
 	media_addon_server media_server midi_server mount_server net_server
-	notification_server print_server print_addon_server registrar syslog_daemon
+	notification_server power_daemon print_server print_addon_server registrar syslog_daemon
 ;
 
 SYSTEM_NETWORK_DEVICES = ethernet loopback ;
@@ -119,7 +119,7 @@ SYSTEM_ADD_ONS_ACCELERANTS = $(X86_ONLY)radeon.accelerant
 	$(X86_ONLY)s3.accelerant $(X86_ONLY)vesa.accelerant
 	$(X86_ONLY)ati.accelerant
 	$(X86_ONLY)3dfx.accelerant
-	#$(X86_ONLY)radeon_hd.accelerant
+	$(X86_ONLY)radeon_hd.accelerant
 	#$(X86_ONLY)via.accelerant
 	#$(X86_ONLY)vmware.accelerant
 ;
@@ -165,7 +165,7 @@ SYSTEM_ADD_ONS_DRIVERS_AUDIO_OLD = ; #cmedia usb_audio ;
 SYSTEM_ADD_ONS_DRIVERS_GRAPHICS = $(X86_ONLY)radeon $(X86_ONLY)nvidia
 	$(X86_ONLY)neomagic $(X86_ONLY)matrox $(X86_ONLY)intel_extreme
 	$(X86_ONLY)s3 $(X86_ONLY)vesa #$(X86_ONLY)via #$(X86_ONLY)vmware
-	$(X86_ONLY)ati $(X86_ONLY)3dfx #$(X86_ONLY)radeon_hd
+	$(X86_ONLY)ati $(X86_ONLY)3dfx $(X86_ONLY)radeon_hd
 ;
 SYSTEM_ADD_ONS_DRIVERS_MIDI = emuxki usb_midi ;
 SYSTEM_ADD_ONS_DRIVERS_NET = $(X86_ONLY)3com $(X86_ONLY)atheros813x
@@ -174,7 +174,7 @@ SYSTEM_ADD_ONS_DRIVERS_NET = $(X86_ONLY)3com $(X86_ONLY)atheros813x
 	$(X86_ONLY)ipro100 $(X86_ONLY)ipro1000 $(X86_ONLY)jmicron2x0
 	$(X86_ONLY)marvell_yukon $(X86_ONLY)nforce $(X86_ONLY)pcnet pegasus
 	$(X86_ONLY)rtl8139 $(X86_ONLY)rtl81xx sis900
-	$(X86_ONLY)syskonnect usb_asix usb_ecm $(X86_ONLY)via_rhine
+	$(X86_ONLY)syskonnect usb_davicom usb_asix usb_ecm $(X86_ONLY)via_rhine
 	$(X86_ONLY)vt612x wb840
 
 	# WLAN drivers
@@ -183,10 +183,10 @@ SYSTEM_ADD_ONS_DRIVERS_NET = $(X86_ONLY)3com $(X86_ONLY)atheros813x
 	$(X86_ONLY)iprowifi4965 $(X86_ONLY)marvell88w8363 $(X86_ONLY)marvell88w8335
 	$(X86_ONLY)ralink2860 $(X86_ONLY)ralinkwifi $(X86_ONLY)wavelanwifi
 
-	# WiMAX drivers
-	$(GPL_ONLY)usb_beceemwmx
+	# WWAN drivers
+	#$(GPL_ONLY)usb_beceemwmx
 ;
-#SYSTEM_ADD_ONS_DRIVERS_POWER = $(X86_ONLY)acpi_button ;
+SYSTEM_ADD_ONS_DRIVERS_POWER = $(X86_ONLY)acpi_button ;
 SYSTEM_ADD_ONS_BUS_MANAGERS =  $(ATA_ONLY)ata pci $(X86_ONLY)ps2 $(X86_ONLY)isa
 	$(IDE_ONLY)ide scsi config_manager agp_gart usb firewire $(X86_ONLY)acpi
 ;
@@ -234,7 +234,7 @@ AddFilesToHaikuImage system add-ons kernel busses usb
 	: <usb>uhci <usb>ohci <usb>ehci ;
 AddFilesToHaikuImage system add-ons kernel console : vga_text ;
 AddFilesToHaikuImage system add-ons kernel debugger
-	: <kdebug>demangle $(X86_ONLY)<kdebug>disasm
+	: <kdebug>demangle $(X86_ONLY)<kdebug>disasm <kdebug>hangman
 	  <kdebug>invalidate_on_exit <kdebug>usb_keyboard <kdebug>run_on_exit ;
 AddFilesToHaikuImage system add-ons kernel file_systems
 	: $(SYSTEM_ADD_ONS_FILE_SYSTEMS) ;
@@ -273,7 +273,7 @@ AddDriversToHaikuImage input		: ps2_hid usb_hid wacom ;
 AddDriversToHaikuImage misc			: <driver>poke <driver>mem ;
 AddDriversToHaikuImage net			: $(SYSTEM_ADD_ONS_DRIVERS_NET) ;
 AddDriversToHaikuImage ports		: usb_serial ;
-#AddDriversToHaikuImage power		: $(SYSTEM_ADD_ONS_DRIVERS_POWER) ;
+AddDriversToHaikuImage power		: $(SYSTEM_ADD_ONS_DRIVERS_POWER) ;
 
 # kernel
 AddFilesToHaikuImage system : <revisioned>kernel_$(TARGET_ARCH) ;
@@ -499,10 +499,54 @@ AddSymlinkToHaikuImage system data Keymaps : Swedish : Finnish ;
 AddSymlinkToHaikuImage system data Keymaps : Slovene : Croatian ;
 AddSymlinkToHaikuImage system data Keymaps : US-International : Brazilian ;
 
+# Copy keyboard layout files to the image one-by-one.
 local keyboardLayoutsDir
 	= [ FDirName $(HAIKU_TOP) data system data KeyboardLayouts ] ;
-local keyboardLayouts = [ Glob $(keyboardLayoutsDir) : [^.]* ] ;
-AddFilesToHaikuImage system data KeyboardLayouts : $(keyboardLayouts) ;
+local keyboardLayoutFiles =
+	"Generic 104-key"
+	"Generic 105-key International"
+	"Kinesis Advantage"
+	"Kinesis Ergo Elan International"
+	"TypeMatrix 2030" ;
+keyboardLayoutFiles = $(keyboardLayoutFiles:G=keyboard-layout) ;
+SEARCH on $(keyboardLayoutFiles) = $(keyboardLayoutsDir) ;
+AddFilesToHaikuImage system data KeyboardLayouts
+	: $(keyboardLayoutFiles) ;
+
+# Add Apple Aluminum keyboard layout files to the image in an Apple Aluminum
+# subdirectory. The subdirectory is turned into a submenu in the Layout menu
+# of the Keymap preference app.
+local appleAluminumDir
+	= [ FDirName $(HAIKU_TOP) data system data KeyboardLayouts
+		Apple\ Aluminum ] ;
+local appleAluminumFiles =
+	"Apple Aluminium Extended International"
+	"Apple Aluminium International"
+	"Apple Aluminum (US)"
+	"Apple Aluminum Extended (US)" ;
+appleAluminumFiles = $(appleAluminumFiles:G=keyboard-layout) ;
+SEARCH on $(appleAluminumFiles) = $(appleAluminumDir) ;
+AddFilesToHaikuImage system data KeyboardLayouts Apple\ Aluminum
+	: $(appleAluminumFiles) ;
+
+# Add ThinkPad keyboard layout files to the image in a ThinkPad
+# subdirectory. The subdirectory is turned into a submenu in the Layout menu
+# of the Keymap preference app.
+local thinkpadDir
+	= [ FDirName $(HAIKU_TOP) data system data KeyboardLayouts ThinkPad ] ;
+local thinkPadFiles =
+	"ThinkPad (US)"
+	"ThinkPad International"
+	"ThinkPad T400s (US)"
+	"ThinkPad T400s International"
+	"ThinkPad X1 (US)"
+	"ThinkPad X1 International"
+	"ThinkPad X100e (US)"
+	"ThinkPad X100e International" ;
+thinkPadFiles = $(thinkPadFiles:G=keyboard-layout) ;
+SEARCH on $(thinkPadFiles) = $(thinkpadDir) ;
+AddFilesToHaikuImage system data KeyboardLayouts ThinkPad
+	: $(thinkPadFiles) ;
 
 local driverSettingsFiles = <driver-settings>kernel ;
 SEARCH on $(driverSettingsFiles)
@@ -775,7 +819,7 @@ UserBuildConfigRulePreImage	;
 HAIKU_IMAGE_NAME ?= $(HAIKU_DEFAULT_IMAGE_NAME) ;
 HAIKU_IMAGE_DIR ?= $(HAIKU_DEFAULT_IMAGE_DIR) ;
 HAIKU_IMAGE = $(HAIKU_IMAGE_NAME) ;
-HAIKU_IMAGE_SIZE ?= $(HAIKU_DEFAULT_IMAGE_SIZE) ; # 230 MB
+HAIKU_IMAGE_SIZE ?= $(HAIKU_DEFAULT_IMAGE_SIZE) ; # 300 MB
 HAIKU_IMAGE_LABEL ?= $(HAIKU_DEFAULT_IMAGE_LABEL) ;
 MakeLocate $(HAIKU_IMAGE) : $(HAIKU_IMAGE_DIR) ;
 

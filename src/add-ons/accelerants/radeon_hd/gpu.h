@@ -3,13 +3,19 @@
  * Distributed under the terms of the MIT License.
  *
  * Authors:
- *      Alexander von Gluck, kallisti5@unixzen.com
+ *		Alexander von Gluck, kallisti5@unixzen.com
  */
 #ifndef RADEON_HD_GPU_H
 #define RADEON_HD_GPU_H
 
 
 #include "accelerant.h"
+
+
+#define HDP_REG_COHERENCY_FLUSH_CNTL 0x54A0
+#define HDP_NONSURFACE_BASE			0x2C04
+#define HDP_NONSURFACE_INFO			0x2C08
+#define HDP_NONSURFACE_SIZE			0x2C0C
 
 
 // GPU Control registers. These are combined as
@@ -168,6 +174,9 @@ void radeon_gpu_mc_resume();
 uint32 radeon_gpu_mc_idlecheck();
 status_t radeon_gpu_mc_setup();
 status_t radeon_gpu_irq_setup();
+status_t radeon_gpu_gpio_setup();
+status_t radeon_gpu_i2c_attach(uint32 id, uint8 hw_line);
+bool radeon_gpu_read_edid(uint32 connector, edid1_info *edid);
 
 
 #endif

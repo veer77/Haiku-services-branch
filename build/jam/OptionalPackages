@@ -90,7 +90,8 @@ if $(HAIKU_ADD_ALTERNATIVE_GCC_LIBS) = 1
 #	Welcome					- introductory documentation to Haiku
 #	WifiFirmwareScriptData	- data files needed by install-wifi-firmwares.sh
 #	WonderBrush				- native graphics application
-#	WQY-MicroHei				- Chinese font
+#	wpa_supplicant			- a WPA Supplicant with support for WPA and WPA2
+#	WQY-MicroHei			- Chinese font
 #	XZ-Utils				- file archiving utility
 #	Yasm					- the assembler utility
 
@@ -723,6 +724,22 @@ if [ IsOptionalHaikuImagePackageAdded DevelopmentMin ] && $(TARGET_ARCH) = x86 {
 }
 
 
+# DMIDecode
+if [ IsOptionalHaikuImagePackageAdded DMIDecode ] {
+	if $(TARGET_ARCH) != x86 {
+		Echo "No optional package DMIDecode available for $(TARGET_ARCH)" ;
+	} else if $(HAIKU_GCC_VERSION[1]) >= 4 {
+		InstallOptionalHaikuImagePackage
+			dmidecode-2.11-x86-gcc4-2011-11-02.zip
+			: http://revolf.free.fr/beos/dmidecode-2.11-x86-gcc4-2011-11-02.zip ;
+	} else {
+		InstallOptionalHaikuImagePackage
+			dmidecode-2.11-x86-gcc2-2011-11-02.zip
+			: http://revolf.free.fr/beos/dmidecode-2.11-x86-gcc2-2011-11-02.zip ;
+	}
+}
+
+
 # Doxygen
 if [ IsOptionalHaikuImagePackageAdded Doxygen ] {
 	if $(TARGET_ARCH) != x86 {
@@ -919,7 +936,7 @@ if [ IsOptionalHaikuImagePackageAdded ICU-devel ] {
 	local arch = $(TARGET_ARCH) ;
 	local abi = gcc$(HAIKU_GCC_VERSION[1]) ;
 	for abiVersionedLib in $(HAIKU_ICU_LIBS) {
-		abiVersionedLib = $(abiVersionedLib:G=) ;
+		abiVersionedLib = $(abiVersionedLib:B:G=) ;
 		local lib = $(abiVersionedLib:B) ;
 		AddSymlinkToHaikuHybridImage develop abi $(arch) $(abi) lib
 			: /system/lib $(abiVersionedLib) : : true ;
@@ -1250,12 +1267,12 @@ if [ IsOptionalHaikuImagePackageAdded OpenSSH ] {
 
 		if $(HAIKU_GCC_VERSION[1]) >= 4 {
 			InstallOptionalHaikuImagePackage
-				openssh-5.8p2-r1a3-x86-gcc4-2011-05-24.zip
-				: $(baseURL)/openssh-5.8p2-r1a3-x86-gcc4-2011-05-24.zip ;
+				openssh-5.9p1-x86-gcc4-2011-09-08.zip
+				: $(baseURL)/openssh-5.9p1-x86-gcc4-2011-09-08.zip ;
 		} else {
 			InstallOptionalHaikuImagePackage
-				openssh-5.8p2-r1a3-x86-gcc2-2011-05-18.zip
-				: $(baseURL)/openssh-5.8p2-r1a3-x86-gcc2-2011-05-18.zip ;
+				openssh-5.9p1-x86-gcc2-2011-09-09.zip
+				: $(baseURL)/openssh-5.9p1-x86-gcc2-2011-09-09.zip ;
 		}
 
 		AddUserToHaikuImage sshd : 1001 : 100 : /var/empty : /bin/true
@@ -1668,8 +1685,8 @@ if [ IsOptionalHaikuImagePackageAdded WebPositive ] {
 		Echo "No optional package WebPositive available for gcc2" ;
 	} else {
 		InstallOptionalHaikuImagePackage
-			WebPositive-r1a3-gcc4-x86-r580-2011-06-02.zip
-			: $(baseURL)/WebPositive-r1a3-gcc4-x86-r580-2011-06-02.zip ;
+			WebPositive-gcc4-x86-r583-2011-08-26.zip
+			: $(baseURL)/WebPositive-gcc4-x86-r583-2011-08-26.zip ;
 		AddSymlinkToHaikuImage home config be Applications
 			: /boot/apps/WebPositive/WebPositive ;
 	}
@@ -1746,6 +1763,22 @@ if [ IsOptionalHaikuImagePackageAdded WonderBrush ] {
 			: apps ;
 		AddSymlinkToHaikuImage home config be Applications
 			: /boot/apps/WonderBrush/WonderBrush ;
+	}
+}
+
+
+# wpa_supplicant
+if [ IsOptionalHaikuImagePackageAdded wpa_supplicant ] {
+	if $(TARGET_ARCH) != x86 {
+		Echo "No optional package wpa_supplicant available for $(TARGET_ARCH)" ;
+	} else if $(HAIKU_GCC_VERSION[1]) >= 4 {
+		InstallOptionalHaikuImagePackage
+			wpa_supplicant-0.7.3-x86-gcc4-2011-10-05.zip
+			: $(baseURL)/wpa_supplicant-0.7.3-x86-gcc4-2011-10-05.zip ;
+	} else {
+		InstallOptionalHaikuImagePackage
+			wpa_supplicant-0.7.3-x86-gcc2-2011-10-05.zip
+			: $(baseURL)/wpa_supplicant-0.7.3-x86-gcc2-2011-10-05.zip ;
 	}
 }
 

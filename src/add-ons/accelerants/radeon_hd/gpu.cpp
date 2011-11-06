@@ -3,12 +3,14 @@
  * Distributed under the terms of the MIT License.
  *
  * Authors:
- *      Alexander von Gluck, kallisti5@unixzen.com
+ *		Alexander von Gluck, kallisti5@unixzen.com
+ *		Axel Dörfler, axeld@pinc-software.de
  */
 
 
 #include "accelerant_protos.h"
 #include "accelerant.h"
+#include "bios.h"
 #include "gpu.h"
 #include "utility.h"
 
@@ -33,7 +35,7 @@ radeon_gpu_reset()
 	radeon_shared_info &info = *gInfo->shared_info;
 
 	// Read GRBM Command Processor status
-	if (!(Read32(OUT, GRBM_STATUS) & GUI_ACTIVE))
+	if ((Read32(OUT, GRBM_STATUS) & GUI_ACTIVE) == 0)
 		return B_ERROR;
 
 	TRACE("%s: GPU software reset in progress...\n", __func__);
@@ -93,8 +95,8 @@ radeon_gpu_reset()
 
 		uint32 tmp;
 		/* Check if any of the rendering block is busy and reset it */
-		if ((Read32(OUT, GRBM_STATUS) & grbm_busy_mask)
-			|| (Read32(OUT, GRBM_STATUS2) & grbm2_busy_mask)) {
+		if ((Read32(OUT, GRBM_STATUS) & grbm_busy_mask) != 0
+			|| (Read32(OUT, GRBM_STATUS2) & grbm2_busy_mask) != 0) {
 			tmp = SOFT_RESET_CR
 				| SOFT_RESET_DB
 				| SOFT_RESET_CB
@@ -163,12 +165,12 @@ void
 radeon_gpu_mc_halt()
 {
 	// Backup current memory controller state
-	gInfo->mc_info->d1vga_control = Read32(OUT, D1VGA_CONTROL);
-	gInfo->mc_info->d2vga_control = Read32(OUT, D2VGA_CONTROL);
-	gInfo->mc_info->vga_render_control = Read32(OUT, VGA_RENDER_CONTROL);
-	gInfo->mc_info->vga_hdp_control = Read32(OUT, VGA_HDP_CONTROL);
-	gInfo->mc_info->d1crtc_control = Read32(OUT, D1CRTC_CONTROL);
-	gInfo->mc_info->d2crtc_control = Read32(OUT, D2CRTC_CONTROL);
+	gInfo->gpu_info.d1vga_control = Read32(OUT, D1VGA_CONTROL);
+	gInfo->gpu_info.d2vga_control = Read32(OUT, D2VGA_CONTROL);
+	gInfo->gpu_info.vga_render_control = Read32(OUT, VGA_RENDER_CONTROL);
+	gInfo->gpu_info.vga_hdp_control = Read32(OUT, VGA_HDP_CONTROL);
+	gInfo->gpu_info.d1crtc_control = Read32(OUT, D1CRTC_CONTROL);
+	gInfo->gpu_info.d2crtc_control = Read32(OUT, D2CRTC_CONTROL);
 
 	// halt all memory controller actions
 	Write32(OUT, D2CRTC_UPDATE_LOCK, 0);
@@ -187,27 +189,26 @@ radeon_gpu_mc_halt()
 void
 radeon_gpu_mc_resume()
 {
-	// TODO : do surface addresses disappear on mc halt?
-	//Write32(OUT, D1GRPH_PRIMARY_SURFACE_ADDRESS, rdev->mc.vram_start);
-	//Write32(OUT, D1GRPH_SECONDARY_SURFACE_ADDRESS, rdev->mc.vram_start);
-	//Write32(OUT, D2GRPH_PRIMARY_SURFACE_ADDRESS, rdev->mc.vram_start);
-	//Write32(OUT, D2GRPH_SECONDARY_SURFACE_ADDRESS, rdev->mc.vram_start);
-	//Write32(OUT, VGA_MEMORY_BASE_ADDRESS, rdev->mc.vram_start);
+	Write32(OUT, D1GRPH_PRIMARY_SURFACE_ADDRESS, gInfo->mc.vramStart);
+	Write32(OUT, D1GRPH_SECONDARY_SURFACE_ADDRESS, gInfo->mc.vramStart);
+	Write32(OUT, D2GRPH_PRIMARY_SURFACE_ADDRESS, gInfo->mc.vramStart);
+	Write32(OUT, D2GRPH_SECONDARY_SURFACE_ADDRESS, gInfo->mc.vramStart);
+	Write32(OUT, VGA_MEMORY_BASE_ADDRESS, gInfo->mc.vramStart);
 
-	// Rnlock host access
-	Write32(OUT, VGA_HDP_CONTROL, gInfo->mc_info->vga_hdp_control);
+	// Unlock host access
+	Write32(OUT, VGA_HDP_CONTROL, gInfo->gpu_info.vga_hdp_control);
 	snooze(1);
 
 	// Restore memory controller state
-	Write32(OUT, D1VGA_CONTROL, gInfo->mc_info->d1vga_control);
-	Write32(OUT, D2VGA_CONTROL, gInfo->mc_info->d2vga_control);
+	Write32(OUT, D1VGA_CONTROL, gInfo->gpu_info.d1vga_control);
+	Write32(OUT, D2VGA_CONTROL, gInfo->gpu_info.d2vga_control);
 	Write32(OUT, D1CRTC_UPDATE_LOCK, 1);
 	Write32(OUT, D2CRTC_UPDATE_LOCK, 1);
-	Write32(OUT, D1CRTC_CONTROL, gInfo->mc_info->d1crtc_control);
-	Write32(OUT, D2CRTC_CONTROL, gInfo->mc_info->d2crtc_control);
+	Write32(OUT, D1CRTC_CONTROL, gInfo->gpu_info.d1crtc_control);
+	Write32(OUT, D2CRTC_CONTROL, gInfo->gpu_info.d2crtc_control);
 	Write32(OUT, D1CRTC_UPDATE_LOCK, 0);
 	Write32(OUT, D2CRTC_UPDATE_LOCK, 0);
-	Write32(OUT, VGA_RENDER_CONTROL, gInfo->mc_info->vga_render_control);
+	Write32(OUT, VGA_RENDER_CONTROL, gInfo->gpu_info.vga_render_control);
 }
 
 
@@ -224,44 +225,199 @@ radeon_gpu_mc_idlecheck()
 }
 
 
-status_t
-radeon_gpu_mc_setup()
+static status_t
+radeon_gpu_mc_setup_r600()
 {
-	uint32 fb_location_int = gInfo->shared_info->frame_buffer_int;
+	// HDP initialization
+	uint32 i;
+	uint32 j;
+	for (i = 0, j = 0; i < 32; i++, j += 0x18) {
+		Write32(OUT, (0x2c14 + j), 0x00000000);
+		Write32(OUT, (0x2c18 + j), 0x00000000);
+		Write32(OUT, (0x2c1c + j), 0x00000000);
+		Write32(OUT, (0x2c20 + j), 0x00000000);
+		Write32(OUT, (0x2c24 + j), 0x00000000);
+	}
+	Write32(OUT, HDP_REG_COHERENCY_FLUSH_CNTL, 0);
 
-	uint32 fb_location = Read32(OUT, R600_MC_VM_FB_LOCATION);
-	uint16 fb_size = (fb_location >> 16) - (fb_location & 0xFFFF);
-	uint32 fb_location_tmp = fb_location_int >> 24;
-	fb_location_tmp |= (fb_location_tmp + fb_size) << 16;
-	uint32 fb_offset_tmp = (fb_location_int >> 8) & 0xff0000;
-
+	// idle the memory controller
 	radeon_gpu_mc_halt();
 
 	uint32 idleState = radeon_gpu_mc_idlecheck();
 	if (idleState > 0) {
-		TRACE("%s: Cannot modify non-idle MC! idleState: 0x%" B_PRIX32 "\n",
+		ERROR("%s: Cannot modify non-idle MC! idleState: 0x%" B_PRIX32 "\n",
 			__func__, idleState);
+		//return B_ERROR;
+	}
+
+	// TODO: Memory Controller AGP
+	Write32(OUT, R600_MC_VM_SYSTEM_APERTURE_LOW_ADDR,
+		gInfo->mc.vramStart >> 12);
+	Write32(OUT, R600_MC_VM_SYSTEM_APERTURE_HIGH_ADDR,
+		gInfo->mc.vramEnd >> 12);
+
+	Write32(OUT, R600_MC_VM_SYSTEM_APERTURE_DEFAULT_ADDR, 0);
+	uint32 tmp = ((gInfo->mc.vramEnd >> 24) & 0xFFFF) << 16;
+	tmp |= ((gInfo->mc.vramStart >> 24) & 0xFFFF);
+
+	Write32(OUT, R600_MC_VM_FB_LOCATION, tmp);
+	Write32(OUT, HDP_NONSURFACE_BASE, (gInfo->mc.vramStart >> 8));
+	Write32(OUT, HDP_NONSURFACE_INFO, (2 << 7));
+	Write32(OUT, HDP_NONSURFACE_SIZE, 0x3FFFFFFF);
+
+	// TODO: AGP gtt start / end / agp base
+	// is AGP?
+	//	WREG32(MC_VM_AGP_TOP, rdev->mc.gtt_end >> 22);
+	//	WREG32(MC_VM_AGP_BOT, rdev->mc.gtt_start >> 22);
+	//	WREG32(MC_VM_AGP_BASE, rdev->mc.agp_base >> 22);
+	// else?
+	Write32(OUT, R600_MC_VM_AGP_BASE, 0);
+	Write32(OUT, R600_MC_VM_AGP_TOP, 0x0FFFFFFF);
+	Write32(OUT, R600_MC_VM_AGP_BOT, 0x0FFFFFFF);
+
+	idleState = radeon_gpu_mc_idlecheck();
+	if (idleState > 0) {
+		ERROR("%s: Cannot modify non-idle MC! idleState: 0x%" B_PRIX32 "\n",
+			__func__, idleState);
+		//return B_ERROR;
+	}
+	radeon_gpu_mc_resume();
+
+	// disable render control
+	Write32(OUT, 0x000300, Read32(OUT, 0x000300) & 0xFFFCFFFF);
+
+	return B_OK;
+}
+
+
+static status_t
+radeon_gpu_mc_setup_r700()
+{
+	// HDP initialization
+	uint32 i;
+	uint32 j;
+	for (i = 0, j = 0; i < 32; i++, j += 0x18) {
+		Write32(OUT, (0x2c14 + j), 0x00000000);
+		Write32(OUT, (0x2c18 + j), 0x00000000);
+		Write32(OUT, (0x2c1c + j), 0x00000000);
+		Write32(OUT, (0x2c20 + j), 0x00000000);
+		Write32(OUT, (0x2c24 + j), 0x00000000);
+	}
+
+	// On r7xx read from HDP_DEBUG1 vs write HDP_REG_COHERENCY_FLUSH_CNTL
+	Read32(OUT, HDP_DEBUG1);
+
+	// idle the memory controller
+	radeon_gpu_mc_halt();
+
+	uint32 idleState = radeon_gpu_mc_idlecheck();
+	if (idleState > 0) {
+		ERROR("%s: Cannot modify non-idle MC! idleState: 0x%" B_PRIX32 "\n",
+			__func__, idleState);
+		//return B_ERROR;
+	}
+
+	Write32(OUT, VGA_HDP_CONTROL, VGA_MEMORY_DISABLE);
+
+	// TODO: Memory Controller AGP
+	Write32(OUT, R700_MC_VM_SYSTEM_APERTURE_LOW_ADDR,
+		gInfo->mc.vramStart >> 12);
+	Write32(OUT, R700_MC_VM_SYSTEM_APERTURE_HIGH_ADDR,
+		gInfo->mc.vramEnd >> 12);
+
+	Write32(OUT, R700_MC_VM_SYSTEM_APERTURE_DEFAULT_ADDR, 0);
+	uint32 tmp = ((gInfo->mc.vramEnd >> 24) & 0xFFFF) << 16;
+	tmp |= ((gInfo->mc.vramStart >> 24) & 0xFFFF);
+
+	Write32(OUT, R700_MC_VM_FB_LOCATION, tmp);
+	Write32(OUT, HDP_NONSURFACE_BASE, (gInfo->mc.vramStart >> 8));
+	Write32(OUT, HDP_NONSURFACE_INFO, (2 << 7));
+	Write32(OUT, HDP_NONSURFACE_SIZE, 0x3FFFFFFF);
+
+	// TODO: AGP gtt start / end / agp base
+	// is AGP?
+	//	WREG32(MC_VM_AGP_TOP, rdev->mc.gtt_end >> 22);
+	//	WREG32(MC_VM_AGP_BOT, rdev->mc.gtt_start >> 22);
+	//	WREG32(MC_VM_AGP_BASE, rdev->mc.agp_base >> 22);
+	// else?
+	Write32(OUT, R700_MC_VM_AGP_BASE, 0);
+	Write32(OUT, R700_MC_VM_AGP_TOP, 0x0FFFFFFF);
+	Write32(OUT, R700_MC_VM_AGP_BOT, 0x0FFFFFFF);
+
+	idleState = radeon_gpu_mc_idlecheck();
+	if (idleState > 0) {
+		ERROR("%s: Cannot modify non-idle MC! idleState: 0x%" B_PRIX32 "\n",
+			__func__, idleState);
+		//return B_ERROR;
+	}
+	radeon_gpu_mc_resume();
+
+	// disable render control
+	Write32(OUT, 0x000300, Read32(OUT, 0x000300) & 0xFFFCFFFF);
+
+	return B_OK;
+}
+
+
+void
+radeon_gpu_mc_init()
+{
+	radeon_shared_info &info = *gInfo->shared_info;
+
+	uint32 fbVMLocationReg;
+	if (info.device_chipset >= RADEON_R700) {
+		fbVMLocationReg = R700_MC_VM_FB_LOCATION;
+	} else {
+		fbVMLocationReg = R600_MC_VM_FB_LOCATION;
+	}
+
+	if (gInfo->shared_info->frame_buffer_size > 0)
+		gInfo->mc.valid = true;
+
+	// TODO: 0 should be correct here... but it gets me vertical stripes
+	//uint64 vramBase = 0;
+	uint64 vramBase = gInfo->shared_info->frame_buffer_phys;
+
+	if ((info.chipsetFlags & CHIP_IGP) != 0) {
+		vramBase = Read32(OUT, fbVMLocationReg) & 0xFFFF;
+		vramBase <<= 24;
+	}
+
+	gInfo->mc.vramStart = vramBase;
+	gInfo->mc.vramSize = gInfo->shared_info->frame_buffer_size * 1024;
+	gInfo->mc.vramEnd = (vramBase + gInfo->mc.vramSize) - 1;
+}
+
+
+status_t
+radeon_gpu_mc_setup()
+{
+	radeon_shared_info &info = *gInfo->shared_info;
+
+	radeon_gpu_mc_init();
+		// init video ram ranges for memory controler
+
+	if (gInfo->mc.valid != true) {
+		ERROR("%s: Memory Controller init failed.\n", __func__);
 		return B_ERROR;
 	}
 
-	TRACE("%s: Setting frame buffer from 0x%" B_PRIX32
-		" to 0x%" B_PRIX32 " [size 0x%" B_PRIX16 "]\n",
-		__func__, fb_location, fb_location_tmp, fb_size);
+	TRACE("%s: vramStart: 0x%" B_PRIX64 ", vramEnd: 0x%" B_PRIX64 "\n",
+		__func__, gInfo->mc.vramStart, gInfo->mc.vramEnd);
 
-	// The MC Write32 will handle cards needing a special MC read/write register
-	Write32(MC, R600_MC_VM_FB_LOCATION, fb_location_tmp);
-	Write32(MC, R600_HDP_NONSURFACE_BASE, fb_offset_tmp);
+	if (info.device_chipset >= RADEON_R700)
+		return radeon_gpu_mc_setup_r700();
+	else if (info.device_chipset >= RADEON_R600)
+		return radeon_gpu_mc_setup_r600();
 
-	radeon_gpu_mc_resume();
-
-	return B_OK;
+	return B_ERROR;
 }
 
 
 status_t
 radeon_gpu_irq_setup()
 {
-	// TODO : Stub for IRQ setup
+	// TODO: Stub for IRQ setup
 
 	// allocate rings via r600_ih_ring_alloc
 
@@ -272,4 +428,236 @@ radeon_gpu_irq_setup()
 	// setup interrupt control
 
 	return B_ERROR;
+}
+
+
+static void
+lock_i2c(void* cookie, bool lock)
+{
+	gpio_info *info = (gpio_info*)cookie;
+	radeon_shared_info &sinfo = *gInfo->shared_info;
+
+	uint32 buffer = 0;
+
+	if (lock == true) {
+		// hw_capable and > DCE3
+		if (info->hw_capable == true
+			&& sinfo.device_chipset >= (RADEON_R600 | 0x20)) {
+			// Switch GPIO pads to ddc mode
+			buffer = Read32(OUT, info->mask_scl_reg);
+			buffer &= ~(1 << 16);
+			Write32(OUT, info->mask_scl_reg, buffer);
+		}
+
+		// Clear pins
+		buffer = Read32(OUT, info->a_scl_reg) & ~info->a_scl_mask;
+		Write32(OUT, info->a_scl_reg, buffer);
+		buffer = Read32(OUT, info->a_sda_reg) & ~info->a_sda_mask;
+		Write32(OUT, info->a_sda_reg, buffer);
+	}
+
+	// Set pins to input
+	buffer = Read32(OUT, info->en_scl_reg) & ~info->en_scl_mask;
+	Write32(OUT, info->en_scl_reg, buffer);
+	buffer = Read32(OUT, info->en_sda_reg) & ~info->en_sda_mask;
+	Write32(OUT, info->en_sda_reg, buffer);
+
+	// mask GPIO pins for software use
+	buffer = Read32(OUT, info->mask_scl_reg);
+	if (lock == true) {
+		buffer |= info->mask_scl_mask;
+	} else {
+		buffer &= ~info->mask_scl_mask;
+	}
+	Write32(OUT, info->mask_scl_reg, buffer);
+	Read32(OUT, info->mask_scl_reg);
+
+	buffer = Read32(OUT, info->mask_sda_reg);
+	if (lock == true) {
+		buffer |= info->mask_sda_mask;
+	} else {
+		buffer &= ~info->mask_sda_mask;
+	}
+	Write32(OUT, info->mask_sda_reg, buffer);
+	Read32(OUT, info->mask_sda_reg);
+}
+
+
+static status_t
+get_i2c_signals(void* cookie, int* _clock, int* _data)
+{
+	gpio_info *info = (gpio_info*)cookie;
+
+	uint32 scl = Read32(OUT, info->y_scl_reg)
+		& info->y_scl_mask;
+	uint32 sda = Read32(OUT, info->y_sda_reg)
+		& info->y_sda_mask;
+
+	*_clock = (scl != 0);
+	*_data = (sda != 0);
+
+	return B_OK;
+}
+
+
+static status_t
+set_i2c_signals(void* cookie, int clock, int data)
+{
+	gpio_info* info = (gpio_info*)cookie;
+
+	uint32 scl = Read32(OUT, info->en_scl_reg)
+		& ~info->en_scl_mask;
+	scl |= clock ? 0 : info->en_scl_mask;
+	Write32(OUT, info->en_scl_reg, scl);
+	Read32(OUT, info->en_scl_reg);
+
+	uint32 sda = Read32(OUT, info->en_sda_reg)
+		& ~info->en_sda_mask;
+	sda |= data ? 0 : info->en_sda_mask;
+	Write32(OUT, info->en_sda_reg, sda);
+	Read32(OUT, info->en_sda_reg);
+
+	return B_OK;
+}
+
+
+bool
+radeon_gpu_read_edid(uint32 connector, edid1_info *edid)
+{
+	// ensure things are sane
+	uint32 gpioID = gConnector[connector]->gpioID;
+	if (gGPIOInfo[gpioID]->valid == false)
+		return false;
+
+	i2c_bus bus;
+
+	ddc2_init_timing(&bus);
+	bus.cookie = (void*)gGPIOInfo[gpioID];
+	bus.set_signals = &set_i2c_signals;
+	bus.get_signals = &get_i2c_signals;
+
+	lock_i2c(bus.cookie, true);
+	status_t edid_result = ddc2_read_edid1(&bus, edid, NULL, NULL);
+	lock_i2c(bus.cookie, false);
+
+	if (edid_result != B_OK)
+		return false;
+
+	TRACE("%s: found edid monitor on connector #%" B_PRId32 "\n",
+		__func__, connector);
+
+	return true;
+}
+
+
+status_t
+radeon_gpu_i2c_attach(uint32 id, uint8 hw_line)
+{
+	gConnector[id]->gpioID = 0;
+	for (uint32 i = 0; i < ATOM_MAX_SUPPORTED_DEVICE; i++) {
+		if (gGPIOInfo[i]->hw_line != hw_line)
+			continue;
+		gConnector[id]->gpioID = i;
+		return B_OK;
+	}
+
+	TRACE("%s: couldn't find GPIO for connector %" B_PRIu32 "\n",
+		__func__, id);
+	return B_ERROR;
+}
+
+
+status_t
+radeon_gpu_gpio_setup()
+{
+	int index = GetIndexIntoMasterTable(DATA, GPIO_I2C_Info);
+
+	uint8 tableMajor;
+	uint8 tableMinor;
+	uint16 tableOffset;
+	uint16 tableSize;
+
+	if (atom_parse_data_header(gAtomContext, index, &tableSize,
+		&tableMajor, &tableMinor, &tableOffset) != B_OK) {
+		ERROR("%s: could't read GPIO_I2C_Info table from AtomBIOS index %d!\n",
+			__func__, index);
+		return B_ERROR;
+	}
+
+	struct _ATOM_GPIO_I2C_INFO *i2c_info
+		= (struct _ATOM_GPIO_I2C_INFO *)(gAtomContext->bios + tableOffset);
+
+	uint32 numIndices = (tableSize - sizeof(ATOM_COMMON_TABLE_HEADER))
+		/ sizeof(ATOM_GPIO_I2C_ASSIGMENT);
+
+	if (numIndices > ATOM_MAX_SUPPORTED_DEVICE) {
+		ERROR("%s: ERROR: AtomBIOS contains more GPIO_Info items then I"
+			"was prepared for! (seen: %" B_PRIu32 "; max: %" B_PRIu32 ")\n",
+			__func__, numIndices, (uint32)ATOM_MAX_SUPPORTED_DEVICE);
+		return B_ERROR;
+	}
+
+	for (uint32 i = 0; i < numIndices; i++) {
+		ATOM_GPIO_I2C_ASSIGMENT *gpio = &i2c_info->asGPIO_Info[i];
+
+		// TODO: if DCE 4 and i == 7 ... manual override for evergreen
+		// TODO: if DCE 3 and i == 4 ... manual override
+
+		// populate gpio information
+		gGPIOInfo[i]->hw_line
+			= gpio->sucI2cId.ucAccess;
+		gGPIOInfo[i]->hw_capable
+			= (gpio->sucI2cId.sbfAccess.bfHW_Capable) ? true : false;
+
+		// GPIO mask (Allows software to control the GPIO pad)
+		// 0 = chip access; 1 = only software;
+		gGPIOInfo[i]->mask_scl_reg
+			= B_LENDIAN_TO_HOST_INT16(gpio->usClkMaskRegisterIndex) * 4;
+		gGPIOInfo[i]->mask_sda_reg
+			= B_LENDIAN_TO_HOST_INT16(gpio->usDataMaskRegisterIndex) * 4;
+		gGPIOInfo[i]->mask_scl_mask
+			= (1 << gpio->ucClkMaskShift);
+		gGPIOInfo[i]->mask_sda_mask
+			= (1 << gpio->ucDataMaskShift);
+
+		// GPIO output / write (A) enable
+		// 0 = GPIO input (Y); 1 = GPIO output (A);
+		gGPIOInfo[i]->en_scl_reg
+			= B_LENDIAN_TO_HOST_INT16(gpio->usClkEnRegisterIndex) * 4;
+		gGPIOInfo[i]->en_sda_reg
+			= B_LENDIAN_TO_HOST_INT16(gpio->usDataEnRegisterIndex) * 4;
+		gGPIOInfo[i]->en_scl_mask
+			= (1 << gpio->ucClkEnShift);
+		gGPIOInfo[i]->en_sda_mask
+			= (1 << gpio->ucDataEnShift);
+
+		// GPIO output / write (A)
+		gGPIOInfo[i]->a_scl_reg
+			= B_LENDIAN_TO_HOST_INT16(gpio->usClkA_RegisterIndex) * 4;
+		gGPIOInfo[i]->a_sda_reg
+			= B_LENDIAN_TO_HOST_INT16(gpio->usDataA_RegisterIndex) * 4;
+		gGPIOInfo[i]->a_scl_mask
+			= (1 << gpio->ucClkA_Shift);
+		gGPIOInfo[i]->a_sda_mask
+			= (1 << gpio->ucDataA_Shift);
+
+		// GPIO input / read (Y)
+		gGPIOInfo[i]->y_scl_reg
+			= B_LENDIAN_TO_HOST_INT16(gpio->usClkY_RegisterIndex) * 4;
+		gGPIOInfo[i]->y_sda_reg
+			= B_LENDIAN_TO_HOST_INT16(gpio->usDataY_RegisterIndex) * 4;
+		gGPIOInfo[i]->y_scl_mask
+			= (1 << gpio->ucClkY_Shift);
+		gGPIOInfo[i]->y_sda_mask
+			= (1 << gpio->ucDataY_Shift);
+
+		// ensure data is valid
+		gGPIOInfo[i]->valid = (gGPIOInfo[i]->mask_scl_reg) ? true : false;
+
+		TRACE("%s: GPIO @ %" B_PRIu32 ", valid: %s, hw_line: 0x%" B_PRIX32 "\n",
+			__func__, i, gGPIOInfo[i]->valid ? "true" : "false",
+			gGPIOInfo[i]->hw_line);
+	}
+
+	return B_OK;
 }

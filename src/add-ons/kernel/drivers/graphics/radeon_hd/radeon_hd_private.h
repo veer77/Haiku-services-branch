@@ -19,6 +19,10 @@
 #include "lock.h"
 
 
+// PCI Base Address Registers
+#define PCI_BAR_FB      0
+#define PCI_BAR_MMIO    2
+
 #define RADEON_BIOS8(adr, v) 	(adr[v])
 #define RADEON_BIOS16(adr, v) 	((adr[v]) | (adr[(v) + 1] << 8))
 #define RADEON_BIOS32(adr, v)	\
@@ -44,10 +48,15 @@ struct radeon_info {
 	const char*		device_identifier;
 	uint32			device_id;
 	uint16			device_chipset;
+	uint32			chipsetFlags;
+	uint8			dceMajor;
+	uint8			dceMinor;
 };
 
 
+status_t mapAtomBIOS(radeon_info &info, uint32 romBase, uint32 romSize);
 extern status_t radeon_hd_init(radeon_info& info);
 extern void radeon_hd_uninit(radeon_info& info);
+
 
 #endif  /* RADEON_RD_PRIVATE_H */

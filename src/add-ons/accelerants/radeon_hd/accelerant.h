@@ -11,12 +11,10 @@
 
 
 #include "atom.h"
+#include "encoder.h"
 #include "mode.h"
 #include "radeon_hd.h"
 #include "pll.h"
-#include "dac.h"
-#include "tmds.h"
-#include "lvds.h"
 
 
 #include <ByteOrder.h>
@@ -27,14 +25,22 @@
 	// Maximum displays (more then two requires AtomBIOS)
 
 
-typedef struct {
+struct gpu_state_info {
 	uint32 d1vga_control;
 	uint32 d2vga_control;
 	uint32 vga_render_control;
 	uint32 vga_hdp_control;
 	uint32 d1crtc_control;
 	uint32 d2crtc_control;
-} gpu_mc_info;
+};
+
+
+struct mc_info {
+	bool		valid;
+	uint64		vramStart;
+	uint64		vramEnd;
+	uint64		vramSize;
+};
 
 
 struct accelerant_info {
@@ -56,7 +62,10 @@ struct accelerant_info {
 	int				device;
 	bool			is_clone;
 
-	gpu_mc_info		*mc_info;		// used for last known mc state
+	struct gpu_state_info gpu_info;	// used for last known gpu state
+	struct mc_info	mc;				// used for memory controller info
+
+	volatile uint32	dpms_mode;		// current driver dpms mode
 
 	// LVDS panel mode passed from the bios/startup.
 	display_mode	lvds_panel_mode;
@@ -64,9 +73,9 @@ struct accelerant_info {
 
 
 struct register_info {
+	uint16	crtcOffset;
 	uint16	vgaControl;
 	uint16	grphEnable;
-	uint16	grphUpdate;
 	uint16	grphControl;
 	uint16	grphSwapControl;
 	uint16	grphPrimarySurfaceAddr;
@@ -80,85 +89,74 @@ struct register_info {
 	uint16	grphYStart;
 	uint16	grphXEnd;
 	uint16	grphYEnd;
-	uint16	crtControl;
-	uint16	crtCountControl;
-	uint16	crtInterlace;
-	uint16	crtHPolarity;
-	uint16	crtVPolarity;
-	uint16	crtHSync;
-	uint16	crtVSync;
-	uint16	crtHBlank;
-	uint16	crtVBlank;
-	uint16	crtHTotal;
-	uint16	crtVTotal;
-	uint16	crtcOffset;
 	uint16	modeDesktopHeight;
 	uint16	modeDataFormat;
-	uint16	modeCenter;
 	uint16	viewportStart;
 	uint16	viewportSize;
-	uint16	sclUpdate;
-	uint16	sclEnable;
-	uint16	sclTapControl;
-};
-
-
-struct pll_info {
-	/* reference frequency */
-	uint32 reference_freq;
-
-	/* fixed dividers */
-	uint32 reference_div;
-	uint32 post_div;
-
-	/* pll in/out limits */
-	uint32 pll_in_min;
-	uint32 pll_in_max;
-	uint32 pll_out_min;
-	uint32 pll_out_max;
-	uint32 lcd_pll_out_min;
-	uint32 lcd_pll_out_max;
-	uint32 best_vco;
-
-	/* divider limits */
-	uint32 min_ref_div;
-	uint32 max_ref_div;
-	uint32 min_post_div;
-	uint32 max_post_div;
-	uint32 min_feedback_div;
-	uint32 max_feedback_div;
-	uint32 min_frac_feedback_div;
-	uint32 max_frac_feedback_div;
-
-	/* flags for the current clock */
-	uint32 flags;
-
-	/* pll id */
-	uint32 id;
 };
 
 
 typedef struct {
-	bool valid;
-	uint16 line_mux;
-	uint16 devices;
-	uint32 connector_type;
-	// TODO struct radeon_i2c_bus_rec ddc_bus;
+	bool	valid;
+
+	bool	hw_capable;
+	uint32	hw_line;
+
+	uint32	mask_scl_reg;
+	uint32	mask_sda_reg;
+	uint32	mask_scl_mask;
+	uint32	mask_sda_mask;
+
+	uint32	en_scl_reg;
+	uint32	en_sda_reg;
+	uint32	en_scl_mask;
+	uint32	en_sda_mask;
+
+	uint32	y_scl_reg;
+	uint32	y_sda_reg;
+	uint32	y_scl_mask;
+	uint32	y_sda_mask;
+
+	uint32	a_scl_reg;
+	uint32	a_sda_reg;
+	uint32	a_scl_mask;
+	uint32	a_sda_mask;
+} gpio_info;
+
+
+struct encoder_info {
+	bool		valid;
+	uint16		objectID;
+	uint32		type;
+	uint32		flags;
+	bool		isExternal;
+	bool		isHDMI;
+	bool		isTV;
+	struct pll_info	pll;
+};
+
+
+typedef struct {
+	bool		valid;
+	uint16		objectID;
+	uint32		type;
+	uint32		flags;
+	uint16		gpioID;
+	struct encoder_info encoder;
 	// TODO struct radeon_hpd hpd;
 } connector_info;
 
 
 typedef struct {
 	bool			active;
-	uint32			connection_type;
-	uint8			connection_id;
+	uint32			connectorIndex; // matches connector id in connector_info
 	register_info	*regs;
 	bool			found_ranges;
 	uint32			vfreq_max;
 	uint32			vfreq_min;
 	uint32			hfreq_max;
 	uint32			hfreq_min;
-	pll_info		pll;
+	edid1_info		edid_info;
 } display_info;
 
 
@@ -174,6 +172,7 @@ extern accelerant_info *gInfo;
 extern atom_context *gAtomContext;
 extern display_info *gDisplay[MAX_DISPLAY];
 extern connector_info *gConnector[ATOM_MAX_SUPPORTED_DEVICE];
+extern gpio_info *gGPIOInfo[ATOM_MAX_SUPPORTED_DEVICE];
 
 
 // register access

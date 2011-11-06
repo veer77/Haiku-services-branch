@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2009 Haiku, Inc. All Rights Reserved.
+ * Copyright 2006-2011 Haiku, Inc. All Rights Reserved.
  * Distributed under the terms of the MIT License.
  *
  * Authors:
@@ -33,6 +33,7 @@ enum {
 	TOKEN_MODULO,
 
 	TOKEN_POWER,
+	TOKEN_FACTORIAL,
 
 	TOKEN_OPENING_BRACKET,
 	TOKEN_CLOSING_BRACKET,
@@ -158,7 +159,7 @@ class Tokenizer {
 			}
 
 			// optional exponent part
-			if (*fCurrentChar == 'e' || *fCurrentChar == 'E') {
+			if (*fCurrentChar == 'E') {
 				temp << *fCurrentChar;
 				fCurrentChar++;
 
@@ -205,6 +206,13 @@ class Tokenizer {
 			fCurrentToken = Token(begin, length, _CurrentPos() - length,
 				TOKEN_IDENTIFIER);
 
+		} else if ((unsigned char)fCurrentChar[0] == 0xCF
+			&& (unsigned char)fCurrentChar[1] == 0x80) {
+			// UTF-8 small greek letter PI
+			fCurrentToken = Token(fCurrentChar, 2, _CurrentPos() - 1,
+				TOKEN_IDENTIFIER);
+			fCurrentChar += 2;
+
 		} else {
 			int32 type = TOKEN_NONE;
 
@@ -229,6 +237,9 @@ class Tokenizer {
 					break;
 				case '^':
 					type = TOKEN_POWER;
+					break;
+				case '!':
+					type = TOKEN_FACTORIAL;
 					break;
 
 				case '(':
@@ -456,7 +467,7 @@ ExpressionParser::_ParseSum()
 
 			default:
 				fTokenizer->RewindToken();
-				return value;
+				return _ParseFactorial(value);
 		}
 	}
 }
@@ -491,7 +502,7 @@ ExpressionParser::_ParseProduct()
 
 			default:
 				fTokenizer->RewindToken();
-				return value;
+				return _ParseFactorial(value);
 		}
 	}
 }
@@ -506,7 +517,7 @@ ExpressionParser::_ParsePower()
 		Token token = fTokenizer->NextToken();
 		if (token.type != TOKEN_POWER) {
 			fTokenizer->RewindToken();
-			return value;
+			return _ParseFactorial(value);
 		}
 		value = value.pow(_ParseUnary());
 	}
@@ -564,10 +575,14 @@ ExpressionParser::_InitArguments(MAPM values[], int32 argumentCount)
 MAPM
 ExpressionParser::_ParseFunction(const Token& token)
 {
-	if (strcasecmp("e", token.string.String()) == 0)
-		return MAPM(MM_E);
-	else if (strcasecmp("pi", token.string.String()) == 0)
-		return MAPM(MM_PI);
+	if (strcmp("e", token.string.String()) == 0)
+		return _ParseFactorial(MAPM(MM_E));
+	else if (strcasecmp("pi", token.string.String()) == 0
+		|| ((unsigned char)token.string.String()[0] == 0xCF 
+			&& (unsigned char)token.string.String()[1] == 0x80)) {
+		// UTF-8 small greek letter PI
+		return _ParseFactorial(MAPM(MM_PI));
+	}
 
 	// hard coded cases for different count of arguments
 	// supports functions with 3 arguments at most
@@ -576,68 +591,71 @@ ExpressionParser::_ParseFunction(const Token& token)
 
 	if (strcasecmp("abs", token.string.String()) == 0) {
 		_InitArguments(values, 1);
-		return values[0].abs();
+		return _ParseFactorial(values[0].abs());
 	} else if (strcasecmp("acos", token.string.String()) == 0) {
 		_InitArguments(values, 1);
 		if (values[0] < -1 || values[0] > 1)
 			throw ParseException("out of domain", token.position);
-		return values[0].acos();
+		return _ParseFactorial(values[0].acos());
 	} else if (strcasecmp("asin", token.string.String()) == 0) {
 		_InitArguments(values, 1);
 		if (values[0] < -1 || values[0] > 1)
 			throw ParseException("out of domain", token.position);
-		return values[0].asin();
+		return _ParseFactorial(values[0].asin());
 	} else if (strcasecmp("atan", token.string.String()) == 0) {
 		_InitArguments(values, 1);
-		return values[0].atan();
+		return _ParseFactorial(values[0].atan());
 	} else if (strcasecmp("atan2", token.string.String()) == 0) {
 		_InitArguments(values, 2);
-		return values[0].atan2(values[1]);
+		return _ParseFactorial(values[0].atan2(values[1]));
+	} else if (strcasecmp("cbrt", token.string.String()) == 0) {
+		_InitArguments(values, 1);
+		return _ParseFactorial(values[0].cbrt());
 	} else if (strcasecmp("ceil", token.string.String()) == 0) {
 		_InitArguments(values, 1);
-		return values[0].ceil();
+		return _ParseFactorial(values[0].ceil());
 	} else if (strcasecmp("cos", token.string.String()) == 0) {
 		_InitArguments(values, 1);
-		return values[0].cos();
+		return _ParseFactorial(values[0].cos());
 	} else if (strcasecmp("cosh", token.string.String()) == 0) {
 		_InitArguments(values, 1);
-		return values[0].cosh();
+		return _ParseFactorial(values[0].cosh());
 	} else if (strcasecmp("exp", token.string.String()) == 0) {
 		_InitArguments(values, 1);
-		return values[0].exp();
+		return _ParseFactorial(values[0].exp());
 	} else if (strcasecmp("floor", token.string.String()) == 0) {
 		_InitArguments(values, 1);
-		return values[0].floor();
+		return _ParseFactorial(values[0].floor());
 	} else if (strcasecmp("ln", token.string.String()) == 0) {
 		_InitArguments(values, 1);
 		if (values[0] <= 0)
 			throw ParseException("out of domain", token.position);
-		return values[0].log();
+		return _ParseFactorial(values[0].log());
 	} else if (strcasecmp("log", token.string.String()) == 0) {
 		_InitArguments(values, 1);
 		if (values[0] <= 0)
 			throw ParseException("out of domain", token.position);
-		return values[0].log10();
+		return _ParseFactorial(values[0].log10());
 	} else if (strcasecmp("pow", token.string.String()) == 0) {
 		_InitArguments(values, 2);
-		return values[0].pow(values[1]);
+		return _ParseFactorial(values[0].pow(values[1]));
 	} else if (strcasecmp("sin", token.string.String()) == 0) {
 		_InitArguments(values, 1);
-		return values[0].sin();
+		return _ParseFactorial(values[0].sin());
 	} else if (strcasecmp("sinh", token.string.String()) == 0) {
 		_InitArguments(values, 1);
-		return values[0].sinh();
+		return _ParseFactorial(values[0].sinh());
 	} else if (strcasecmp("sqrt", token.string.String()) == 0) {
 		_InitArguments(values, 1);
 		if (values[0] < 0)
 			throw ParseException("out of domain", token.position);
-		return values[0].sqrt();
+		return _ParseFactorial(values[0].sqrt());
 	} else if (strcasecmp("tan", token.string.String()) == 0) {
 		_InitArguments(values, 1);
-		return values[0].tan();
+		return _ParseFactorial(values[0].tan());
 	} else if (strcasecmp("tanh", token.string.String()) == 0) {
 		_InitArguments(values, 1);
-		return values[0].tanh();
+		return _ParseFactorial(values[0].tanh());
 	}
 
 	throw ParseException("unknown identifier", token.position);
@@ -652,7 +670,7 @@ ExpressionParser::_ParseAtom()
 		throw ParseException("unexpected end of expression", token.position);
 
 	if (token.type == TOKEN_CONSTANT)
-		return token.value;
+		return _ParseFactorial(token.value);
 
 	fTokenizer->RewindToken();
 
@@ -662,6 +680,20 @@ ExpressionParser::_ParseAtom()
 
 	_EatToken(TOKEN_CLOSING_BRACKET);
 
+	return _ParseFactorial(value);
+}
+
+
+MAPM
+ExpressionParser::_ParseFactorial(MAPM value)
+{
+	if (fTokenizer->NextToken().type == TOKEN_FACTORIAL) {
+		fTokenizer->RewindToken();
+		_EatToken(TOKEN_FACTORIAL);
+		return value.factorial();
+	}
+
+	fTokenizer->RewindToken();
 	return value;
 }
 

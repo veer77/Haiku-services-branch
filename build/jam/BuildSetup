@@ -65,7 +65,7 @@ HAIKU_DEFAULT_IMAGE_NAME = haiku.image ;
 HAIKU_DEFAULT_IMAGE_DIR = $(HAIKU_OUTPUT_DIR) ;
 HAIKU_DEFAULT_VMWARE_IMAGE_NAME = haiku.vmdk ;
 HAIKU_DEFAULT_INSTALL_DIR = /Haiku ;
-HAIKU_DEFAULT_IMAGE_SIZE ?= 230 ; # 230 MB
+HAIKU_DEFAULT_IMAGE_SIZE ?= 300 ; # 300 MB
 HAIKU_DEFAULT_IMAGE_LABEL ?= Haiku ;
 
 # Haiku CD defaults
@@ -164,10 +164,10 @@ HAIKU_LINK = $(HAIKU_CC) ;
 HAIKU_LINKFLAGS = $(HAIKU_GCC_BASE_FLAGS) ;
 
 HAIKU_HDRS = [ FStandardHeaders ] ;
-HAIKU_CCFLAGS = $(HAIKU_GCC_BASE_FLAGS) -nostdinc ;
-HAIKU_C++FLAGS = $(HAIKU_GCC_BASE_FLAGS) -nostdinc ;
-HAIKU_KERNEL_CCFLAGS = $(HAIKU_GCC_BASE_FLAGS) ;
-HAIKU_KERNEL_C++FLAGS = $(HAIKU_GCC_BASE_FLAGS) ;
+HAIKU_KERNEL_CCFLAGS = $(HAIKU_CCFLAGS) $(HAIKU_GCC_BASE_FLAGS) ;
+HAIKU_KERNEL_C++FLAGS = $(HAIKU_C++FLAGS) $(HAIKU_GCC_BASE_FLAGS) ;
+HAIKU_CCFLAGS += $(HAIKU_GCC_BASE_FLAGS) -nostdinc ;
+HAIKU_C++FLAGS += $(HAIKU_GCC_BASE_FLAGS) -nostdinc ;
 HAIKU_DEFINES = __HAIKU__ ;
 HAIKU_NO_WERROR ?= 0 ;
 
@@ -279,7 +279,7 @@ switch $(HAIKU_CPU) {
 			}
 		}
 		# offset in floppy image (>= sizeof(haiku_loader))
-		HAIKU_BOOT_ARCHIVE_IMAGE_OFFSET = 300 ; # in kB
+		HAIKU_BOOT_ARCHIVE_IMAGE_OFFSET = 260 ; # in kB
 		HAIKU_NO_WERROR = 1 ;
 			# we use #warning as placeholders for things to write...
 	}
@@ -656,6 +656,12 @@ if $(HOST_ARCH) = m68k {
 	HOST_KERNEL_PIC_CCFLAGS = $(HAIKU_KERNEL_PIC_CCFLAGS) ;
 	HOST_KERNEL_PIC_LINKFLAGS = $(HAIKU_KERNEL_PIC_LINKFLAGS) ;
 }
+
+if $(HOST_PLATFORM) != darwin {
+	# fix for new changes to DSO linking policies
+	HOST_LINKFLAGS += -Xlinker --no-as-needed ;
+}
+
 
 # warning flags
 HOST_WARNING_CCFLAGS = -Wall -Wno-trigraphs -Wmissing-prototypes -Wpointer-arith

@@ -33,28 +33,28 @@ radeon_bios_init_scratch()
 {
 	radeon_shared_info &info = *gInfo->shared_info;
 
-	uint32 bios_2_scratch;
-	uint32 bios_6_scratch;
+	uint32 biosScratch2;
+	uint32 biosScratch6;
 
 	if (info.device_chipset >= RADEON_R600) {
-		bios_2_scratch = Read32(OUT, R600_BIOS_2_SCRATCH);
-		bios_6_scratch = Read32(OUT, R600_BIOS_6_SCRATCH);
+		biosScratch2 = Read32(OUT, R600_BIOS_2_SCRATCH);
+		biosScratch6 = Read32(OUT, R600_BIOS_6_SCRATCH);
 	} else {
-		bios_2_scratch = Read32(OUT, RADEON_BIOS_2_SCRATCH);
-		bios_6_scratch = Read32(OUT, RADEON_BIOS_6_SCRATCH);
+		biosScratch2 = Read32(OUT, RADEON_BIOS_2_SCRATCH);
+		biosScratch6 = Read32(OUT, RADEON_BIOS_6_SCRATCH);
 	}
 
-	bios_2_scratch &= ~ATOM_S2_VRI_BRIGHT_ENABLE;
+	biosScratch2 &= ~ATOM_S2_VRI_BRIGHT_ENABLE;
 		// bios should control backlight
-	bios_6_scratch |= ATOM_S6_ACC_BLOCK_DISPLAY_SWITCH;
+	biosScratch6 |= ATOM_S6_ACC_BLOCK_DISPLAY_SWITCH;
 		// bios shouldn't handle mode switching
 
 	if (info.device_chipset >= RADEON_R600) {
-		Write32(OUT, R600_BIOS_2_SCRATCH, bios_2_scratch);
-		Write32(OUT, R600_BIOS_6_SCRATCH, bios_6_scratch);
+		Write32(OUT, R600_BIOS_2_SCRATCH, biosScratch2);
+		Write32(OUT, R600_BIOS_6_SCRATCH, biosScratch6);
 	} else {
-		Write32(OUT, RADEON_BIOS_2_SCRATCH, bios_2_scratch);
-		Write32(OUT, RADEON_BIOS_6_SCRATCH, bios_6_scratch);
+		Write32(OUT, RADEON_BIOS_2_SCRATCH, biosScratch2);
+		Write32(OUT, RADEON_BIOS_6_SCRATCH, biosScratch6);
 	}
 }
 
@@ -73,7 +73,7 @@ radeon_bios_isposted()
 			+ EVERGREEN_CRTC0_REGISTER_OFFSET)
 			| Read32(OUT, EVERGREEN_CRTC_CONTROL
 			+ EVERGREEN_CRTC1_REGISTER_OFFSET);
-		if (reg & EVERGREEN_CRTC_MASTER_EN)
+		if ((reg & EVERGREEN_CRTC_MASTER_EN) != 0)
 			return true;
 	} else if (info.device_chipset >= RADEON_R1000) {
 		// evergreen or higher
@@ -89,13 +89,13 @@ radeon_bios_isposted()
 				+ EVERGREEN_CRTC4_REGISTER_OFFSET)
 			| Read32(OUT, EVERGREEN_CRTC_CONTROL
 				+ EVERGREEN_CRTC5_REGISTER_OFFSET);
-		if (reg & EVERGREEN_CRTC_MASTER_EN)
+		if ((reg & EVERGREEN_CRTC_MASTER_EN) != 0)
 			return true;
 	} else if (info.device_chipset > RADEON_R580) {
 		// avivio through r700
 		reg = Read32(OUT, AVIVO_D1CRTC_CONTROL) |
 			Read32(OUT, AVIVO_D2CRTC_CONTROL);
-		if (reg & AVIVO_CRTC_EN) {
+		if ((reg & AVIVO_CRTC_EN) != 0) {
 			return true;
 		}
 	}
@@ -127,15 +127,10 @@ radeon_init_bios(uint8* bios)
 	atom_card_info->reg_read = Read32Cail;
 	atom_card_info->reg_write = Write32Cail;
 
-	if (false) {
-		// TODO : if rio_mem, use ioreg
-		//atom_card_info->ioreg_read = cail_ioreg_read;
-		//atom_card_info->ioreg_write = cail_ioreg_write;
-	} else {
-		TRACE("%s: Cannot find PCI I/O BAR; using MMIO\n", __func__);
-		atom_card_info->ioreg_read = Read32Cail;
-		atom_card_info->ioreg_write = Write32Cail;
-	}
+	// use MMIO instead of PCI I/O BAR
+	atom_card_info->ioreg_read = Read32Cail;
+	atom_card_info->ioreg_write = Write32Cail;
+
 	atom_card_info->mc_read = _read32;
 	atom_card_info->mc_write = _write32;
 	atom_card_info->pll_read = _read32;
@@ -159,13 +154,8 @@ radeon_init_bios(uint8* bios)
 	radeon_bios_init_scratch();
 	atom_allocate_fb_scratch(gAtomContext);
 
-	// TODO : Always post bios for now... not doing this
-	// at a later date may save boot time
-	atom_asic_init(gAtomContext);
-
-	#if 0
 	// post card atombios if needed
-	if (!radeon_bios_isposted()) {
+	if (radeon_bios_isposted() == false) {
 		TRACE("%s: init AtomBIOS for this card as it is not not posted\n",
 			__func__);
 		// radeon_gpu_reset();	// <= r500 only?
@@ -174,7 +164,6 @@ radeon_init_bios(uint8* bios)
 		TRACE("%s: AtomBIOS is already posted\n",
 			__func__);
 	}
-	#endif
 
 	return B_OK;
 }

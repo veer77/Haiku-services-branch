@@ -30,8 +30,6 @@
 
 
 using BPrivate::ObjectDeleter;
-using BPrivate::B_WEEK_START_MONDAY;
-using BPrivate::B_WEEK_START_SUNDAY;
 
 
 BLocale::BLocale(const BLanguage* language,
@@ -111,7 +109,7 @@ BLocale::GetLanguage(BLanguage* language) const
 
 	BAutolock lock(fLock);
 	if (!lock.IsLocked())
-		return B_WOULD_BLOCK;
+		return B_ERROR;
 
 	*language = fLanguage;
 
@@ -127,7 +125,7 @@ BLocale::GetFormattingConventions(BFormattingConventions* conventions) const
 
 	BAutolock lock(fLock);
 	if (!lock.IsLocked())
-		return B_WOULD_BLOCK;
+		return B_ERROR;
 
 	*conventions = fConventions;
 
@@ -196,7 +194,7 @@ BLocale::FormatDate(char* string, size_t maxSize, time_t time,
 {
 	BAutolock lock(fLock);
 	if (!lock.IsLocked())
-		return B_WOULD_BLOCK;
+		return B_ERROR;
 
 	BString format;
 	fConventions.GetDateFormat(style, format);
@@ -223,7 +221,7 @@ BLocale::FormatDate(BString *string, time_t time, BDateFormatStyle style,
 {
 	BAutolock lock(fLock);
 	if (!lock.IsLocked())
-		return B_WOULD_BLOCK;
+		return B_ERROR;
 
 	BString format;
 	fConventions.GetDateFormat(style, format);
@@ -256,7 +254,7 @@ BLocale::FormatDate(BString* string, int*& fieldPositions, int& fieldCount,
 {
 	BAutolock lock(fLock);
 	if (!lock.IsLocked())
-		return B_WOULD_BLOCK;
+		return B_ERROR;
 
 	BString format;
 	fConventions.GetDateFormat(style, format);
@@ -272,7 +270,7 @@ BLocale::FormatDate(BString* string, int*& fieldPositions, int& fieldCount,
 		error);
 
 	if (error != U_ZERO_ERROR)
-		return B_ERROR;
+		return B_BAD_VALUE;
 
 	icu::FieldPosition field;
 	std::vector<int> fieldPosStorage;
@@ -303,7 +301,7 @@ BLocale::GetDateFields(BDateElement*& fields, int& fieldCount,
 {
 	BAutolock lock(fLock);
 	if (!lock.IsLocked())
-		return B_WOULD_BLOCK;
+		return B_ERROR;
 
 	BString format;
 	fConventions.GetDateFormat(style, format);
@@ -320,7 +318,7 @@ BLocale::GetDateFields(BDateElement*& fields, int& fieldCount,
 		&positionIterator, error);
 
 	if (U_FAILURE(error))
-		return B_ERROR;
+		return B_BAD_VALUE;
 
 	icu::FieldPosition field;
 	std::vector<int> fieldPosStorage;
@@ -353,26 +351,54 @@ BLocale::GetDateFields(BDateElement*& fields, int& fieldCount,
 }
 
 
-int
-BLocale::StartOfWeek() const
+status_t
+BLocale::GetStartOfWeek(BWeekday* startOfWeek) const
 {
+	if (startOfWeek == NULL)
+		return B_BAD_VALUE;
+
 	BAutolock lock(fLock);
 	if (!lock.IsLocked())
-		return B_WOULD_BLOCK;
+		return B_ERROR;
 
 	UErrorCode err = U_ZERO_ERROR;
-	Calendar* c = Calendar::createInstance(
-		*BFormattingConventions::Private(&fConventions).ICULocale(),
-		err);
+	ObjectDeleter<Calendar> calendar = Calendar::createInstance(
+		*BFormattingConventions::Private(&fConventions).ICULocale(), err);
 
-	if (err == U_ZERO_ERROR && c->getFirstDayOfWeek(err) == UCAL_SUNDAY) {
-		delete c;
-		return B_WEEK_START_SUNDAY;
-	} else {
-		delete c;
-		// Might be another day, but BeAPI will not handle it
-		return B_WEEK_START_MONDAY;
+	if (U_FAILURE(err))
+		return B_ERROR;
+
+	UCalendarDaysOfWeek icuWeekStart = calendar->getFirstDayOfWeek(err);
+	if (U_FAILURE(err))
+		return B_ERROR;
+
+	switch (icuWeekStart) {
+		case UCAL_SUNDAY:
+			*startOfWeek = B_WEEKDAY_SUNDAY;
+			break;
+		case UCAL_MONDAY:
+			*startOfWeek = B_WEEKDAY_MONDAY;
+			break;
+		case UCAL_TUESDAY:
+			*startOfWeek = B_WEEKDAY_TUESDAY;
+			break;
+		case UCAL_WEDNESDAY:
+			*startOfWeek = B_WEEKDAY_WEDNESDAY;
+			break;
+		case UCAL_THURSDAY:
+			*startOfWeek = B_WEEKDAY_THURSDAY;
+			break;
+		case UCAL_FRIDAY:
+			*startOfWeek = B_WEEKDAY_FRIDAY;
+			break;
+		case UCAL_SATURDAY:
+			*startOfWeek = B_WEEKDAY_SATURDAY;
+			break;
+		default:
+			return B_ERROR;
 	}
+
+	return B_OK;
 }
 
 
@@ -382,7 +408,7 @@ BLocale::FormatDateTime(char* target, size_t maxSize, time_t time,
 {
 	BAutolock lock(fLock);
 	if (!lock.IsLocked())
-		return B_WOULD_BLOCK;
+		return B_ERROR;
 
 	BString format;
 	fConventions.GetDateFormat(dateStyle, format);
@@ -419,7 +445,7 @@ BLocale::FormatDateTime(BString* target, time_t time,
 {
 	BAutolock lock(fLock);
 	if (!lock.IsLocked())
-		return B_WOULD_BLOCK;
+		return B_ERROR;
 
 	BString format;
 	fConventions.GetDateFormat(dateStyle, format);
@@ -462,7 +488,7 @@ BLocale::FormatTime(char* string, size_t maxSize, time_t time,
 {
 	BAutolock lock(fLock);
 	if (!lock.IsLocked())
-		return B_WOULD_BLOCK;
+		return B_ERROR;
 
 	BString format;
 	fConventions.GetTimeFormat(style, format);
@@ -489,7 +515,7 @@ BLocale::FormatTime(BString* string, time_t time, BTimeFormatStyle style,
 {
 	BAutolock lock(fLock);
 	if (!lock.IsLocked())
-		return B_WOULD_BLOCK;
+		return B_ERROR;
 
 	BString format;
 	fConventions.GetTimeFormat(style, format);
@@ -522,7 +548,7 @@ BLocale::FormatTime(BString* string, int*& fieldPositions, int& fieldCount,
 {
 	BAutolock lock(fLock);
 	if (!lock.IsLocked())
-		return B_WOULD_BLOCK;
+		return B_ERROR;
 
 	BString format;
 	fConventions.GetTimeFormat(style, format);
@@ -538,7 +564,7 @@ BLocale::FormatTime(BString* string, int*& fieldPositions, int& fieldCount,
 		error);
 
 	if (error != U_ZERO_ERROR)
-		return B_ERROR;
+		return B_BAD_VALUE;
 
 	icu::FieldPosition field;
 	std::vector<int> fieldPosStorage;
@@ -568,7 +594,7 @@ BLocale::GetTimeFields(BDateElement*& fields, int& fieldCount,
 {
 	BAutolock lock(fLock);
 	if (!lock.IsLocked())
-		return B_WOULD_BLOCK;
+		return B_ERROR;
 
 	BString format;
 	fConventions.GetTimeFormat(style, format);
@@ -585,7 +611,7 @@ BLocale::GetTimeFields(BDateElement*& fields, int& fieldCount,
 		&positionIterator, error);
 
 	if (error != U_ZERO_ERROR)
-		return B_ERROR;
+		return B_BAD_VALUE;
 
 	icu::FieldPosition field;
 	std::vector<int> fieldPosStorage;
@@ -644,7 +670,7 @@ BLocale::FormatNumber(BString* string, double value) const
 {
 	BAutolock lock(fLock);
 	if (!lock.IsLocked())
-		return B_WOULD_BLOCK;
+		return B_ERROR;
 
 	UErrorCode err = U_ZERO_ERROR;
 	ObjectDeleter<NumberFormat> numberFormatter(NumberFormat::createInstance(
@@ -654,7 +680,7 @@ BLocale::FormatNumber(BString* string, double value) const
 	if (numberFormatter.Get() == NULL)
 		return B_NO_MEMORY;
 	if (U_FAILURE(err))
-		return B_ERROR;
+		return B_BAD_VALUE;
 
 	UnicodeString icuString;
 	numberFormatter->format(value, icuString);
@@ -684,7 +710,7 @@ BLocale::FormatNumber(BString* string, int32 value) const
 {
 	BAutolock lock(fLock);
 	if (!lock.IsLocked())
-		return B_WOULD_BLOCK;
+		return B_ERROR;
 
 	UErrorCode err = U_ZERO_ERROR;
 	ObjectDeleter<NumberFormat> numberFormatter(NumberFormat::createInstance(
@@ -694,7 +720,7 @@ BLocale::FormatNumber(BString* string, int32 value) const
 	if (numberFormatter.Get() == NULL)
 		return B_NO_MEMORY;
 	if (U_FAILURE(err))
-		return B_ERROR;
+		return B_BAD_VALUE;
 
 	UnicodeString icuString;
 	numberFormatter->format((int32_t)value, icuString);
@@ -727,7 +753,7 @@ BLocale::FormatMonetary(BString* string, double value) const
 
 	BAutolock lock(fLock);
 	if (!lock.IsLocked())
-		return B_WOULD_BLOCK;
+		return B_ERROR;
 
 	UErrorCode err = U_ZERO_ERROR;
 	ObjectDeleter<NumberFormat> numberFormatter(
@@ -738,7 +764,7 @@ BLocale::FormatMonetary(BString* string, double value) const
 	if (numberFormatter.Get() == NULL)
 		return B_NO_MEMORY;
 	if (U_FAILURE(err))
-		return B_ERROR;
+		return B_BAD_VALUE;
 
 	UnicodeString icuString;
 	numberFormatter->format(value, icuString);

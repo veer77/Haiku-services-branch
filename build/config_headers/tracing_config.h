@@ -35,6 +35,7 @@
 #define NET_BUFFER_TRACING						0
 #define NET_BUFFER_TRACING_STACK_TRACE			0	/* stack trace depth */
 #define PAGE_ALLOCATION_TRACING					0
+#define PAGE_ALLOCATION_TRACING_STACK_TRACE		0	/* stack trace depth */
 #define PAGE_DAEMON_TRACING						0
 #define PAGE_STATE_TRACING						0
 #define PAGE_STATE_TRACING_STACK_TRACE			0	/* stack trace depth */
@@ -47,7 +48,9 @@
 #define SCHEDULING_ANALYSIS_TRACING				0
 #define SIGNAL_TRACING							0
 #define SLAB_MEMORY_MANAGER_TRACING				0
+#define SLAB_MEMORY_MANAGER_TRACING_STACK_TRACE	0	/* stack trace depth */
 #define SLAB_OBJECT_CACHE_TRACING				0
+#define SLAB_OBJECT_CACHE_TRACING_STACK_TRACE	0	/* stack trace depth */
 #define SWAP_TRACING							0
 #define SYSCALL_TRACING							0
 #define SYSCALL_TRACING_IGNORE_KTRACE_OUTPUT	1

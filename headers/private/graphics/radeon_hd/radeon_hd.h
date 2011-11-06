@@ -14,9 +14,10 @@
 
 #include "radeon_reg.h"
 
-#include "rhd_regs.h"	// to phase out
+#include "avivo.h"
 #include "r500_reg.h"
 #include "r600_reg.h"
+#include "r700_reg.h"
 #include "r800_reg.h"
 
 #include <Accelerant.h>
@@ -27,6 +28,7 @@
 
 #define VENDOR_ID_ATI	0x1002
 
+// Card models
 #define RADEON_R520		0x0520	// Fudo
 #define RADEON_R580		0x0580	// Rodin
 #define RADEON_R600		0x0600	// Pele
@@ -36,7 +38,12 @@
 #define RADEON_R3000	0x3000	// Southern Islands
 #define RADEON_R4000	0x4000	// Not yet known / used
 
-#define RADEON_VBIOS_SIZE 0x10000
+// Card chipset flags
+#define CHIP_STD		(1 << 0) // Standard chipset
+#define CHIP_IGP		(1 << 1) // IGP chipset
+#define CHIP_MOBILE		(1 << 2) // Mobile chipset
+#define CHIP_DISCREET	(1 << 3) // Discreet chipset
+#define CHIP_APU		(1 << 4) // APU chipset
 
 #define DEVICE_NAME				"radeon_hd"
 #define RADEON_ACCELERANT_NAME	"radeon_hd.accelerant"
@@ -87,11 +94,10 @@ struct radeon_shared_info {
 	addr_t			physical_status_page;
 	uint32			graphics_memory_size;
 
-	addr_t			frame_buffer_phys;		// card PCI BAR address of FB
-	area_id			frame_buffer_area;		// area of memory mapped FB
-	uint32			frame_buffer_int;		// card internal FB location
-	uint32			frame_buffer_size;		// card internal FB aperture size
 	uint8*			frame_buffer;			// virtual memory mapped FB
+	area_id			frame_buffer_area;		// area of memory mapped FB
+	addr_t			frame_buffer_phys;		// card PCI BAR address of FB
+	uint32			frame_buffer_size;		// FB size mapped
 
 	bool			has_edid;
 	edid1_info		edid_info;
@@ -119,6 +125,9 @@ struct radeon_shared_info {
 	uint16			cursor_hot_y;
 
 	uint16			device_chipset;
+	uint32			chipsetFlags;
+	uint8			dceMajor;
+	uint8			dceMinor;
 	char			device_identifier[32];
 };
 
@@ -160,120 +169,7 @@ struct radeon_free_graphics_memory {
 // registers
 #define R6XX_CONFIG_APER_SIZE			0x5430	// r600>
 #define OLD_CONFIG_APER_SIZE			0x0108	// <r600
-
-#define D1CRTC_CONTROL						0x6080
-#define     CRTC_EN							(1 << 0)
-#define D1CRTC_STATUS						0x609c
-#define D1CRTC_UPDATE_LOCK					0x60E8
-#define D1GRPH_PRIMARY_SURFACE_ADDRESS		0x6110
-#define D1GRPH_SECONDARY_SURFACE_ADDRESS	0x6118
-#define D1GRPH_PRIMARY_SURFACE_ADDRESS_HIGH	0x6914		// r700>
-#define D1GRPH_SECONDARY_SURFACE_ADDRESS_HIGH 0x691c	// r700>
-
-#define D2CRTC_CONTROL						0x6880
-#define D2CRTC_STATUS						0x689c
-#define D2CRTC_UPDATE_LOCK					0x68E8
-#define D2GRPH_PRIMARY_SURFACE_ADDRESS		0x6910
-#define D2GRPH_SECONDARY_SURFACE_ADDRESS	0x6918
-#define D2GRPH_PRIMARY_SURFACE_ADDRESS_HIGH	0x6114		// r700>
-#define D2GRPH_SECONDARY_SURFACE_ADDRESS_HIGH 0x611c	// r700>
-
-#define D1VGA_CONTROL						0x0330
-#define     DVGA_CONTROL_MODE_ENABLE		(1 << 0)
-#define     DVGA_CONTROL_TIMING_SELECT		(1 << 8)
-#define     DVGA_CONTROL_SYNC_POLARITY_SELECT (1 << 9)
-#define     DVGA_CONTROL_OVERSCAN_TIMING_SELECT (1 << 10)
-#define     DVGA_CONTROL_OVERSCAN_COLOR_EN	(1 << 16)
-#define     DVGA_CONTROL_ROTATE				(1 << 24)
-#define D2VGA_CONTROL						0x0338
-
-#define VGA_HDP_CONTROL						0x328
-#define     VGA_MEM_PAGE_SELECT_EN			(1 << 0)
-#define     VGA_MEMORY_DISABLE				(1 << 4)
-#define     VGA_RBBM_LOCK_DISABLE			(1 << 8)
-#define     VGA_SOFT_RESET					(1 << 16)
-#define VGA_MEMORY_BASE_ADDRESS				0x0310
-#define VGA_RENDER_CONTROL					0x0300
-#define     VGA_VSTATUS_CNTL_MASK			0x00030000
-
-// cursor
-#define RADEON_CURSOR_CONTROL			0x70080
-#define RADEON_CURSOR_BASE				0x70084
-#define RADEON_CURSOR_POSITION			0x70088
-#define RADEON_CURSOR_PALETTE			0x70090 // (- 0x7009f)
-#define RADEON_CURSOR_SIZE				0x700a0
-#define CURSOR_ENABLED					(1UL << 31)
-#define CURSOR_FORMAT_2_COLORS			(0UL << 24)
-#define CURSOR_FORMAT_3_COLORS			(1UL << 24)
-#define CURSOR_FORMAT_4_COLORS			(2UL << 24)
-#define CURSOR_FORMAT_ARGB				(4UL << 24)
-#define CURSOR_FORMAT_XRGB				(5UL << 24)
-#define CURSOR_POSITION_NEGATIVE		0x8000
-#define CURSOR_POSITION_MASK			0x3fff
-
-// overlay flip
-#define COMMAND_OVERLAY_FLIP			(0x11 << 23)
-#define COMMAND_OVERLAY_CONTINUE		(0 << 21)
-#define COMMAND_OVERLAY_ON				(1 << 21)
-#define COMMAND_OVERLAY_OFF				(2 << 21)
-#define OVERLAY_UPDATE_COEFFICIENTS		0x1
-
-// 2D acceleration
-#define XY_COMMAND_SOURCE_BLIT			0x54c00006
-#define XY_COMMAND_COLOR_BLIT			0x54000004
-#define XY_COMMAND_SETUP_MONO_PATTERN	0x44400007
-#define XY_COMMAND_SCANLINE_BLIT		0x49400001
-#define COMMAND_COLOR_BLIT				0x50000003
-#define COMMAND_BLIT_RGBA				0x00300000
-
-#define COMMAND_MODE_SOLID_PATTERN		0x80
-#define COMMAND_MODE_CMAP8				0x00
-#define COMMAND_MODE_RGB15				0x02
-#define COMMAND_MODE_RGB16				0x01
-#define COMMAND_MODE_RGB32				0x03
-
-// display
-
-#define DISPLAY_CONTROL_ENABLED			(1UL << 31)
-#define DISPLAY_CONTROL_GAMMA			(1UL << 30)
-#define DISPLAY_CONTROL_COLOR_MASK		(0x0fUL << 26)
-#define DISPLAY_CONTROL_CMAP8			(2UL << 26)
-#define DISPLAY_CONTROL_RGB15			(4UL << 26)
-#define DISPLAY_CONTROL_RGB16			(5UL << 26)
-#define DISPLAY_CONTROL_RGB32			(6UL << 26)
-
-/* VIP bus */
-#define RADEON_VIPH_CH0_DATA                0x0c00
-#define RADEON_VIPH_CH1_DATA                0x0c04
-#define RADEON_VIPH_CH2_DATA                0x0c08
-#define RADEON_VIPH_CH3_DATA                0x0c0c
-#define RADEON_VIPH_CH0_ADDR                0x0c10
-#define RADEON_VIPH_CH1_ADDR                0x0c14
-#define RADEON_VIPH_CH2_ADDR                0x0c18
-#define RADEON_VIPH_CH3_ADDR                0x0c1c
-#define RADEON_VIPH_CH0_SBCNT               0x0c20
-#define RADEON_VIPH_CH1_SBCNT               0x0c24
-#define RADEON_VIPH_CH2_SBCNT               0x0c28
-#define RADEON_VIPH_CH3_SBCNT               0x0c2c
-#define RADEON_VIPH_CH0_ABCNT               0x0c30
-#define RADEON_VIPH_CH1_ABCNT               0x0c34
-#define RADEON_VIPH_CH2_ABCNT               0x0c38
-#define RADEON_VIPH_CH3_ABCNT               0x0c3c
-#define RADEON_VIPH_CONTROL                 0x0c40
-#       define RADEON_VIP_BUSY 0
-#       define RADEON_VIP_IDLE 1
-#       define RADEON_VIP_RESET 2
-#       define RADEON_VIPH_EN               (1 << 21)
-#define RADEON_VIPH_DV_LAT                  0x0c44
-#define RADEON_VIPH_BM_CHUNK                0x0c48
-#define RADEON_VIPH_DV_INT                  0x0c4c
-#define RADEON_VIPH_TIMEOUT_STAT            0x0c50
-#define RADEON_VIPH_TIMEOUT_STAT__VIPH_REG_STAT 0x00000010
-#define RADEON_VIPH_TIMEOUT_STAT__VIPH_REG_AK   0x00000010
-#define RADEON_VIPH_TIMEOUT_STAT__VIPH_REGR_DIS 0x01000000
-
-#define RADEON_VIPH_REG_DATA                0x0084
-#define RADEON_VIPH_REG_ADDR                0x0080
+#define CONFIG_MEMSIZE                  0x5428	// r600>
 
 // PCI bridge memory management
 
