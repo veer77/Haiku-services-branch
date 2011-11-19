@@ -256,6 +256,12 @@ radeon_init_accelerant(int device)
 
 	// detect physical connectors
 	status = detect_connectors();
+
+	if (status != B_OK) {
+		TRACE("%s: falling back to legacy connector detection.\n", __func__);
+		status = detect_connectors_legacy();
+	}
+
 	if (status != B_OK) {
 		TRACE("%s: couldn't detect supported connectors!\n", __func__);
 		return status;
@@ -309,12 +315,22 @@ radeon_uninit_accelerant(void)
 status_t
 radeon_get_accelerant_device_info(accelerant_device_info *di)
 {
+	radeon_shared_info &info = *gInfo->shared_info;
+
 	di->version = B_ACCELERANT_VERSION;
-	strcpy(di->name, gInfo->shared_info->device_identifier);
+	strcpy(di->name, info.deviceName);
 
 	char chipset[32];
-	sprintf(chipset, "r%X", gInfo->shared_info->device_chipset);
+	sprintf(chipset, "%s", gInfo->shared_info->chipsetName);
 	strcpy(di->chipset, chipset);
+
+	// add flags onto chipset name
+	if ((info.chipsetFlags & CHIP_IGP) != 0)
+		strcat(di->chipset, " IGP");
+	if ((info.chipsetFlags & CHIP_MOBILE) != 0)
+		strcat(di->chipset, " Mobile");
+	if ((info.chipsetFlags & CHIP_APU) != 0)
+		strcat(di->chipset, " APU");
 
 	strcpy(di->serial_no, "None" );
 

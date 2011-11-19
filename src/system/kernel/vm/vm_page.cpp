@@ -1724,7 +1724,7 @@ mark_page_range_in_use(page_num_t startPage, page_num_t length, bool wired)
 				VMPageQueue& queue = page->State() == PAGE_STATE_FREE
 					? sFreePageQueue : sClearPageQueue;
 				queue.Remove(page);
-				page->SetState(wired ? PAGE_STATE_UNUSED : PAGE_STATE_UNUSED);
+				page->SetState(wired ? PAGE_STATE_WIRED : PAGE_STATE_UNUSED);
 				page->busy = false;
 				atomic_add(&sUnreservedFreePages, -1);
 				DEBUG_PAGE_ACCESS_END(page);
@@ -3230,23 +3230,28 @@ vm_page_init_num_pages(kernel_args *args)
 	sNonExistingPages = 0;
 	sIgnoredPages = args->ignored_physical_memory / B_PAGE_SIZE;
 
-	for (uint32 i = 0; i < args->num_physical_memory_ranges; i++) {
+	for (uint32 i = 1; i < args->num_physical_memory_ranges; i++) {
 		page_num_t start = args->physical_memory_range[i].start / B_PAGE_SIZE;
 		if (start > physicalPagesEnd)
 			sNonExistingPages += start - physicalPagesEnd;
 		physicalPagesEnd = start
 			+ args->physical_memory_range[i].size / B_PAGE_SIZE;
+
+#ifdef LIMIT_AVAILABLE_MEMORY
+		page_num_t available
+			= physicalPagesEnd - sPhysicalPageOffset - sNonExistingPages;
+		if (available > LIMIT_AVAILABLE_MEMORY * (1024 * 1024 / B_PAGE_SIZE)) {
+			physicalPagesEnd = sPhysicalPageOffset + sNonExistingPages
+				+ LIMIT_AVAILABLE_MEMORY * (1024 * 1024 / B_PAGE_SIZE);
+			break;
+		}
+#endif
 	}
 
 	TRACE(("first phys page = %#" B_PRIxPHYSADDR ", end %#" B_PRIxPHYSADDR "\n",
 		sPhysicalPageOffset, physicalPagesEnd));
 
 	sNumPages = physicalPagesEnd - sPhysicalPageOffset;
-
-#ifdef LIMIT_AVAILABLE_MEMORY
-	if (sNumPages > LIMIT_AVAILABLE_MEMORY * (1024 * 1024 / B_PAGE_SIZE))
-		sNumPages = LIMIT_AVAILABLE_MEMORY * (1024 * 1024 / B_PAGE_SIZE);
-#endif
 }
 
 
@@ -4053,13 +4058,11 @@ vm_page_num_unused_pages(void)
 void
 vm_page_get_stats(system_info *info)
 {
-	// Get free pages count -- not really exact, since we don't know how many
-	// of the reserved pages have already been allocated, but good citizens
-	// unreserve chunk-wise as they are allocating the pages, if they have
-	// reserved a larger quantity.
-	int32 free = sUnreservedFreePages;
-	if (free < 0)
-		free = 0;
+	// Note: there's no locking protecting any of the queues or counters here,
+	// so we run the risk of getting bogus values when evaluating them
+	// throughout this function. As these stats are for informational purposes
+	// only, it is not really worth introducing such locking. Therefore we just
+	// ensure that we don't under- or overflow any of the values.
 
 	// The pages used for the block cache buffers. Those should not be counted
 	// as used but as cached pages.
@@ -4067,11 +4070,33 @@ vm_page_get_stats(system_info *info)
 	// can't really be freed in a low memory situation.
 	page_num_t blockCachePages = block_cache_used_memory() / B_PAGE_SIZE;
 
-	info->max_pages = sNumPages - sNonExistingPages;
-	info->used_pages = gMappedPagesCount + sInactivePageQueue.Count()
-		- blockCachePages;
-	info->cached_pages = info->max_pages >= free + info->used_pages
-		? info->max_pages - free - info->used_pages : 0;
+	// Non-temporary modified pages are special as they represent pages that
+	// can be written back, so they could be freed if necessary, for us
+	// basically making them into cached pages with a higher overhead. The
+	// modified queue count is therefore split into temporary and non-temporary
+	// counts that are then added to the corresponding number.
+	page_num_t modifiedNonTemporaryPages
+		= (sModifiedPageQueue.Count() - sModifiedTemporaryPages);
+
+	info->max_pages = vm_page_num_pages();
+	info->cached_pages = sCachedPageQueue.Count() + modifiedNonTemporaryPages
+		+ blockCachePages;
+
+	// max_pages is composed of:
+	//	active + inactive + unused + wired + modified + cached + free + clear
+	// So taking out the cached (including modified non-temporary), free and
+	// clear ones leaves us with all used pages.
+	int32 subtractPages = info->cached_pages + sFreePageQueue.Count()
+		+ sClearPageQueue.Count();
+	info->used_pages = subtractPages > info->max_pages
+		? 0 : info->max_pages - subtractPages;
+
+	if (info->used_pages + info->cached_pages > info->max_pages) {
+		// Something was shuffled around while we were summing up the counts.
+		// Make the values sane, preferring the worse case of more used pages.
+		info->cached_pages = info->max_pages - info->used_pages;
+	}
+
 	info->page_faults = vm_num_page_faults();
 	info->ignored_pages = sIgnoredPages;
 

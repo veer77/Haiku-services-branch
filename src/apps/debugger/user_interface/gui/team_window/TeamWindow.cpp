@@ -1,6 +1,6 @@
 /*
  * Copyright 2009, Ingo Weinhold, ingo_weinhold@gmx.de.
- * Copyright 2010, Rene Gollent, rene@gollent.com.
+ * Copyright 2010-2011, Rene Gollent, rene@gollent.com.
  * Distributed under the terms of the MIT License.
  */
 
@@ -107,7 +107,8 @@ TeamWindow::TeamWindow(::Team* team, UserInterfaceListener* listener)
 	fRunButton(NULL),
 	fStepOverButton(NULL),
 	fStepIntoButton(NULL),
-	fStepOutButton(NULL)
+	fStepOutButton(NULL),
+	fSourceLocatePanel(NULL)
 {
 	fTeam->Lock();
 	BString name = fTeam->Name();
@@ -138,6 +139,8 @@ TeamWindow::~TeamWindow()
 	_SetActiveStackTrace(NULL);
 	_SetActiveImage(NULL);
 	_SetActiveThread(NULL);
+
+	delete fSourceLocatePanel;
 }
 
 
@@ -247,13 +250,15 @@ TeamWindow::MessageReceived(BMessage* message)
 				&& fActiveFunction->GetFunctionDebugInfo()
 					->SourceFile() != NULL && fActiveSourceCode != NULL
 				&& fActiveSourceCode->GetSourceFile() == NULL) {
-				BFilePanel* panel = NULL;
 				try {
-					panel = new BFilePanel(B_OPEN_PANEL,
-						new BMessenger(this));
-					panel->Show();
+					if (fSourceLocatePanel == NULL) {
+						fSourceLocatePanel = new BFilePanel(B_OPEN_PANEL,
+							new BMessenger(this));
+					}
+					fSourceLocatePanel->Show();
 				} catch (...) {
-					delete panel;
+					delete fSourceLocatePanel;
+					fSourceLocatePanel = NULL;
 				}
 			}
 			break;
@@ -335,13 +340,19 @@ TeamWindow::MessageReceived(BMessage* message)
 bool
 TeamWindow::QuitRequested()
 {
-	return fListener->UserInterfaceQuitRequested();
+	fListener->UserInterfaceQuitRequested();
+
+	return false;
 }
 
 
 status_t
 TeamWindow::LoadSettings(const GUITeamUISettings* settings)
 {
+	AutoLocker<BWindow> lock(this);
+	if (!lock.IsLocked())
+		return B_ERROR;
+
 	BVariant value;
 	status_t error = settings->Value("teamWindowFrame", value);
 	if (error == B_OK) {
@@ -364,6 +375,10 @@ TeamWindow::LoadSettings(const GUITeamUISettings* settings)
 status_t
 TeamWindow::SaveSettings(GUITeamUISettings* settings)
 {
+	AutoLocker<BWindow> lock(this);
+	if (!lock.IsLocked())
+		return B_ERROR;
+
 	// save the settings from the cached copy first,
 	// then overwrite them with our most current set
 	// this is necessary in order to preserve the settings
@@ -1098,6 +1113,7 @@ TeamWindow::_HandleSourceCodeChanged()
 	SourceCode* sourceCode = fActiveFunction->GetFunction()->GetSourceCode();
 	LocatableFile* sourceFile = NULL;
 	BString sourceText;
+	BString truncatedText;
 	if (sourceCode == NULL)
 		sourceCode = fActiveFunction->GetSourceCode();
 
@@ -1111,7 +1127,12 @@ TeamWindow::_HandleSourceCodeChanged()
 		&& sourceFile != NULL) {
 		sourceText.Prepend("Click to locate source file '");
 		sourceText += "'";
-		fSourcePathView->SetText(sourceText.String());
+		truncatedText = sourceText;
+		fSourcePathView->TruncateString(&truncatedText, B_TRUNCATE_MIDDLE,
+			fSourcePathView->Bounds().Width());
+		if (sourceText != truncatedText)
+			fSourcePathView->SetToolTip(sourceText.String());
+		fSourcePathView->SetText(truncatedText.String());
 	} else if (sourceFile != NULL) {
 		sourceText.Prepend("File: ");
 		fSourcePathView->SetText(sourceText.String());
@@ -1167,6 +1188,11 @@ TeamWindow::_LoadSplitSettings(BSplitView* view, const char* name,
 			view->SetItemWeight(i, value.ToFloat(),
 				i == view->CountItems() - 1);
 		}
+
+		settingName.SetToFormat("teamWindow%sCollapsed%d", name, i);
+		error = settings->Value(settingName.String(), value);
+		if (error == B_OK)
+			view->SetItemCollapsed(i, value.ToBool());
 	}
 }
 
@@ -1181,7 +1207,12 @@ TeamWindow::_SaveSplitSettings(BSplitView* view, const char* name,
 		settingName.SetToFormat("teamWindow%sSplit%d", name, i);
 		if (!settings->SetValue(settingName.String(),
 			view->ItemWeight(i)))
-		return B_NO_MEMORY;
+			return B_NO_MEMORY;
+
+		settingName.SetToFormat("teamWindow%sCollapsed%d", name, i);
+		if (!settings->SetValue(settingName.String(), 
+			view->IsItemCollapsed(i)))
+			return B_NO_MEMORY;
 	}
 
 	return B_OK;
