@@ -1,5 +1,5 @@
 /*
- * Copyright 2010, Oliver Tappe, zooey@hirschkaefer.de.
+ * Copyright 2010-2011, Oliver Tappe, zooey@hirschkaefer.de.
  * Distributed under the terms of the MIT License.
  */
 #ifndef _ICU_LOCALE_BACKEND_H
@@ -9,6 +9,7 @@
 #include "LocaleBackend.h"
 
 #include <locale.h>
+#include <pthread.h>
 #include <timelocal.h>
 
 #include "ICUCollateData.h"
@@ -40,6 +41,12 @@ public:
 	virtual	status_t			ToWCTrans(wint_t wc, wctrans_t transition,
 									wint_t& result);
 
+	virtual status_t			MultibyteToWchar(wchar_t* wcOut, const char* mb,
+									size_t mbLength, mbstate_t* mbState,
+									size_t& lengthOut);
+	virtual status_t			WcharToMultibyte(char* mbOut, wchar_t wc,
+									mbstate_t* mbState, size_t& lengthOut);
+
 	virtual	const char*			GetLanginfo(int index);
 
 	virtual	status_t			Strcoll(const char* a, const char* b, int& out);
@@ -57,12 +64,18 @@ private:
 			const char*			_QueryLocale(int category);
 			const char*			_SetPosixLocale(int category);
 
+	static	pthread_key_t		_CreateThreadLocalStorageKey();
+	static	void 				_DestroyThreadLocalStorageValue(void* value);
+
 			// buffer for locale names (up to one per category)
 			char				fLocaleDescription[512];
 
 			// data containers
 			struct lconv 	 	fLocaleConv;
 			struct lc_time_t 	fLCTimeInfo;
+
+			//
+			pthread_key_t		fThreadLocalStorageKey;
 
 			// these work on the data containers above
 			ICUCollateData		fCollateData;
