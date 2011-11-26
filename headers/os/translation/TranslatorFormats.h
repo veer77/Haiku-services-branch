@@ -34,6 +34,7 @@ enum TranslatorGroups {
 	B_TRANSLATOR_TEXT		= 'TEXT',
 	B_TRANSLATOR_MIDI		= 'midi',
 	B_TRANSLATOR_MEDIA		= 'mhi!',
+	B_TRANSLATOR_CONTACT	= 'cnct',
 	B_TRANSLATOR_NONE		= 'none',
 	B_TRANSLATOR_ANY_TYPE	= 0
 };
@@ -61,7 +62,11 @@ enum {
 	B_AU_FORMAT				= 'AU  ',
 
 	// Text formats
-	B_STYLED_TEXT_FORMAT	= 'STXT'
+	B_STYLED_TEXT_FORMAT	= 'STXT',
+
+	B_CONTACT_FORMAT		= 'BCFM',
+	B_PEOPLE_FORMAT			= 'BPFM',
+	B_VCARD_FORMAT			= 'BVFM'
 };
 
 
