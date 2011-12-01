@@ -623,6 +623,14 @@ radeon_gpu_read_edid(uint32 connector, edid1_info *edid)
 	if (gGPIOInfo[gpioID]->valid == false)
 		return false;
 
+	if (gConnector[connector]->type == VIDEO_CONNECTOR_LVDS) {
+		// we should call radeon_gpu_read_edid_lvds at some point
+		ERROR("%s: LCD panel detected (LVDS), sending VESA EDID!\n",
+			__func__);
+		memcpy(edid, &gInfo->shared_info->edid_info, sizeof(struct edid1_info));
+		return true;
+	}
+
 	i2c_bus bus;
 
 	ddc2_init_timing(&bus);
@@ -642,6 +650,75 @@ radeon_gpu_read_edid(uint32 connector, edid1_info *edid)
 
 	return true;
 }
+
+
+#if 0
+bool
+radeon_gpu_read_edid_lvds(uint32 connector, edid1_info *edid)
+{
+	uint8 dceMajor;
+	uint8 dceMinor;
+	int index = GetIndexIntoMasterTable(DATA, LVDS_Info);
+	uint16 offset;
+
+	if (atom_parse_data_header(gAtomContexg, index, NULL,
+		&dceMajor, &dceMinor, &offset) == B_OK) {
+		lvdsInfo = (union lvds_info *)(gAtomContext->bios + offset);
+
+		display_timing timing;
+		// Pixel Clock
+		timing.pixel_clock
+			= B_LENDIAN_TO_HOST_INT16(lvdsInfo->info.sLCDTiming.usPixClk) * 10;
+		// Horizontal
+		timing.h_display
+			= B_LENDIAN_TO_HOST_INT16(lvdsInfo->info.sLCDTiming.usHActive);
+		timing.h_total = timing.h_display + B_LENDIAN_TO_HOST_INT16(
+			lvdsInfo->info.sLCDTiming.usHBlanking_Time);
+		timing.h_sync_start = timing.h_display
+			+ B_LENDIAN_TO_HOST_INT16(lvdsInfo->info.sLCDTiming.usHSyncOffset);
+		timing.h_sync_end = timing.h_sync_start
+			+ B_LENDIAN_TO_HOST_INT16(lvdsInfo->info.sLCDTiming.usHSyncWidth);
+		// Vertical
+		timing.v_display
+			= B_LENDIAN_TO_HOST_INT16(lvdsInfo->info.sLCDTiming.usVActive);
+		timing.v_total = timing.v_display + B_LENDIAN_TO_HOST_INT16(
+			lvdsInfo->info.sLCDTiming.usVBlanking_Time);
+		timing.v_sync_start = timing.v_display
+			+ B_LENDIAN_TO_HOST_INT16(lvdsInfo->info.sLCDTiming.usVSyncOffset);
+		timing.v_sync_end = timing.v_sync_start
+			+ B_LENDIAN_TO_HOST_INT16(lvdsInfo->info.sLCDTiming.usVSyncWidth);
+
+		#if 0
+		// Who cares.
+		uint32 powerDelay
+			= B_LENDIAN_TO_HOST_INT16(lvdsInfo->info.usOffDelayInMs);
+		uint32 lcdMisc = lvdsInfo->info.ucLVDS_Misc;
+		#endif
+
+		uint16 flags = B_LENDIAN_TO_HOST_INT16(
+			lvdsInfo->info.sLCDTiming.susModeMiscInfo.usAccess);
+
+		if ((flags & ATOM_VSYNC_POLARITY) == 0)
+			timing.flags |= B_POSITIVE_VSYNC;
+		if ((flags & ATOM_HSYNC_POLARITY) == 0)
+			timing.flags |= B_POSITIVE_HSYNC;
+
+		// Extra flags
+		if ((flags & ATOM_INTERLACE) != 0)
+			timing.flags |= B_TIMING_INTERLACED;
+
+		#if 0
+		// We don't use these timing flags at the moment
+		if ((flags & ATOM_COMPOSITESYNC) != 0)
+			timing.flags |= MODE_FLAG_CSYNC;
+		if ((flags & ATOM_DOUBLE_CLOCK_MODE) != 0)
+			timing.flags |= MODE_FLAG_DBLSCAN;
+		#endif
+
+		// TODO: generate a fake EDID with information above
+	}
+}
+#endif
 
 
 status_t
@@ -773,76 +850,4 @@ radeon_gpu_gpio_setup()
 	}
 
 	return B_OK;
-}
-
-
-int32
-radeon_get_temp()
-{
-	// return GPU temp in millidegrees C
-
-	radeon_shared_info &info = *gInfo->shared_info;
-
-	uint32 rawTemp = 0;
-	int32 finalTemp = 0;
-
-	if (info.chipsetID == RADEON_JUNIPER) {
-		uint32 offset = (Read32(OUT, EVERGREEN_CG_THERMAL_CTRL)
-			& EVERGREEN_TOFFSET_MASK) >> EVERGREEN_TOFFSET_SHIFT;
-		rawTemp = (Read32(OUT, EVERGREEN_CG_TS0_STATUS)
-			& EVERGREEN_TS0_ADC_DOUT_MASK) >> EVERGREEN_TS0_ADC_DOUT_SHIFT;
-
-		if (offset & 0x100)
-			finalTemp = rawTemp / 2 - (0x200 - offset);
-		else
-			finalTemp = rawTemp / 2 + offset;
-
-		return finalTemp * 1000;
-	} else if (info.chipsetID == RADEON_SUMO
-		|| info.chipsetID == RADEON_SUMO2) {
-		uint32 rawTemp = Read32(OUT, EVERGREEN_CG_THERMAL_STATUS) & 0xff;
-		finalTemp = rawTemp - 49;
-
-		return finalTemp * 1000;
-	} else if (info.chipsetID >= RADEON_CEDAR) {
-		rawTemp = (Read32(OUT, EVERGREEN_CG_MULT_THERMAL_STATUS)
-			& EVERGREEN_ASIC_T_MASK) >> EVERGREEN_ASIC_T_SHIFT;
-
-		if (rawTemp & 0x400)
-			finalTemp = -256;
-		else if (rawTemp & 0x200)
-			finalTemp = 255;
-		else if (rawTemp & 0x100) {
-			finalTemp = rawTemp & 0x1ff;
-			finalTemp |= ~0x1ff;
-		} else
-			finalTemp = rawTemp & 0xff;
-
-		return (finalTemp * 1000) / 2;
-	} else if (info.chipsetID >= RADEON_RV770) {
-		rawTemp = (Read32(OUT, R700_CG_MULT_THERMAL_STATUS) & R700_ASIC_T_MASK)
-			>> R700_ASIC_T_SHIFT;
-		if (rawTemp & 0x400)
-			finalTemp = -256;
-		else if (rawTemp & 0x200)
-			finalTemp = 255;
-		else if (rawTemp & 0x100) {
-			finalTemp = rawTemp & 0x1ff;
-			finalTemp |= ~0x1ff;
-		} else
-			finalTemp = rawTemp & 0xff;
-
-		return (finalTemp * 1000) / 2;
-	} else if (info.chipsetID >= RADEON_R600) {
-		rawTemp = (Read32(OUT, R600_CG_THERMAL_STATUS) & R600_ASIC_T_MASK)
-			>> R600_ASIC_T_SHIFT;
-		finalTemp = rawTemp & 0xff;
-
-		if (rawTemp & 0x100)
-			finalTemp -= 256;
-
-		return finalTemp * 1000;
-	}
-
-	return -1;
 }

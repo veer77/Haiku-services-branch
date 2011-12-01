@@ -32,6 +32,8 @@
 #	define TRACE(x...) ;
 #endif
 
+#define ERROR(x...) dprintf("radeon_hd: " x)
+
 #define MAX_CARDS 1
 
 
@@ -151,7 +153,7 @@ const struct supported_device {
 
 	// From here on AMD no longer used numeric identifiers
 
-	// Marketing Names: Radeon HD 54xx - HD 63xx
+	// Marketing Names: Radeon HD 54xx ~ HD 63xx
 	// Introduced: 2009
 	// Codename: Evergreen
 	//  Cedar
@@ -174,11 +176,24 @@ const struct supported_device {
 	//  Hemlock
 	{0x689c, 4, 0, RADEON_HEMLOCK, CHIP_STD, "Radeon HD 5900"},
 	// Fusion APUS
-	//  Palms
+	//  Palm
 	{0x9804, 4, 1, RADEON_PALM, CHIP_APU, "Radeon HD 6250"},
 	{0x9805, 4, 1, RADEON_PALM, CHIP_APU, "Radeon HD 6290"},
 	{0x9802, 4, 1, RADEON_PALM, CHIP_APU, "Radeon HD 6310"},
 	{0x9803, 4, 1, RADEON_PALM, CHIP_APU, "Radeon HD 6310"},
+	//  Sumo (no VGA / LVDS!, only DP)
+	{0x9640, 4, 1, RADEON_SUMO, CHIP_APU, "Radeon HD 6550D"},
+	{0x9641, 4, 1, RADEON_SUMO, CHIP_APU, "Radeon HD SUMO M"},
+	{0x9647, 4, 1, RADEON_SUMO, CHIP_APU, "Radeon HD 6520G (M)"},
+	{0x9648, 4, 1, RADEON_SUMO, CHIP_APU, "Radeon HD 6480G (M)"},
+	{0x964a, 4, 1, RADEON_SUMO, CHIP_APU, "Radeon HD 6530D"},
+	{0x964e, 4, 1, RADEON_SUMO, CHIP_APU, "Radeon HD SUMO M"},
+	{0x964f, 4, 1, RADEON_SUMO, CHIP_APU, "Radeon HD SUMO M"},
+	//  Sumo2 (no VGA / LVDS!, only DP)
+	{0x9642, 4, 1, RADEON_SUMO2, CHIP_APU, "Radeon HD 6370D"},
+	{0x9643, 4, 1, RADEON_SUMO2, CHIP_APU, "Radeon HD SUMO2 M"},
+	{0x9644, 4, 1, RADEON_SUMO2, CHIP_APU, "Radeon HD 6410D"},
+	{0x9645, 4, 1, RADEON_SUMO2, CHIP_APU, "Radeon HD SUMO2 M"},
 
 	// Radeon HD 64xx - HD 69xx
 	// Introduced: 2010
@@ -295,7 +310,7 @@ init_hardware(void)
 
 	status_t status = get_module(B_PCI_MODULE_NAME, (module_info **)&gPCI);
 	if (status != B_OK) {
-		dprintf(DEVICE_NAME ": ERROR: pci module unavailable\n");
+		ERROR("%s: ERROR: pci module unavailable\n", __func__);
 		return status;
 	}
 
@@ -316,7 +331,7 @@ init_driver(void)
 
 	status_t status = get_module(B_PCI_MODULE_NAME, (module_info**)&gPCI);
 	if (status != B_OK) {
-		dprintf(DEVICE_NAME ": ERROR: pci module unavailable\n");
+		ERROR("%s: ERROR: pci module unavailable\n", __func__);
 		return status;
 	}
 
@@ -369,7 +384,7 @@ init_driver(void)
 		gDeviceInfo[found]->dceMinor = kSupportedDevices[type].dceMinor;
 		gDeviceInfo[found]->chipsetFlags = kSupportedDevices[type].chipsetFlags;
 
-		dprintf(DEVICE_NAME ": GPU(%ld) %s, revision = 0x%x\n", found,
+		ERROR("%s: GPU(%ld) %s, revision = 0x%x\n", __func__, found,
 			kSupportedDevices[type].deviceName, info->revision);
 
 		found++;
@@ -381,6 +396,7 @@ init_driver(void)
 		mutex_destroy(&gLock);
 		put_module(B_AGP_GART_MODULE_NAME);
 		put_module(B_PCI_MODULE_NAME);
+		ERROR("%s: no supported devices found\n", __func__);
 		return ENODEV;
 	}
 
@@ -418,6 +434,7 @@ find_device(const char* name)
 			return &gDeviceHooks;
 	}
 
+	ERROR("%s: %s wasn't found!\n", __func__, name);
 	return NULL;
 }
 
