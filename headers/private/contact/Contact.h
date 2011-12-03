@@ -14,13 +14,13 @@
 #include "RawContact.h"
 
 
-class BContact : public BArchivable {
+class BContact : public virtual BArchivable {
 public:
 							BContact(BRawContact* contact = NULL);
 							BContact(BMessage* archive);
 			virtual			~BContact();
 
-			status_t		Archive(BMessage* archive, bool deep);
+			status_t		Archive(BMessage* archive, bool deep) const;
 	static BArchivable*		Instantiate(BMessage* data);
 
 			status_t		InitCheck() const;
@@ -55,7 +55,7 @@ private:
 	//		status_t 		SetID(uint32 id);
 	//		status_t		SetGroup(uint32 id);
 
-			status_t		_FlattenFields(BMessage* msg);
+			status_t		_FlattenFields(BMessage* msg) const;
 			status_t		_UnflattenFields(BMessage* msg);
 			
 			BRawContact* 	fRawContact;

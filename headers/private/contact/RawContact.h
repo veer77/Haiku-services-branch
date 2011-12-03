@@ -10,7 +10,7 @@
 #include <TranslatorFormats.h>
 #include <TranslatorRoster.h>
 
-class BRawContact : public BArchivable {
+class BRawContact : public virtual BArchivable {
 public:
 					// Initialize the RawContact from
 					// a BMessage if it's valid.
@@ -23,7 +23,7 @@ public:
 
 					~BRawContact();
 
-	status_t		Archive(BMessage* data, bool deep);
+	status_t 		Archive(BMessage* data, bool deep) const;
 
 	static BArchivable*	Instantiate(BMessage* data);
 

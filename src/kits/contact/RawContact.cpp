@@ -48,12 +48,13 @@ void
 BRawContact::_Init()
 {
 	printf("init\n");
-	if (fFormat == 0 && fDest != NULL)
+	if (fFormat == 0 && fDest != NULL) {
 		if (_FindFormat() == B_OK) {
 			return;
 		} else {
 			fFormat = B_CONTACT_FORMAT;
 		}
+	}
 
 	if (fDest == NULL && fFormat != B_PEOPLE_FORMAT) {
 		if (fFormat == 0)
@@ -148,7 +149,7 @@ BRawContact::_CheckDestination(BPositionIO* destination)
 
 
 status_t
-BRawContact::Archive(BMessage* archive, bool deep)
+BRawContact::Archive(BMessage* archive, bool deep) const
 {
 	if (fInitCheck != B_OK)
 		return fInitCheck;

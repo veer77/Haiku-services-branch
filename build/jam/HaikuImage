@@ -81,7 +81,7 @@ SYSTEM_DEMOS = BSnow Chart Clock Cortex FontDemo GLTeapot
 	Pulse Sudoku
 ;
 SYSTEM_LIBS =
-	libbe.so libbsd.so libbnetapi.so
+	libbe.so libbsd.so libcontact.so libbnetapi.so
 	libdebug.so libdevice.so
 	libfreetype.so
 	libgame.so libGL.so libgnu.so
@@ -125,9 +125,9 @@ SYSTEM_ADD_ONS_ACCELERANTS = $(X86_ONLY)radeon.accelerant
 ;
 SYSTEM_ADD_ONS_TRANSLATORS = BMPTranslator EXRTranslator GIFTranslator
 	HVIFTranslator ICOTranslator JPEGTranslator JPEG2000Translator
-	PCXTranslator PNGTranslator PPMTranslator
+	PCXTranslator PeopleTranslator PNGTranslator PPMTranslator
 	RAWTranslator RTF-Translator SGITranslator STXTTranslator TGATranslator
-	TIFFTranslator WebPTranslator WonderBrushTranslator
+	TIFFTranslator VCardTranslator WebPTranslator WonderBrushTranslator
 ;
 SYSTEM_ADD_ONS_LOCALE_CATALOGS = <catalog-addon>zeta <catalog-addon>plaintext ;
 SYSTEM_ADD_ONS_MEDIA = cortex_audioadapter.media_addon

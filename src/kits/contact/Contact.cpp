@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Your Name <your@email.address>
+ * Copyright 2011 Dario Casalinuovo <your@email.address>
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 #include <Contact.h>
@@ -69,7 +69,7 @@ BContact::~BContact()
 
 
 status_t
-BContact::Archive(BMessage* archive, bool deep)
+BContact::Archive(BMessage* archive, bool deep) const
 {
 	if (fInitCheck != B_OK)
 		return fInitCheck;
@@ -326,7 +326,7 @@ BContact::CopyFieldsFrom(BContact& contact)
 
 
 status_t
-BContact::_FlattenFields(BMessage* msg)
+BContact::_FlattenFields(BMessage* msg) const
 {
 	int count = fList.CountItems();
 	status_t ret;
