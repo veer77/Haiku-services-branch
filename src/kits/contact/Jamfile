@@ -5,6 +5,7 @@ UsePrivateSystemHeaders ;
 
 SharedLibrary libcontact.so :
 	Contact.cpp
+	ContactRef.cpp
 	RawContact.cpp
 	ContactField.cpp
 	AddressBook.cpp

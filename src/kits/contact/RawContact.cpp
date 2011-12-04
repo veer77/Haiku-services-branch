@@ -2,7 +2,7 @@
  * Copyright 2010 Dario Casalinuovo <your@email.address>
  * All rights reserved. Distributed under the terms of the MIT license.
  */
-#include "RawContact.h"
+#include <RawContact.h>
 
 #include <File.h>
 #include <TranslatorFormats.h>

@@ -6,17 +6,18 @@
 #define B_CONTACT_H
 
 #include <Archivable.h>
+#include <ContactDefs.h>
+#include <ContactField.h>
+#include <ContactRef.h>
 #include <Message.h>
 #include <ObjectList.h>
-
-#include "ContactDefs.h"
-#include "ContactField.h"
-#include "RawContact.h"
+#include <RawContact.h>
 
 
 class BContact : public virtual BArchivable {
 public:
 							BContact(BRawContact* contact = NULL);
+							BContact(BContactRef& ref);
 							BContact(BMessage* archive);
 			virtual			~BContact();
 
@@ -28,12 +29,14 @@ public:
 			int32			ID() { return fID; }
 			int32			GroupID() { return fGroupID; }
 */
+			const BContactRef& ContactRef();
+
 			status_t		AddField(BContactField* field);
 			status_t		RemoveEquivalentFields(BContactField* field);
 			status_t		RemoveField(BContactField* field);
 			status_t		ReplaceField(BContactField* field);
 			bool			HasField(BContactField* field);
-			// TODO FieldAt is a better name
+
 			BContactField*	FieldAt(int index);
 			BContactField*	FieldAt(type_code type, int32 index = 0);
 
@@ -66,7 +69,10 @@ private:
 			int32 			fID;
 			int32			fGroupID;
 
+			const BContactRef fContactRef;
+
 			BContactFieldList fList;
+
 //friend class BContactRoster;
 };
 

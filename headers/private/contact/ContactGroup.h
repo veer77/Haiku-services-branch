@@ -5,26 +5,26 @@
 #ifndef _CONTACT_GROUP_H
 #define _CONTACT_GROUP_H
 
-#include <SupportDefs.h>
 #include <Contact.h>
+#include <SupportDefs.h>
 
 typedef BObjectList<BContactGroup> BContactGroupList;
 
 
 class BContactGroup {
 public:
-					BContactGroup(int32 groupID);
+					BContactGroup(uint32 groupID);
 					~BContactGroup();
 
 	status_t		InitCheck();
 
-	status_t		AddContact(BContact* contact);
-	status_t		RemoveContact(BContact* contact);
+	status_t		AddContact(BContactRef* contact);
+	status_t		RemoveContact(BContactRef* contact);
 
-	BContactList*	AllContacts();
-	BContactList*	ContactsByField(ContactFieldType type,
+	BContactRefList* AllContacts();
+	BContactRefList* ContactsByField(ContactFieldType type,
 						const char* value = NULL);
-//	BContactList*	ContactsByQuery(BContactQuery* query);
+	//BContactList*	ContactsByQuery(BContactQuery* query);
 
 	//BMessage* 	AsMessage();
 private:
