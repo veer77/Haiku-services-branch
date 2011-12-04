@@ -4,6 +4,7 @@
  *
  * Authors:
  *		Philippe Houdoin
+ *      Dario Casalinuovo
  */
 
 
@@ -85,31 +86,8 @@ PictureView::PictureView(float width, float height, const entry_ref* ref)
 	fFocusChanging(false),
 	fOpenPanel(new BFilePanel(B_OPEN_PANEL))
 {
-	SetViewColor(255, 255, 255);
 
-	SetToolTip(B_TRANSLATE(
-		"Drop an image here,\n"
-		"or use the contextual menu."));
-
-	BSize size(width + 2 * kPictureMargin, height + 2 * kPictureMargin);
-	SetExplicitMinSize(size);
-	SetExplicitMaxSize(size);
-
-	BMimeType mime(B_PERSON_MIMETYPE);
-	uint8* iconData;
-	size_t iconDataSize;
-	if (mime.GetIcon(&iconData, &iconDataSize) == B_OK) {
-		float size = width < height ? width : height;
-		fDefaultPicture = new BBitmap(BRect(0, 0, size, size),
-			B_RGB32);
-		if (fDefaultPicture->InitCheck() != B_OK
-			|| BIconUtils::GetVectorIcon(iconData, iconDataSize,
-				fDefaultPicture) != B_OK) {
-			delete fDefaultPicture;
-			fDefaultPicture = NULL;
-		}
-	}
-
+	_Init(width, height);
 	Update(ref);
 }
 
@@ -124,6 +102,14 @@ PictureView::PictureView(float width, float height, BBitmap* bitmap)
 	fPictureType(0),
 	fFocusChanging(false),
 	fOpenPanel(new BFilePanel(B_OPEN_PANEL))
+{
+	_Init(width, height);
+	Update(bitmap);
+}
+
+
+void
+PictureView::_Init(float width, float height)
 {
 	SetViewColor(255, 255, 255);
 
@@ -149,8 +135,6 @@ PictureView::PictureView(float width, float height, BBitmap* bitmap)
 			fDefaultPicture = NULL;
 		}
 	}
-
-	Update(bitmap);
 }
 
 

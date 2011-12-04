@@ -83,14 +83,14 @@ public:
 	{
 		fDest->Seek(0, SEEK_SET);
 		const char data[] = "BEGIN:VCARD\nVERSION:2.1\n";
-		fDest->Write(data, strlen(data));
+		fDest->Write(data, sizeof(data)-1);
 	}
 
 	void			WriteEnd()
 	{
 		// TODO VC 3.0 support
 		const char data[] = "END:VCARD\n";
-		fDest->Write(data, strlen(data));	
+		fDest->Write(data, sizeof(data)-1);	
 	}
 
 	virtual void 	Visit(BStringContactField* field)
@@ -186,17 +186,6 @@ public:
 	{
 	
 	}
-
-	/*virtual void 		Visit(BUrlContactField* field)
-	{
-		if(field->FieldType() == B_CONTACT_URL) {
-			BString str(VCARD_URL);
-			str << ":";
-			str << field->Value();
-			str << "\n";
-			fDest->Write(str.String(), str.Length());
-		}
-	}*/
 
 private:
 	BPositionIO* fDest;

@@ -217,50 +217,37 @@ BContact::HasField(BContactField* field)
 }
 
 
+// TODO improve performances sorting
+// fList's objects by type
 BContactField*
-BContact::GetField(type_code type)
+BContact::FieldAt(type_code type, int32 index)
 {
 	if (fInitCheck != B_OK)
 		return NULL;
 
-	int count = fList.CountItems();
-	BContactField* ret;
-	for (int i = 0; i < count; i++) {
-		ret = fList.ItemAt(i);
-		if (ret->FieldType() == type)
-			return ret;
-	}
+	BContactField* ret = fList.ItemAt(index);
+	if (ret->TypeCode() == type)
+		return ret;
+
 	return NULL;
 }
 
-status_t
-BContact::CreateDefaultFields()
+
+BContactField*
+BContact::FieldAt(int index)
 {
-	fList.AddItem(new BStringContactField(B_CONTACT_NAME));
-	fList.AddItem(new BStringContactField(B_CONTACT_NICKNAME));
-	fList.AddItem(new BStringContactField(B_CONTACT_EMAIL));
-	fList.AddItem(new BStringContactField(B_CONTACT_ORGANIZATION));
-//	fList.AddItem(new BStringContactField(B_CONTACT_IM));
-	fList.AddItem(new BStringContactField(B_CONTACT_URL));
-	BStringContactField* homePhone 
-		= new BStringContactField(B_CONTACT_PHONE);
-	
-	homePhone->SetUsage(CONTACT_DATA_HOME);
-	fList.AddItem(homePhone);
+	if (fInitCheck != B_OK)
+		return NULL;
 
-	BStringContactField* workPhone 
-		= new BStringContactField(B_CONTACT_PHONE);
-	workPhone->SetUsage(CONTACT_DATA_WORK);
-	fList.AddItem(workPhone);
+	return fList.ItemAt(index);
+}
 
-	BStringContactField* fax 
-		= new BStringContactField(B_CONTACT_PHONE);
-	fax->SetUsage(CONTACT_PHONE_FAX_WORK);
-	fList.AddItem(fax);
 
-	fList.AddItem(new BAddressContactField());
 
-	return B_OK;
+int32
+BContact::CountFields() const
+{
+	return fList.CountItems();
 }
 
 
@@ -292,35 +279,54 @@ BContact::RemoveField(BContactField* field)
 	return B_OK;
 }
 
-
-BContactField*
-BContact::GetField(int index)
+const BContactFieldList&
+BContact::FieldList() const
 {
-	if (fInitCheck != B_OK)
-		return NULL;
-
-	return fList.ItemAt(index);
+	return fList;
 }
-
-
-
-int32
-BContact::CountFields() const
-{
-	return fList.CountItems();
-}
-
+	
 
 status_t
 BContact::CopyFieldsFrom(BContact& contact)
 {
 	for (int i = 0; i < contact.CountFields(); i++) {
-		BContactField* field = BContactField::Duplicate(contact.GetField(i));
+		BContactField* field = BContactField::Duplicate(contact.FieldAt(i));
 		if (field == NULL)
 			return B_ERROR;
 
 		fList.AddItem(field);
 	}
+	return B_OK;
+}
+
+
+status_t
+BContact::CreateDefaultFields()
+{
+	fList.AddItem(new BStringContactField(B_CONTACT_NAME));
+	fList.AddItem(new BStringContactField(B_CONTACT_NICKNAME));
+	fList.AddItem(new BStringContactField(B_CONTACT_EMAIL));
+	fList.AddItem(new BStringContactField(B_CONTACT_ORGANIZATION));
+//	fList.AddItem(new BStringContactField(B_CONTACT_IM));
+	fList.AddItem(new BStringContactField(B_CONTACT_URL));
+	BStringContactField* homePhone 
+		= new BStringContactField(B_CONTACT_PHONE);
+	
+	homePhone->SetUsage(CONTACT_DATA_HOME);
+	fList.AddItem(homePhone);
+
+	BStringContactField* workPhone 
+		= new BStringContactField(B_CONTACT_PHONE);
+	workPhone->SetUsage(CONTACT_DATA_WORK);
+	fList.AddItem(workPhone);
+
+	BStringContactField* fax 
+		= new BStringContactField(B_CONTACT_PHONE);
+	fax->SetUsage(CONTACT_PHONE_FAX_WORK);
+	fList.AddItem(fax);
+
+	fList.AddItem(new BAddressContactField());
+
 	return B_OK;
 }
 

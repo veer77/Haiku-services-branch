@@ -168,7 +168,7 @@ public:
 			BBitmapStream stream(picture);
 			// Detach *our* bitmap from stream to avoid its deletion
 			// at stream object destruction
-			stream.DetachBitmap(&picture);
+			//stream.DetachBitmap(&picture);
 
 			BTranslatorRoster* roster = BTranslatorRoster::Default();
 			roster->Translate(&stream, NULL, NULL, fDest,
@@ -493,16 +493,16 @@ PeopleTranslator::_AddField(BContactField* field, BMessage* msg)
 }
 
 
-void
+status_t
 PeopleTranslator::_AddPicture(BFile* file, BMessage* msg)
 {
 	off_t fileSize;
 	status_t status = file->GetSize(&fileSize);
 		if (status != B_OK)
-			return;
+			return B_ERROR;
 
 		if (fileSize < 1)
-			return;
+			return B_ERROR;
 
 	translator_info info;
 	memset(&info, 0, sizeof(translator_info));
@@ -511,7 +511,7 @@ PeopleTranslator::_AddPicture(BFile* file, BMessage* msg)
 	BTranslatorRoster* roster = BTranslatorRoster::Default();
 
 	if (roster == NULL)
-		return;
+		return B_NO_MEMORY;
 
 	status = roster->Identify(file, &ioExtension, &info, 0, NULL,
 		B_TRANSLATOR_BITMAP);
@@ -523,12 +523,12 @@ PeopleTranslator::_AddPicture(BFile* file, BMessage* msg)
 			B_TRANSLATOR_BITMAP);
 	}
 	if (status != B_OK)
-		return;
+		return B_ERROR;
 
 	BBitmap* picture = NULL;
 	if (stream.DetachBitmap(&picture) != B_OK
 		|| picture == NULL)
-		return;
+		return B_ERROR;
 
 	BPhotoContactField* field = new BPhotoContactField(picture);
 

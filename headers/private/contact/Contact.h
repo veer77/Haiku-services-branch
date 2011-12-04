@@ -34,13 +34,15 @@ public:
 			status_t		ReplaceField(BContactField* field);
 			bool			HasField(BContactField* field);
 			// TODO FieldAt is a better name
-			BContactField*	GetField(int index);
-
-			BContactField*	GetField(type_code type);
+			BContactField*	FieldAt(int index);
+			BContactField*	FieldAt(type_code type, int32 index = 0);
 
 			int32			CountFields() const;
-			status_t		CopyFieldsFrom(BContact& contact);
+			int32			CountFields(type_code code) const;
 
+			const BContactFieldList& FieldList() const;
+
+			status_t		CopyFieldsFrom(BContact& contact);
 			status_t		CreateDefaultFields();
 
 	// for the moment it supports only a BRawContact, in future
@@ -52,8 +54,9 @@ public:
 			status_t		Commit();
 			status_t		Reload();
 private:
-	//		status_t 		SetID(uint32 id);
-	//		status_t		SetGroup(uint32 id);
+	//		status_t 		SetInternalID(uint32 id);
+	//		status_t		AppendGroup(uint32 id);
+	//		status_t		AppendGroup(BContactGroup group);
 
 			status_t		_FlattenFields(BMessage* msg) const;
 			status_t		_UnflattenFields(BMessage* msg);
@@ -63,7 +66,7 @@ private:
 			int32 			fID;
 			int32			fGroupID;
 
-			BObjectList<BContactField> fList;
+			BContactFieldList fList;
 //friend class BContactRoster;
 };
 

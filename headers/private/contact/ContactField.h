@@ -13,17 +13,17 @@
 #include <String.h>
 #include <ObjectList.h>
 
+#define CONTACT_FIELD_IDENT "contactfield"
+
+
 enum {
 	B_CONTACT_FIELD_TYPE = 'CNFT'
 };
-
-#define CONTACT_FIELD_IDENT "contactfield"
 
 class BAddressContactField;
 class BContactFieldVisitor;
 class BPhotoContactField;
 class BStringContactField;
-
 
 class BContactField : public virtual BFlattenable {
 public:
@@ -94,6 +94,9 @@ public:
 	virtual void 			Visit(BPhotoContactField* field) = 0;
 };
 
+typedef BObjectList<BContactField> BContactFieldList;
+
+/*** Contact Fields implementations ***/
 
 class BStringContactField : public BContactField {
 public:
@@ -278,5 +281,6 @@ public:
 private:
 			struct 			EqualityVisitor;
 };
+
 */
 #endif	// _CONTACTFIELD_H_

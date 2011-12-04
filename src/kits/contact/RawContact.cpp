@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Your Name <your@email.address>
+ * Copyright 2010 Dario Casalinuovo <your@email.address>
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 #include "RawContact.h"
@@ -48,7 +48,7 @@ void
 BRawContact::_Init()
 {
 	printf("init\n");
-	if (fFormat == 0 && fDest != NULL) {
+	if (fFormat == B_CONTACT_ANY && fDest != NULL) {
 		if (_FindFormat() == B_OK) {
 			return;
 		} else {
@@ -57,7 +57,7 @@ BRawContact::_Init()
 	}
 
 	if (fDest == NULL && fFormat != B_PEOPLE_FORMAT) {
-		if (fFormat == 0)
+		if (fFormat == B_CONTACT_ANY)
 			fFormat = B_CONTACT_FORMAT;
 		fDest = new BMallocIO();
 		return;

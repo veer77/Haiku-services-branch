@@ -1,4 +1,7 @@
-
+/*
+ * Copyright 2010 Dario Casalinuovo <your@email.address>
+ * All rights reserved. Distributed under the terms of the MIT license.
+ */
 #include "AddressView.h"
 
 #include <ControlLook.h>
@@ -111,12 +114,19 @@ AddressView::UpdateAddressField()
 BString
 AddressView::Value() const
 {
-	if (fField)
+	if (fField == NULL)
 		return "";
 
 	return fField->Value();
 }
 
+/*
+ * 
+ * Increment fCount AFTER adding the items to the layout. 
+ * Furthermore, instead of a member variable for this, just use layout->CountRows();
+ * Also, use BLayoutBuilder::Grid::AddTextView(), it's prettier!
+ * 
+ */
 
 BTextControl*
 AddressView::_AddControl(const char* label, const char* value)
@@ -124,10 +134,11 @@ AddressView::_AddControl(const char* label, const char* value)
 	BTextControl* control = new BTextControl(label, value, NULL);
 	control->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
 	BGridLayout* layout = GridLayout();
-	fCount += 1;
 
 	layout->AddItem(control->CreateLabelLayoutItem(), 0, fCount);
 	layout->AddItem(control->CreateTextViewLayoutItem(), 1, fCount);
+
+	fCount += 1;
 
 	return control;
 }

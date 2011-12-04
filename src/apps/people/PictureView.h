@@ -46,6 +46,7 @@ public:
 	virtual	void				MakeFocus(bool focused);
 
 private:
+			void				_Init(float width, float height);
 			void				_BeginDrag(BPoint sourcePoint);
 			void				_HandleDrop(BMessage* message);
 			void				_ShowPopUpMenu(BPoint screen);

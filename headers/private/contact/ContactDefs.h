@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Your Name <your@email.address>
+ * Copyright 2010 Dario Casalinuovo <your@email.address>
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 #ifndef B_CONTACT_DEFS_H
@@ -7,25 +7,29 @@
 
 #include <Errors.h>
 
+enum DefaultDefs {
+	B_CONTACT_ANY = 'BCNA'
+};
+
 enum ContactGroupDefs {
 	B_CONTACT_GROUP_DEFAULT = 'BCGD'
 };
 
 enum ContactFieldType {
-	B_CONTACT_NAME 			= 'BCNN', //BString
-	B_CONTACT_NICKNAME 		= 'BCNK', // *
-	B_CONTACT_PHOTO 		= 'BCNH', // image
-	B_CONTACT_ADDRESS 		= 'BCNA', // BAddress
-	B_CONTACT_PHONE			= 'BCNP', // BPhone
-	B_CONTACT_EMAIL			= 'BCNE', // string
-	B_CONTACT_URL			= 'BCNU', // BUrl
-	B_CONTACT_GEO			= 'BCNG', // string?
-	B_CONTACT_NOTE			= 'BCNO', // BString
-	B_CONTACT_ORGANIZATION  = 'BCNJ', // string
-	B_CONTACT_IM			= 'BCNI', // string
-	B_CONTACT_UID			= 'BCND', // uint32
-	B_CONTACT_GROUP			= 'BCNR', // uint32 / string
-	B_CONTACT_PROTOCOLS 	= 'BCNL'  // string?
+	B_CONTACT_NAME 			= 'CFNN', //BString
+	B_CONTACT_NICKNAME 		= 'CFNK', // *
+	B_CONTACT_PHOTO 		= 'CFNH', // image
+	B_CONTACT_ADDRESS 		= 'CFNA', // BAddress
+	B_CONTACT_PHONE			= 'CFNP', // BPhone
+	B_CONTACT_EMAIL			= 'CFNE', // string
+	B_CONTACT_URL			= 'CFNU', // BUrl
+	B_CONTACT_GEO			= 'CFNG', // string?
+	B_CONTACT_NOTE			= 'CFNO', // BString
+	B_CONTACT_ORGANIZATION  = 'CFNJ', // string
+	B_CONTACT_IM			= 'CFNI', // string
+	B_CONTACT_UID			= 'CFND', // uint32
+	B_CONTACT_GROUP			= 'CFNR', // uint32 / string
+	B_CONTACT_PROTOCOLS 	= 'CFNL'  // string?
 };
 
 enum CommonFieldUsageTypes {

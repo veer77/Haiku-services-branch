@@ -1,11 +1,12 @@
 /*
- * Copyright 2010 Your Name <your@email.address>
+ * Copyright 2010 Dario Casalinuovo <your@email.address>
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 #ifndef B_RAW_CONTACT_H
 #define B_RAW_CONTACT_H
 
 #include <Archivable.h>
+#include <ContactDefs.h>
 #include <Message.h>
 #include <TranslatorFormats.h>
 #include <TranslatorRoster.h>

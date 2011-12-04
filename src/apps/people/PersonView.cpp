@@ -403,7 +403,7 @@ PersonView::_LoadFieldsFromContact()
 		fContact->CreateDefaultFields();
 
 	for (int i = 0; i < fContact->CountFields(); i++) {
-		BContactField* field = fContact->GetField(i);
+		BContactField* field = fContact->FieldAt(i);
 		if (field != NULL)
 			AddField(field);
 	}

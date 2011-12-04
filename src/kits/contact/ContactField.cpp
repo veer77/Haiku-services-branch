@@ -289,6 +289,7 @@ BContactField::UnflattenChildClass(const void* from, ssize_t size)
 
 	type_code childType;
 	data.Read(&childType, sizeof(childType));
+	ObjectDeleter<BContactField> deleter;
 	BContactField* child = NULL;
 	switch (childType) {
 		case B_CONTACT_NAME:
@@ -314,13 +315,12 @@ BContactField::UnflattenChildClass(const void* from, ssize_t size)
 
 	if (child == NULL)
 		return NULL;
+	deleter.SetTo(child);
 
 	status_t ret = child->Unflatten(B_CONTACT_FIELD_TYPE, from, size);
-
 	if (ret == B_OK)
 		return child;
 
-	delete child;
 	return NULL;
 }
 
@@ -1014,6 +1014,7 @@ BPhotoContactField::Value() const
 }
 
 
+// TODO choose a better username and add missing method
 uint32
 BPhotoContactField::PictureType() const
 {
@@ -1102,6 +1103,7 @@ BPhotoContactField::Unflatten(type_code code,
 	}
 
 	void* buf = malloc(destSize);
+	MemoryDeleter deleter(buf);
 	data.Read(buf, destSize);
 
 	BMemoryIO dest(buf, destSize);

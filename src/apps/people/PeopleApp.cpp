@@ -177,7 +177,7 @@ TPeopleApp::_NewWindow(const entry_ref* ref, BFile* file)
 	} else {
 		// using this BRawContact constructor, the class
 		// will detect automatically the final format
-		rawContact = new BRawContact(0, file);
+		rawContact = new BRawContact(B_CONTACT_ANY, file);
 	}
 
 	BContact* contact = new BContact(rawContact);

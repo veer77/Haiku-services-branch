@@ -49,7 +49,7 @@ BAddressBook::AddContact(BContact* contact, const char* filename)
 
 	if (filename == NULL) {
 		BStringContactField* field 
-			= (BStringContactField*)contact->GetField(B_CONTACT_NAME);
+			= (BStringContactField*)contact->FieldAt(B_CONTACT_NAME);
 
 		if (field != NULL) {
 			path.Append(field->Value());
@@ -67,7 +67,7 @@ BAddressBook::AddContact(BContact* contact, const char* filename)
 
 	int32 count = contact->CountFields();	
 	for (int i = 0; i < count; i++)
-		dest->AddField(contact->GetField(i));
+		dest->AddField(contact->FieldAt(i));
 
 	dest->Commit();
 
@@ -141,7 +141,7 @@ BAddressBook::ContactsByField(type_code type)
 	for (int i = 0; i < count; i++) {
 		BContact* contact = list->ItemAt(i);
 		for (int j = 0; j < contact->CountFields(); j++) {
-			BContactField* field = contact->GetField(j);
+			BContactField* field = contact->FieldAt(j);
 			if (field->FieldType() == type)
 				ret->AddItem(contact);
 		}

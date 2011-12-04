@@ -1,3 +1,7 @@
+/*
+ * Copyright 2010 Dario Casalinuovo <your@email.address>
+ * All rights reserved. Distributed under the terms of the MIT license.
+ */
 #ifndef _PEOPLE_TRANSLATOR_H
 #define _PEOPLE_TRANSLATOR_H
 
@@ -75,7 +79,7 @@ private:
 
 			status_t _InitializeAttributes(BFile* file);
 			status_t _CheckPeople(BPositionIO* people);
-			void	 _AddPicture(BFile* file, BMessage* msg);
+			status_t _AddPicture(BFile* file, BMessage* msg);
 };
 
 #endif // #ifndef _People_TRANSLATOR_H
