@@ -1,0 +1,14 @@
+SubDir HAIKU_TOP src servers media_addon ;
+
+SetSubDirSupportedPlatformsBeOSCompatible ;
+
+UsePrivateHeaders service ;
+UsePrivateSystemHeaders ;
+
+AddResources servce_server : service_server.rdef ;
+
+Server service_server :
+
+	:
+	be libservice.so $(TARGET_LIBSUPC++) $(TARGET_LIBSTDC++)
+;
