@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Your Name <your@email.address>
+ * Copyright 2011 Haiku Inc.
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 #ifndef ADDRESS_BOOK_H

@@ -94,7 +94,9 @@ public:
 	virtual void 			Visit(BPhotoContactField* field) = 0;
 };
 
+
 typedef BObjectList<BContactField> BContactFieldList;
+
 
 /*** Contact Fields implementations ***/
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Your Name <your@email.address>
+ * Copyright 2011 Haiku Inc.
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 #ifndef _CONTACT_GROUP_H
@@ -16,6 +16,8 @@ public:
 					BContactGroup(int32 groupID);
 					~BContactGroup();
 
+	status_t		InitCheck();
+
 	status_t		AddContact(BContact* contact);
 	status_t		RemoveContact(BContact* contact);
 
@@ -23,8 +25,10 @@ public:
 	BContactList*	ContactsByField(ContactFieldType type,
 						const char* value = NULL);
 //	BContactList*	ContactsByQuery(BContactQuery* query);
+
+	//BMessage* 	AsMessage();
 private:
-	BContactList* 	fList;	
+	BContactList 	fList;	
 };
 
 #endif // _CONTACT_GROUP_H
