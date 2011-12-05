@@ -1378,7 +1378,7 @@ copy_user_process_args(const char* const* userFlatArgs, size_t flatArgsSize,
 		return B_BAD_ADDRESS;
 
 	// allocate kernel memory
-	char** flatArgs = (char**)malloc(flatArgsSize);
+	char** flatArgs = (char**)malloc(_ALIGN(flatArgsSize));
 	if (flatArgs == NULL)
 		return B_NO_MEMORY;
 
@@ -4037,6 +4037,7 @@ _user_setsid(void)
 		return B_NOT_ALLOWED;
 
 	// remove the team from the old and add it to the new process group
+	BReference<ProcessGroup> oldGroupReference(team->group);
 	remove_team_from_group(team);
 	group->Publish(session);
 	insert_team_into_group(group, team);
