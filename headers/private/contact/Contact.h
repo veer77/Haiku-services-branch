@@ -51,6 +51,7 @@ public:
 	// for the moment it supports only a BRawContact, in future
 	// the following methods will help to merge many BRawContacts
 	// into a BContact.
+	// delete the actual BRawContact objects
 			status_t		Append(BRawContact* contact);
 			const BRawContact&	RawContact() const;
 

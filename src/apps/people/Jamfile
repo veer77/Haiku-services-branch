@@ -10,6 +10,7 @@ Application People :
 	PersonView.cpp
 	PersonWindow.cpp
 	PictureView.cpp
+	PeopleSavePanel.cpp
 	: be tracker translation libcontact.so
 		$(TARGET_LIBSUPC++) $(HAIKU_LOCALE_LIBS)
 	: People.rdef

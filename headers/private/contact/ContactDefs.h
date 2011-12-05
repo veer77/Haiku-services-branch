@@ -8,7 +8,7 @@
 #include <Errors.h>
 
 enum DefaultDefs {
-	B_CONTACT_ANY = 'BCNA'
+	B_CONTACT_ANY = 'BCAN'
 };
 
 enum ContactGroupDefs {

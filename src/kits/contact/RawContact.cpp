@@ -219,13 +219,12 @@ BRawContact::Commit(BMessage* data)
 	BMallocIO flat;
 	ret = data->Flatten(&flat);
 
-	printf("Translate %s\n", strerror(ret));
 	flat.Seek(0, SEEK_SET);
 	if (ret == B_OK)
 		return fRoster->Translate(fTranslatorID, &flat,
 			NULL, fDest, fFormat);
-	else
-		return ret;
+
+	return ret;
 }
 
 

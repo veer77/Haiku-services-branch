@@ -161,7 +161,9 @@ BContact::Commit()
 	_FlattenFields(&msg);
 
 	msg.PrintToStream();
-	return fRawContact->Commit(&msg);	
+	status_t ret = fRawContact->Commit(&msg);	
+	printf("Translate %s\n", strerror(ret));
+	return ret;
 }
 
 

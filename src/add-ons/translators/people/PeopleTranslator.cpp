@@ -168,7 +168,7 @@ public:
 			BBitmapStream stream(picture);
 			// Detach *our* bitmap from stream to avoid its deletion
 			// at stream object destruction
-			//stream.DetachBitmap(&picture);
+			stream.DetachBitmap(&picture);
 
 			BTranslatorRoster* roster = BTranslatorRoster::Default();
 			roster->Translate(&stream, NULL, NULL, fDest,
@@ -476,7 +476,7 @@ PeopleTranslator::_AddField(BContactField* field, BMessage* msg)
 		void* buffer = new char [size];
 		if (buffer == NULL)
 			return B_NO_MEMORY;
-		MemoryDeleter deleter(buffer);
+		//MemoryDeleter deleter(buffer);
 
 		status_t ret = field->Flatten(buffer, size);
 		if (ret != B_OK)

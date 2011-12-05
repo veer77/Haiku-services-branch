@@ -35,6 +35,7 @@
 
 #include "PeopleApp.h"
 #include "PersonView.h"
+#include "PeopleSavePanel.h"
 
 
 #undef B_TRANSLATE_CONTEXT

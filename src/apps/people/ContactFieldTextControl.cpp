@@ -4,6 +4,7 @@
  *
  * Authors:
  *		Robert Polic
+ *      Dario Casalinuovo
  *
  * Copyright 1999, Be Incorporated.   All Rights Reserved.
  * This file may be used under the terms of the Be Sample Code License.
@@ -14,6 +15,7 @@
 #include <Font.h>
 #include <Catalog.h>
 
+#include <stdio.h>
 #include <string.h>
 #include <malloc.h>
 
@@ -26,6 +28,7 @@ ContactFieldTextControl::ContactFieldTextControl(BContactField* field)
 	BTextControl(NULL, "", NULL),
 	fField(field)
 {
+	printf("field pointer %p\n", field);
 	SetLabel(field->Label());
 	SetText(field->Value());
 

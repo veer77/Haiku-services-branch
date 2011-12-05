@@ -13,9 +13,6 @@
 #include <assert.h>
 #include <stdio.h>
 
-// TODO split the cpp file and mantain one header
-// (add a private header if needed)
-
 struct EqualityVisitorBase : public BContactFieldVisitor {
 	EqualityVisitorBase() : result(false) {}
 	bool result;
