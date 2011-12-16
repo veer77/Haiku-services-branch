@@ -301,39 +301,6 @@ BScrollView::ResizeToPreferred()
 
 
 void
-BScrollView::InvalidateLayout(bool descendants)
-{
-	BView::InvalidateLayout(descendants);
-}
-
-
-void
-BScrollView::DoLayout()
-{
-	if (!(Flags() & B_SUPPORTS_LAYOUT))
-		return;
-
-	// If the user set a layout, we let the base class version call its hook.
-	if (GetLayout()) {
-		BView::DoLayout();
-		return;
-	}
-
-	BRect innerFrame = _InnerFrame();
-
-	if (fTarget != NULL) {
-		fTarget->MoveTo(innerFrame.left, innerFrame.top);
-		fTarget->ResizeTo(innerFrame.Width(), innerFrame.Height());
-
-		//BLayoutUtils::AlignInFrame(fTarget, fTarget->Bounds());
-	}
-
-	_AlignScrollBars(fHorizontalScrollBar != NULL, fVerticalScrollBar != NULL,
-		innerFrame);
-}
-
-
-void
 BScrollView::FrameMoved(BPoint position)
 {
 	BView::FrameMoved(position);
@@ -650,11 +617,11 @@ BScrollView::Perform(perform_code code, void* _data)
 			BScrollView::SetLayout(data->layout);
 			return B_OK;
 		}
-		case PERFORM_CODE_INVALIDATE_LAYOUT:
+		case PERFORM_CODE_LAYOUT_INVALIDATED:
 		{
-			perform_data_invalidate_layout* data
-				= (perform_data_invalidate_layout*)_data;
-			BScrollView::InvalidateLayout(data->descendants);
+			perform_data_layout_invalidated* data
+				= (perform_data_layout_invalidated*)_data;
+			BScrollView::LayoutInvalidated(data->descendants);
 			return B_OK;
 		}
 		case PERFORM_CODE_DO_LAYOUT:
@@ -666,6 +633,40 @@ BScrollView::Perform(perform_code code, void* _data)
 
 	return BView::Perform(code, _data);
 }
+
+
+void
+BScrollView::LayoutInvalidated(bool descendants)
+{
+}
+
+
+void
+BScrollView::DoLayout()
+{
+	if (!(Flags() & B_SUPPORTS_LAYOUT))
+		return;
+
+	// If the user set a layout, we let the base class version call its hook.
+	if (GetLayout()) {
+		BView::DoLayout();
+		return;
+	}
+
+	BRect innerFrame = _InnerFrame();
+
+	if (fTarget != NULL) {
+		fTarget->MoveTo(innerFrame.left, innerFrame.top);
+		fTarget->ResizeTo(innerFrame.Width(), innerFrame.Height());
+
+		//BLayoutUtils::AlignInFrame(fTarget, fTarget->Bounds());
+	}
+
+	_AlignScrollBars(fHorizontalScrollBar != NULL, fVerticalScrollBar != NULL,
+		innerFrame);
+}
+
+
 
 
 // #pragma mark -

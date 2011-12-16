@@ -678,17 +678,11 @@ BMenu::FrameResized(float new_width, float new_height)
 void
 BMenu::InvalidateLayout()
 {
-	InvalidateLayout(false);
-}
-
-
-void
-BMenu::InvalidateLayout(bool descendants)
-{
 	fUseCachedMenuLayout = false;
-	fLayoutData->preferred.Set(B_SIZE_UNSET, B_SIZE_UNSET);
-
-	BView::InvalidateLayout(descendants);
+	// This method exits for backwards compatibility reasons, it is used to
+	// invalidate the menu layout, but we also use call
+	// BView::InvalidateLayout() for good measure. Don't delete this method!
+	BView::InvalidateLayout(false);
 }
 
 
@@ -1244,11 +1238,11 @@ BMenu::Perform(perform_code code, void* _data)
 			BMenu::SetLayout(data->layout);
 			return B_OK;
 		}
-		case PERFORM_CODE_INVALIDATE_LAYOUT:
+		case PERFORM_CODE_LAYOUT_INVALIDATED:
 		{
-			perform_data_invalidate_layout* data
-				= (perform_data_invalidate_layout*)_data;
-			BMenu::InvalidateLayout(data->descendants);
+			perform_data_layout_invalidated* data
+				= (perform_data_layout_invalidated*)_data;
+			BMenu::LayoutInvalidated(data->descendants);
 			return B_OK;
 		}
 		case PERFORM_CODE_DO_LAYOUT:
@@ -2276,6 +2270,14 @@ BMenu::_ComputeMatrixLayout(BRect &frame)
 			frame.bottom = max_c(frame.bottom, item->Frame().bottom);
 		}
 	}
+}
+
+
+void
+BMenu::LayoutInvalidated(bool descendants)
+{
+	fUseCachedMenuLayout = false;
+	fLayoutData->preferred.Set(B_SIZE_UNSET, B_SIZE_UNSET);
 }
 
 

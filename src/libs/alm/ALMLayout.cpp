@@ -763,9 +763,8 @@ BALMLayout::BaseAlignment()
  * Resets minimum/maximum/preferred size.
  */
 void
-BALMLayout::InvalidateLayout(bool children)
+BALMLayout::LayoutInvalidated(bool children)
 {
-	BLayout::InvalidateLayout(children);
 	fMinSize = kUnsetSize;
 	fMaxSize = kUnsetSize;
 	fPreferredSize = kUnsetSize;
@@ -796,7 +795,7 @@ BALMLayout::ItemRemoved(BLayoutItem* item, int32 fromIndex)
  * If no layout specification is given, a specification is reverse engineered automatically.
  */
 void
-BALMLayout::DerivedLayoutItems()
+BALMLayout::DoLayout()
 {
 	_UpdateAreaConstraints();
 

@@ -841,17 +841,6 @@ BTextControl::PreferredSize()
 }
 
 
-void
-BTextControl::InvalidateLayout(bool descendants)
-{
-	CALLED();
-
-	fLayoutData->valid = false;
-
-	BView::InvalidateLayout(descendants);
-}
-
-
 BLayoutItem*
 BTextControl::CreateLabelLayoutItem()
 {
@@ -867,6 +856,15 @@ BTextControl::CreateTextViewLayoutItem()
 	if (!fLayoutData->text_view_layout_item)
 		fLayoutData->text_view_layout_item = new TextViewLayoutItem(this);
 	return fLayoutData->text_view_layout_item;
+}
+
+
+void
+BTextControl::LayoutInvalidated(bool descendants)
+{
+	CALLED();
+
+	fLayoutData->valid = false;
 }
 
 
@@ -965,11 +963,11 @@ BTextControl::Perform(perform_code code, void* _data)
 			BTextControl::SetLayout(data->layout);
 			return B_OK;
 		}
-		case PERFORM_CODE_INVALIDATE_LAYOUT:
+		case PERFORM_CODE_LAYOUT_INVALIDATED:
 		{
-			perform_data_invalidate_layout* data
-				= (perform_data_invalidate_layout*)_data;
-			BTextControl::InvalidateLayout(data->descendants);
+			perform_data_layout_invalidated* data
+				= (perform_data_layout_invalidated*)_data;
+			BTextControl::LayoutInvalidated(data->descendants);
 			return B_OK;
 		}
 		case PERFORM_CODE_DO_LAYOUT:
