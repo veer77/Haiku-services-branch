@@ -27,8 +27,10 @@ typedef __WINT_TYPE__ wint_t;
 typedef int wctype_t;
 
 typedef struct {
+	void* converter;
+	char charset[64];
 	unsigned int count;
-	unsigned int converterID;
+	char data[1024 + 8];	// 1024 bytes for data, 8 for alignment space
 } mbstate_t;
 
 
@@ -39,8 +41,7 @@ typedef struct {
 
 /*
  * Haiku is always using UTF32 in wchars, other encodings can be handled
- * by converting to/from wchar by means of mbsrtowcs() or wcsrtombs().
- * TODO: define __STDC_ISO_10646__ accordingly in our compilers.
+ * by converting to/from wchar by means of mbrtowc() or wcrtomb().
  */
 
 

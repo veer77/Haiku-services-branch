@@ -52,7 +52,7 @@ SYSTEM_BIN = "[" addattr alert arp base64 basename bash bc beep bzip2
 	query quit
 	rc readlink ReadOnlyBootPrompt reindex release renice rlog rm rmattr
 	rmindex rmdir roster route
-	safemode screen_blanker screenmode screenshot sdiff setdecor settype
+	safemode screen_blanker screenmode screenshot sdiff setdecor setmime settype
 	setversion setvolume seq sha1sum shar shred shuf shutdown sleep sort
 	spamdbm
 	split stat strace stty su sum sync sysinfo
@@ -465,11 +465,6 @@ AddFilesToHaikuImage common etc profile.d : $(profileFiles) ;
 #AddFilesToHaikuImage common etc bash_completion.d : $(bashCompletionFiles) ;
 #AddFilesToHaikuImage common etc bash_completion.d helpers
 #    : $(bashCompletionHelperFiles) ;
-
-local dataFiles = teapot.data ;
-dataFiles = $(dataFiles:G=data) ;
-SEARCH on $(dataFiles) = [ FDirName $(HAIKU_TOP) data system data ] ;
-AddFilesToHaikuImage system data : $(dataFiles) ;
 
 local fortuneFiles = [ Glob $(HAIKU_TOP)/data/system/data/fortunes
 	: [a-zA-Z0-9]* ] ;

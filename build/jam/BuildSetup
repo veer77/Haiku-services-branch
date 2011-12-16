@@ -772,6 +772,7 @@ if $(HOST_PLATFORM_BEOS_COMPATIBLE) {
 	# compatibility library
 	HOST_HAIKU_COMPATIBILITY_LIBS = libhaikucompat.a ;
 } else {
+	HOST_LINKFLAGS += -lm ;
 	HOST_LIBSTDC++ = stdc++ ;
 	HOST_LIBROOT = libroot_build_function_remapper.a libroot_build.so ;
 	HOST_STATIC_LIBROOT = libroot_build_function_remapper.a libroot_build.a ;
@@ -1362,6 +1363,9 @@ if $(HAIKU_NO_WERROR) != 1 {
 	EnableWerror src preferences ;
 	EnableWerror src servers ;
 	EnableWerror src system kernel ;
+	EnableWerror src system libroot add-ons ;
+	EnableWerror src system libroot posix locale ;
+	EnableWerror src system libroot posix wchar ;
 	EnableWerror src system runtime_loader ;
 }
 

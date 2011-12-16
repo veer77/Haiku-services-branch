@@ -55,6 +55,7 @@
 
 #include "VMAddressSpaceLocking.h"
 #include "VMAnonymousCache.h"
+#include "VMAnonymousNoSwapCache.h"
 #include "IORequest.h"
 
 
@@ -2300,7 +2301,8 @@ vm_copy_on_write_area(VMCache* lowerCache,
 
 	// create an anonymous cache
 	status_t status = VMCacheFactory::CreateAnonymousCache(upperCache, false, 0,
-		0, true, VM_PRIORITY_USER);
+		0, dynamic_cast<VMAnonymousNoSwapCache*>(lowerCache) == NULL,
+		VM_PRIORITY_USER);
 	if (status != B_OK)
 		return status;
 
@@ -2361,6 +2363,8 @@ vm_copy_on_write_area(VMCache* lowerCache,
 			}
 		}
 	} else {
+		ASSERT(lowerCache->WiredPagesCount() == 0);
+
 		// just change the protection of all areas
 		for (VMArea* tempArea = upperCache->areas; tempArea != NULL;
 				tempArea = tempArea->cache_next) {
@@ -6261,21 +6265,22 @@ _user_set_memory_protection(void* _address, size_t size, uint32 protection)
 			if ((area->protection & B_KERNEL_AREA) != 0)
 				return B_NOT_ALLOWED;
 
-			AreaCacheLocker cacheLocker(area);
-
-			if (wait_if_area_is_wired(area, &locker, &cacheLocker)) {
-				restart = true;
-				break;
-			}
-
-			cacheLocker.Unlock();
-
 			// TODO: For (shared) mapped files we should check whether the new
 			// protections are compatible with the file permissions. We don't
 			// have a way to do that yet, though.
 
 			addr_t offset = currentAddress - area->Base();
 			size_t rangeSize = min_c(area->Size() - offset, sizeLeft);
+
+			AreaCacheLocker cacheLocker(area);
+
+			if (wait_if_area_range_is_wired(area, currentAddress, rangeSize,
+					&locker, &cacheLocker)) {
+				restart = true;
+				break;
+			}
+
+			cacheLocker.Unlock();
 
 			currentAddress += rangeSize;
 			sizeLeft -= rangeSize;

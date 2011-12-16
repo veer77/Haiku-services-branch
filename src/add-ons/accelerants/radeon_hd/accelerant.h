@@ -10,15 +10,14 @@
 #define RADEON_HD_ACCELERANT_H
 
 
+#include <ByteOrder.h>
+#include <edid.h>
+
 #include "atom.h"
 #include "encoder.h"
 #include "mode.h"
-#include "radeon_hd.h"
 #include "pll.h"
-
-
-#include <ByteOrder.h>
-#include <edid.h>
+#include "radeon_hd.h"
 
 
 #define MAX_DISPLAY 2
@@ -49,13 +48,13 @@ struct fb_info {
 
 
 struct accelerant_info {
-	vuint8			*regs;
+	vuint8*			regs;
 	area_id			regs_area;
 
-	radeon_shared_info *shared_info;
+	radeon_shared_info* shared_info;
 	area_id			shared_info_area;
 
-	display_mode	*mode_list;		// cloned list of standard display modes
+	display_mode*	mode_list;		// cloned list of standard display modes
 	area_id			mode_list_area;
 
 	uint8*			rom;
@@ -103,29 +102,40 @@ struct register_info {
 typedef struct {
 	bool	valid;
 
-	bool	hw_capable;
-	uint32	hw_line;
+	uint32	hwPin;		// GPIO hardware pin on GPU
+	bool	hwCapable;	// can do hw assisted i2c
 
-	uint32	mask_scl_reg;
-	uint32	mask_sda_reg;
-	uint32	mask_scl_mask;
-	uint32	mask_sda_mask;
+	uint32	sclMaskReg;
+	uint32	sdaMaskReg;
+	uint32	sclMask;
+	uint32	sdaMask;
 
-	uint32	en_scl_reg;
-	uint32	en_sda_reg;
-	uint32	en_scl_mask;
-	uint32	en_sda_mask;
+	uint32	sclEnReg;
+	uint32	sdaEnReg;
+	uint32	sclEnMask;
+	uint32	sdaEnMask;
 
-	uint32	y_scl_reg;
-	uint32	y_sda_reg;
-	uint32	y_scl_mask;
-	uint32	y_sda_mask;
+	uint32	sclYReg;
+	uint32	sdaYReg;
+	uint32	sclYMask;
+	uint32	sdaYMask;
 
-	uint32	a_scl_reg;
-	uint32	a_sda_reg;
-	uint32	a_scl_mask;
-	uint32	a_sda_mask;
+	uint32	sclAReg;
+	uint32	sdaAReg;
+	uint32	sclAMask;
+	uint32	sdaAMask;
 } gpio_info;
+
+
+typedef struct {
+	bool	valid;
+
+	uint8	config[8]; // DP configuration data
+	uint8	sinkType;
+	uint8	clock;
+	int		laneCount;
+	bool	eDPOn;
+} dp_info;
 
 
 struct encoder_info {
@@ -133,7 +143,9 @@ struct encoder_info {
 	uint16		objectID;
 	uint32		type;
 	uint32		flags;
+	uint32		linkEnumeration; // ex. linkb == GRAPH_OBJECT_ENUM_ID2
 	bool		isExternal;
+	bool		isDPBridge;
 	bool		isHDMI;
 	bool		isTV;
 	struct pll_info	pll;
@@ -154,7 +166,7 @@ typedef struct {
 typedef struct {
 	bool			active;
 	uint32			connectorIndex; // matches connector id in connector_info
-	register_info	*regs;
+	register_info*	regs;
 	bool			found_ranges;
 	uint32			vfreq_max;
 	uint32			vfreq_min;
@@ -172,11 +184,12 @@ typedef struct {
 #define MC	0x5 // Memory controller calls
 
 
-extern accelerant_info *gInfo;
-extern atom_context *gAtomContext;
-extern display_info *gDisplay[MAX_DISPLAY];
-extern connector_info *gConnector[ATOM_MAX_SUPPORTED_DEVICE];
-extern gpio_info *gGPIOInfo[ATOM_MAX_SUPPORTED_DEVICE];
+extern accelerant_info* gInfo;
+extern atom_context* gAtomContext;
+extern display_info* gDisplay[MAX_DISPLAY];
+extern connector_info* gConnector[ATOM_MAX_SUPPORTED_DEVICE];
+extern gpio_info* gGPIOInfo[ATOM_MAX_SUPPORTED_DEVICE];
+extern dp_info* gDPInfo[ATOM_MAX_SUPPORTED_DEVICE];
 
 
 // register access
@@ -184,7 +197,7 @@ extern gpio_info *gGPIOInfo[ATOM_MAX_SUPPORTED_DEVICE];
 inline uint32
 _read32(uint32 offset)
 {
-	return *(volatile uint32 *)(gInfo->regs + offset);
+	return *(volatile uint32*)(gInfo->regs + offset);
 }
 
 

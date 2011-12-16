@@ -163,12 +163,36 @@ ICULocaleBackend::MultibyteToWchar(wchar_t* wcOut, const char* mb,
 
 
 status_t
+ICULocaleBackend::MultibyteStringToWchar(wchar_t* wcDest, size_t wcDestLength,
+	const char** mbSource, size_t mbSourceLength, mbstate_t* mbState,
+	size_t& lengthOut)
+{
+	ErrnoMaintainer errnoMaintainer;
+
+	return fCtypeData.MultibyteStringToWchar(wcDest, wcDestLength, mbSource,
+		mbSourceLength, mbState, lengthOut);
+}
+
+
+status_t
 ICULocaleBackend::WcharToMultibyte(char* mbOut, wchar_t wc, mbstate_t* mbState,
 	size_t& lengthOut)
 {
 	ErrnoMaintainer errnoMaintainer;
 
 	return fCtypeData.WcharToMultibyte(mbOut, wc, mbState, lengthOut);
+}
+
+
+status_t
+ICULocaleBackend::WcharStringToMultibyte(char* mbDest, size_t mbDestLength,
+	const wchar_t** wcSource, size_t wcSourceLength, mbstate_t* mbState,
+	size_t& lengthOut)
+{
+	ErrnoMaintainer errnoMaintainer;
+
+	return fCtypeData.WcharStringToMultibyte(mbDest, mbDestLength, wcSource,
+		wcSourceLength, mbState, lengthOut);
 }
 
 
