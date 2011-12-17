@@ -17,7 +17,7 @@ public:
 					// a BMessage if it's valid.
 					BRawContact(BMessage* data);
 
-					BRawContact(uint32 finalFormat = 0,
+					BRawContact(uint32 finalFormat = B_CONTACT_FORMAT,
 						BPositionIO* destination = NULL);
 
 	// TODO add a entry_ref constructor

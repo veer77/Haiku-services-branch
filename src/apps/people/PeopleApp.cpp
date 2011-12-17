@@ -172,13 +172,10 @@ TPeopleApp::_NewWindow(const entry_ref* ref, BFile* file)
 {
 
 	BRawContact* rawContact;
-	if (file == NULL) {
+	if (file == NULL)
 		rawContact = new BRawContact(B_CONTACT_FORMAT, NULL);
-	} else {
-		// using this BRawContact constructor, the class
-		// will detect automatically the final format
+	else
 		rawContact = new BRawContact(B_CONTACT_ANY, file);
-	}
 
 	BContact* contact = new BContact(rawContact);
 	//ObjectDeleter<BContact> deleter(contact);

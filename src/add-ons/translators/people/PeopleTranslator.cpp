@@ -10,12 +10,17 @@
 #include <NodeInfo.h>
 #include <File.h>
 #include <ObjectList.h>
+#include <Volume.h>
+#include <VolumeRoster.h>
 
 #include <new>
 #include <stdio.h>
 #include <syslog.h>
 
 #include "PeopleView.h"
+
+#undef B_TRANSLATE_CONTEXT
+#define B_TRANSLATE_CONTEXT "People"
 
 const char* kTranslatorName = "People Contacts Files";
 const char* kTranslatorInfo = "Translator for People files";
@@ -75,34 +80,34 @@ const uint32 kNumOutputFormats = sizeof(sOutputFormats)
 const uint32 kNumDefaultSettings = sizeof(sDefaultSettings)
 	/ sizeof(TranSetting);
 
-/*
-struct DefaultAttribute {
+
+struct Attribute {
 	const char*	attribute;
 	int32		width;
 	const char*	name;
 };
 
 // TODO: Add flags in attribute info message to find these.
-static const char* kNameAttribute = "META:name";
-static const char* kCategoryAttribute = "META:group";
+//static const char* kNameAttribute = "META:name";
+//static const char* kCategoryAttribute = "META:group";
 
-struct DefaultAttribute sDefaultAttributes[] = {
-	{ kNameAttribute, 120, B_TRANSLATE("Contact name") },
-	{ "META:nickname", 120, B_TRANSLATE("Nickname") },
-	{ "META:company", 120, B_TRANSLATE("Company") },
-	{ "META:address", 120, B_TRANSLATE("Address") },
-	{ "META:city", 90, B_TRANSLATE("City") },
-	{ "META:state", 50, B_TRANSLATE("State") },
-	{ "META:zip", 50, B_TRANSLATE("Zip") },
-	{ "META:country", 120, B_TRANSLATE("Country") },
-	{ "META:hphone", 90, B_TRANSLATE("Home phone") },
-	{ "META:wphone", 90, B_TRANSLATE("Work phone") },
-	{ "META:fax", 90, B_TRANSLATE("Fax") },
-	{ "META:email", 120, B_TRANSLATE("E-mail") },
-	{ "META:url", 120, B_TRANSLATE("URL") },
-	{ kCategoryAttribute, 120, B_TRANSLATE("Group") },
+struct Attribute sDefaultAttributes[] = {
+	{ B_PEOPLE_NAME, 120, B_TRANSLATE("Contact name") },
+	{ B_PEOPLE_NICKNAME, 120, B_TRANSLATE("Nickname") },
+	{ B_PEOPLE_COMPANY, 120, B_TRANSLATE("Company") },
+	{ B_PEOPLE_ADDRESS, 120, B_TRANSLATE("Address") },
+	{ B_PEOPLE_CITY, 90, B_TRANSLATE("City") },
+	{ B_PEOPLE_STATE, 50, B_TRANSLATE("State") },
+	{ B_PEOPLE_ZIP, 50, B_TRANSLATE("Zip") },
+	{ B_PEOPLE_COUNTRY, 120, B_TRANSLATE("Country") },
+	{ B_PEOPLE_HPHONE, 90, B_TRANSLATE("Home phone") },
+	{ B_PEOPLE_WPHONE, 90, B_TRANSLATE("Work phone") },
+	{ B_PEOPLE_FAX, 90, B_TRANSLATE("Fax") },
+	{ B_PEOPLE_EMAIL, 120, B_TRANSLATE("E-mail") },
+	{ B_PEOPLE_URL, 120, B_TRANSLATE("URL") },
+	{ B_PEOPLE_GROUP, 120, B_TRANSLATE("Group") },
 	{ NULL, 0, NULL }
-};*/
+};
 
 
 struct PeopleVisitor : public BContactFieldVisitor {
@@ -358,10 +363,6 @@ PeopleTranslator::TranslatePeople(BPositionIO* inSource,
 				return B_NO_MEMORY;
 
 			file->ReadAttr(buf, 0, 0, value, info.size);
-
-			// TODO use a std::map here since it's just mapping
-			// strings to enum values. Maybe use 2 maps, one for address fields
-			// one for string fields.
 			
 			BContactField* field = NULL;
 			if (strcmp(buf, B_PEOPLE_NAME) == 0) {
@@ -548,7 +549,7 @@ status_t
 PeopleTranslator::_InitAttr()
 {
 	bool valid = false;
-	BMimeType mime(B_PERSON_MIMETYPE);
+	BMimeType mime(PEOPLE_MIMETYPE);
 	if (mime.IsInstalled()) {
 		BMessage info;
 		if (mime.GetAttrInfo(&info) == B_NO_ERROR) {
@@ -634,4 +635,5 @@ PeopleTranslator::_InitAttr()
 				B_STRING_TYPE, 0);
 		}
 	}
-}*/
+}
+*/

@@ -80,6 +80,8 @@ private:
 			status_t _InitializeAttributes(BFile* file);
 			status_t _CheckPeople(BPositionIO* people);
 			status_t _AddPicture(BFile* file, BMessage* msg);
+
+		//	status_t _InitAttr();
 };
 
 #endif // #ifndef _People_TRANSLATOR_H

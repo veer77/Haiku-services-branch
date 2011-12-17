@@ -4,7 +4,8 @@
  *
  * Authors:
  *		Robert Polic
- *
+ *		Dario Casalinuovo
+ * 
  * Copyright 1999, Be Incorporated.   All Rights Reserved.
  * This file may be used under the terms of the Be Sample Code License.
  */

@@ -6,14 +6,23 @@
 #define _CONTACT_REF_H
 
 #include <Flattenable.h>
+#include <ObjectList.h>
+
 
 class BContactRef /*: public virtual BFlattenable*/ {
 public:
 				BContactRef();
 				BContactRef(uint32 id);
 				~BContactRef();
-private:
-	uint32 		fContactID;
+
+	const char*	name;
+	const char*	nickname;
+	const char* address;
+	const char* email;
+	uint32 		contactID;
+	uint32		groupID;
 };
+
+typedef BObjectList<BContactRef> BContactRefList;
 
 #endif

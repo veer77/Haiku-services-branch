@@ -7,7 +7,7 @@
 
 BContactRef::BContactRef()
 	:
-	fContactID(0)
+	contactID(0)
 {
 
 }
@@ -15,7 +15,7 @@ BContactRef::BContactRef()
 
 BContactRef::BContactRef(uint32 id)
 	:
-	fContactID(id)
+	contactID(id)
 {
 
 }

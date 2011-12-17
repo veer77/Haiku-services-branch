@@ -5,15 +5,14 @@
 #ifndef _CONTACT_GROUP_H
 #define _CONTACT_GROUP_H
 
-#include <Contact.h>
+#include <ContactRef.h>
 #include <SupportDefs.h>
 
 typedef BObjectList<BContactGroup> BContactGroupList;
 
-
 class BContactGroup {
 public:
-					BContactGroup(uint32 groupID);
+					BContactGroup(uint32 groupID, bool custom = false);
 					~BContactGroup();
 
 	status_t		InitCheck();
@@ -21,14 +20,17 @@ public:
 	status_t		AddContact(BContactRef* contact);
 	status_t		RemoveContact(BContactRef* contact);
 
-	BContactRefList* AllContacts();
-	BContactRefList* ContactsByField(ContactFieldType type,
-						const char* value = NULL);
 	//BContactList*	ContactsByQuery(BContactQuery* query);
 
 	//BMessage* 	AsMessage();
+
+	const BContactRefList& AllContacts() const;
+	//const BContactRefList& ContactsByField(ContactFieldType type,
+	//					const char* value = NULL) const;
 private:
-	BContactList 	fList;	
+	BContactRefList fList;
+	uint32			fGroupID;
+	bool			fCustom;
 };
 
 #endif // _CONTACT_GROUP_H

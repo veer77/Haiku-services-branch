@@ -8,8 +8,12 @@
 
 //TODO define error codes
 
-BContactGroup::BContactGroup(int32 groupID)
+BContactGroup::BContactGroup(int32 groupID, bool custom)
+	:
+	fGroupID(groupID),
+	fCustom(custom)
 {
+
 }
 
 
@@ -26,12 +30,30 @@ BContact::InitCheck() const
 
 
 status_t
-BContactGroup::AddContact(BContact* contact)
+BContactGroup::AddContact(BContactRef* contact)
 {
+	fList.AddItem(contact);
 }
 
 
 status_t
-BContactGroup::RemoveContact(BContact* contact)
+BContactGroup::RemoveContact(BContactRef* contact)
+{
+	fList.RemoveItem(contact);
+}
+
+
+const
+BContactRefList&
+BContactGroup::AllContacts() const
+{
+	return fList;
+}
+
+
+const
+BContactRefList&
+BContactGroup::ContactsByField(ContactFieldType type, 
+	const char* value) const
 {
 }

@@ -16,20 +16,20 @@ enum ContactGroupDefs {
 };
 
 enum ContactFieldType {
-	B_CONTACT_NAME 			= 'CFNN', //BString
-	B_CONTACT_NICKNAME 		= 'CFNK', // *
-	B_CONTACT_PHOTO 		= 'CFNH', // image
-	B_CONTACT_ADDRESS 		= 'CFNA', // BAddress
-	B_CONTACT_PHONE			= 'CFNP', // BPhone
-	B_CONTACT_EMAIL			= 'CFNE', // string
-	B_CONTACT_URL			= 'CFNU', // BUrl
-	B_CONTACT_GEO			= 'CFNG', // string?
-	B_CONTACT_NOTE			= 'CFNO', // BString
-	B_CONTACT_ORGANIZATION  = 'CFNJ', // string
-	B_CONTACT_IM			= 'CFNI', // string
-	B_CONTACT_UID			= 'CFND', // uint32
-	B_CONTACT_GROUP			= 'CFNR', // uint32 / string
-	B_CONTACT_PROTOCOLS 	= 'CFNL'  // string?
+	B_CONTACT_NAME 			= 'CFNN',
+	B_CONTACT_NICKNAME 		= 'CFNK',
+	B_CONTACT_PHOTO 		= 'CFNH',
+	B_CONTACT_ADDRESS 		= 'CFNA',
+	B_CONTACT_PHONE			= 'CFNP',
+	B_CONTACT_EMAIL			= 'CFNE',
+	B_CONTACT_URL			= 'CFNU',
+	B_CONTACT_GEO			= 'CFNG',
+	B_CONTACT_NOTE			= 'CFNO',
+	B_CONTACT_ORGANIZATION  = 'CFNJ',
+	B_CONTACT_IM			= 'CFNI',
+	B_CONTACT_UID			= 'CFND',
+	B_CONTACT_GROUP			= 'CFNR',
+	B_CONTACT_PROTOCOLS 	= 'CFNL'
 };
 
 enum CommonFieldUsageTypes {
