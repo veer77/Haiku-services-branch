@@ -133,6 +133,7 @@ radeon_dpms_set(int mode)
 			for (uint8 id = 0; id < MAX_DISPLAY; id++) {
 				if (gDisplay[id]->active == false)
 					continue;
+				encoder_dpms_set(id, mode);
 				display_crtc_lock(id, ATOM_ENABLE);
 				display_crtc_power(id, ATOM_ENABLE);
 				if (info.dceMajor >= 3)
@@ -154,6 +155,7 @@ radeon_dpms_set(int mode)
 					display_crtc_memreq(id, ATOM_DISABLE);
 				display_crtc_power(id, ATOM_DISABLE);
 				display_crtc_lock(id, ATOM_DISABLE);
+				encoder_dpms_set(id, mode);
 			}
 			break;
 	}
@@ -180,8 +182,7 @@ radeon_set_display_mode(display_mode* mode)
 
 		// *** encoder prep
 		encoder_output_lock(true);
-		encoder_dpms_set(id, gConnector[connectorIndex]->encoder.objectID,
-			B_DPMS_OFF);
+		encoder_dpms_set(id, B_DPMS_OFF);
 		encoder_assign_crtc(id);
 
 		// *** CRT controler prep
@@ -226,9 +227,7 @@ radeon_set_display_mode(display_mode* mode)
 					ATOM_ENCODER_CMD_DP_VIDEO_ON, 0);
 		}
 
-		encoder_dpms_set(id, gConnector[connectorIndex]->encoder.objectID,
-			B_DPMS_ON);
-
+		encoder_dpms_set(id, B_DPMS_ON);
 		encoder_output_lock(false);
 	}
 

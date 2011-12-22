@@ -938,9 +938,14 @@ if [ IsOptionalHaikuImagePackageAdded ICU-devel ] {
 
 	local arch = $(TARGET_ARCH) ;
 	local abi = gcc$(HAIKU_GCC_VERSION[1]) ;
+	local lib ;
 	for abiVersionedLib in $(HAIKU_ICU_LIBS) {
 		abiVersionedLib = $(abiVersionedLib:B:G=) ;
-		local lib = $(abiVersionedLib:B) ;
+		lib = $(abiVersionedLib:B) ;
+		while $(lib:S) != ".so" {
+			abiVersionedLib = $(abiVersionedLib:B) ;
+			lib = $(abiVersionedLib:B) ;
+		}
 		AddSymlinkToHaikuHybridImage develop abi $(arch) $(abi) lib
 			: /system/lib $(abiVersionedLib) : : true ;
 		AddSymlinkToHaikuHybridImage develop abi $(arch) $(abi) lib
@@ -1371,8 +1376,8 @@ if [ IsOptionalHaikuImagePackageAdded Pe ] {
 	} else {
 		if $(HAIKU_GCC_VERSION[1]) >= 4 {
 			InstallOptionalHaikuImagePackage
-				pe-2.4.3-600-r1a3-x86-gcc4-2011-05-24.zip
-				: $(baseURL)/pe-2.4.3-600-r1a3-x86-gcc4-2011-05-24.zip ;
+				pe-2.4.3-600-x86-gcc4-2011-12-18.zip
+				: $(baseURL)/pe-2.4.3-600-x86-gcc4-2011-12-18.zip ;
 		} else {
 			InstallOptionalHaikuImagePackage
 				pe-2.4.3-600-r1a3-x86-gcc2-2011-05-18.zip
@@ -1667,12 +1672,12 @@ if [ IsOptionalHaikuImagePackageAdded Vision ] {
 		Echo "No optional package Vision available for $(TARGET_ARCH)" ;
 	} else {
 		if $(HAIKU_GCC_VERSION[1]) >= 4 {
-			InstallOptionalHaikuImagePackage vision-908-r1a3-x86-gcc4-2011-06-07.zip
-				: $(baseURL)/vision-908-r1a3-x86-gcc4-2011-06-07.zip ;
+			InstallOptionalHaikuImagePackage vision-908-x86-gcc4-2011-12-17.zip
+				: $(baseURL)/vision-908-x86-gcc4-2011-12-17.zip ;
 		} else {
 			InstallOptionalHaikuImagePackage
-				vision-908-r1a3-x86-gcc2-2011-06-07.zip
-				: $(baseURL)/vision-908-r1a3-x86-gcc2-2011-06-07.zip ;
+				vision-908-x86-gcc2-2011-12-17.zip
+				: $(baseURL)/vision-908-x86-gcc2-2011-12-17.zip ;
 		}
 		AddSymlinkToHaikuImage home config settings deskbar Applications
 			: /boot/apps/Vision/Vision ;
@@ -1688,8 +1693,8 @@ if [ IsOptionalHaikuImagePackageAdded WebPositive ] {
 		Echo "No optional package WebPositive available for gcc2" ;
 	} else {
 		InstallOptionalHaikuImagePackage
-			WebPositive-gcc4-x86-r583-2011-08-26.zip
-			: $(baseURL)/WebPositive-gcc4-x86-r583-2011-08-26.zip ;
+			WebPositive-gcc4-x86-r583-2011-12-17.zip
+			: $(baseURL)/WebPositive-gcc4-x86-r583-2011-12-17.zip ;
 		AddSymlinkToHaikuImage home config settings deskbar Applications
 			: /boot/apps/WebPositive/WebPositive ;
 	}

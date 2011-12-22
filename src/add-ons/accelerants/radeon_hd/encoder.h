@@ -30,9 +30,14 @@ status_t encoder_tv_setup(uint32 connectorIndex,
 
 bool encoder_analog_load_detect(uint32 connectorIndex);
 void encoder_output_lock(bool lock);
+status_t transmitter_dig_setup(uint32 connectorIndex, uint32 pixelClock,
+	uint8 laneNumber, uint8 laneSet, int command);
 void encoder_crtc_scratch(uint8 crtcID);
 void encoder_dpms_scratch(uint8 crtcID, bool power);
-void encoder_dpms_set(uint8 crtcID, uint8 encoderID, int mode);
+void encoder_dpms_set(uint8 crtcID, int mode);
+void encoder_dpms_set_dig(uint8 crtcID, int mode);
+void encoder_dpms_set_external(uint8 crtcID, int mode);
+
 const char* encoder_name_lookup(uint32 encoderID);
 uint32 encoder_object_lookup(uint32 encoderFlags, uint8 dacID);
 uint32 encoder_type_lookup(uint32 encoderID, uint32 connectorFlags);

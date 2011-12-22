@@ -321,14 +321,14 @@ POP3Protocol::DeleteMessage(const entry_ref& ref)
 	if (error < B_OK)
 		return error;
 
-#if DEBUG
-	printf("DeleteMessage: ID is %d\n", (int)unique_ids->IndexOf(uid));
-		// What should we use for int32 instead of %d?
-#endif
 	char uidString[256];
 	BNode node(&ref);
 	if (node.ReadAttr("MAIL:unique_id", B_STRING_TYPE, 0, uidString, 256) < 0)
 		return B_ERROR;
+	#if DEBUG
+	printf("DeleteMessage: ID is %d\n", (int)fUniqueIDs.IndexOf(uidString));
+		// What should we use for int32 instead of %d?
+	#endif
 	Delete(fUniqueIDs.IndexOf(uidString));
 
 	Disconnect();
@@ -608,10 +608,12 @@ POP3Protocol::CheckForDeletedMessages()
 		Delete(fUniqueIDs.IndexOf(toDelete.StringAt(i)));
 	}
 
-	//*(unique_ids) -= to_delete; --- This line causes bad things to
-	// happen (POP3 client uses the wrong indices to retrieve
-	// messages).  Without it, bad things don't happen.
+	// Don't remove ids from fUniqueIDs, the indices have to stay the same when
+	// retrieving new messages.
 	fManifest.Remove(toDelete);
+
+	// TODO: at some point the purged manifest should be written to disk
+	// otherwise it will grow forever
 }
 
 

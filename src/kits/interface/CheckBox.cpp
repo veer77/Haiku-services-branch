@@ -623,3 +623,18 @@ BCheckBox::operator=(const BCheckBox &)
 	return *this;
 }
 
+
+#if __GNUC__ == 2
+
+
+extern "C" void
+InvalidateLayout__9BCheckBoxb(BCheckBox* box, bool descendants)
+{
+	perform_data_layout_invalidated data;
+	data.descendants = descendants;
+
+	box->Perform(PERFORM_CODE_LAYOUT_INVALIDATED, &data);	
+}
+
+
+#endif

@@ -873,3 +873,18 @@ BBox::_ValidateLayoutData()
 	ResetLayoutInvalidation();
 }
 
+
+#if __GNUC__ == 2
+
+
+extern "C" void
+InvalidateLayout__4BBoxb(BBox* box, bool descendants)
+{
+	perform_data_layout_invalidated data;
+	data.descendants = descendants;
+
+	box->Perform(PERFORM_CODE_LAYOUT_INVALIDATED, &data);
+}
+
+
+#endif

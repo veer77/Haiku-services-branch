@@ -782,3 +782,17 @@ BButton::_DrawFocusLine(float x, float y, float width, bool visible)
 }
 
 
+#if __GNUC__ == 2
+
+
+extern "C" void
+InvalidateLayout__7BButtonb(BView* view, bool descendants)
+{
+	perform_data_layout_invalidated data;
+	data.descendants = descendants;
+
+	view->Perform(PERFORM_CODE_LAYOUT_INVALIDATED, &data);
+}
+
+
+#endif
