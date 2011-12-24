@@ -19,9 +19,6 @@
 
 #include "PeopleView.h"
 
-#undef B_TRANSLATE_CONTEXT
-#define B_TRANSLATE_CONTEXT "People"
-
 const char* kTranslatorName = "People Contacts Files";
 const char* kTranslatorInfo = "Translator for People files";
 
@@ -80,7 +77,7 @@ const uint32 kNumOutputFormats = sizeof(sOutputFormats)
 const uint32 kNumDefaultSettings = sizeof(sDefaultSettings)
 	/ sizeof(TranSetting);
 
-
+/*
 struct Attribute {
 	const char*	attribute;
 	int32		width;
@@ -108,7 +105,7 @@ struct Attribute sDefaultAttributes[] = {
 	{ B_PEOPLE_GROUP, 120, B_TRANSLATE("Group") },
 	{ NULL, 0, NULL }
 };
-
+*/
 
 struct PeopleVisitor : public BContactFieldVisitor {
 public:

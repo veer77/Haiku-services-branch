@@ -47,18 +47,6 @@ public:
 			const BString&	Label() const;
 			void			SetLabel(const BString& label);
 
-			// these functions will be removed probably
-			bool			AddParameter(const BString& property);
-
-			bool			AddParameterAt(const BString& property,
-								int32 index);
-			bool			ReplaceParameter(const BString& property,
-								int32 index);
-
-			status_t		RemoveParameter(const BString& property);
-			const BString&	ParameterAt(int32 i) const;
-			int32			CountParameters() const;
-
 	virtual	bool			IsFixedSize() const;
 	virtual	type_code		TypeCode() const;
 	virtual	bool			AllowsTypeCode(type_code code) const;
@@ -134,7 +122,6 @@ protected:
 // TODO move code into a BAddress object
 class BAddressContactField : public BContactField {
 public:
-//							BAddressContactField(BAddress* address);
 							BAddressContactField(BString address = "",
 								bool wellFormed = true);
 	virtual					~BAddressContactField();
@@ -144,7 +131,7 @@ public:
 
 			bool			IsWellFormed() const;
 
-	// this return a formatted address
+	// this return a formatted address (see vcard)
 	virtual void			SetValue(const BString& value) ;
 	virtual const BString&	Value() const;
 
@@ -198,10 +185,6 @@ public:
 
 			BBitmap*		Photo() const;
 			void			SetPhoto(BBitmap* photo);
-/*
-			const entry_ref& RefToPhoto();
-			void			SetRefToPhoto(const entry_ref& ref);
-*/
 
 	virtual void			SetValue(const BString& value) ;
 	virtual const BString&	Value() const;
@@ -215,6 +198,8 @@ public:
 
 			uint32			PictureType() const;
 			void			SetPictureType(uint32 type);
+			const BString&	PictureMIME() const;
+			void			SetPictureMIME(const BString& mime);
 protected:
 			void			_InitLabel();
 
@@ -225,39 +210,12 @@ protected:
 
 			entry_ref* 		fEntry;
 			uint32			fPictureType;
+			BString			fPictureMIME;
 };
 
 /*
-ATM i don't think it's needed, so i'm using
-the BStringContactField for the phone number. 
 
-class BPhoneContactField : public virtual BStringContactField {
-public:
-							BPhoneContactField(int phone);
-							BPhoneContactField(const BString& phone);
-
-	virtual					~BPhoneContactField();
-
-	virtual	void			Accept(BContactFieldVisitor* v);
-	virtual	bool			IsEqual(BContactField* field);
-
-			int				Phone() const;
-			void			SetPhone(int phone);
-
-	virtual void			SetValue(const BString& value) ;
-	virtual const BString&	Value() const;
-
-	virtual	ssize_t			FlattenedSize() const;
-	virtual	status_t		Flatten(void* buffer, ssize_t size) const;
-	virtual	status_t		Unflatten(type_code code, const void* buffer,
-								ssize_t size);
-protected:
-			struct 			EqualityVisitor;
-			BString			fPhone;
-};
-
-
-this will be a special type of field
+This will be a special type of field
 that will provide a method to define
 custom contact fields presumably
 using a BMessage

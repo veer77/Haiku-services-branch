@@ -91,7 +91,7 @@ PictureView::PictureView(float width, float height, const entry_ref* ref)
 	Update(ref);
 }
 
-// TODO create private methods for constructor
+
 PictureView::PictureView(float width, float height, BBitmap* bitmap)
 	:
 	BView("pictureview", B_WILL_DRAW | B_FULL_UPDATE_ON_RESIZE | B_NAVIGABLE),

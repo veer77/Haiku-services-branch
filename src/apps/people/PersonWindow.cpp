@@ -330,7 +330,7 @@ PersonWindow::SaveAs()
 
 	if (fPanel == NULL) {
 		BMessenger target(this);
-		fPanel = new PeopleSavePanel(&target);
+		fPanel = new BFilePanel(B_SAVE_PANEL, &target);
 
 		BPath path;
 		find_directory(B_USER_DIRECTORY, &path, true);

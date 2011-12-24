@@ -20,7 +20,7 @@ public:
 					BRawContact(uint32 finalFormat = B_CONTACT_FORMAT,
 						BPositionIO* destination = NULL);
 
-	// TODO add a entry_ref constructor
+					// TODO add a entry_ref constructor
 
 					~BRawContact();
 

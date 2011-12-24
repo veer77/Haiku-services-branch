@@ -98,56 +98,6 @@ BContactField::SetLabel(const BString& label)
 
 
 bool
-BContactField::AddParameter(const BString& property)
-{
-	return fParamList.AddItem(new BString(property));
-}
-
-
-bool
-BContactField::AddParameterAt(const BString& property, int32 index)
-{
-	return fParamList.AddItem(new BString(property), index);
-}
-
-
-bool
-BContactField::ReplaceParameter(const BString& property, int32 index)
-{
-	return fParamList.ReplaceItem(index, new BString(property));
-}
-
-
-const BString&
-BContactField::ParameterAt(int32 i) const
-{
-	return *fParamList.ItemAt(i);
-}
-
-
-int32
-BContactField::CountParameters() const
-{
-	return fParamList.CountItems();
-}
-
-
-status_t
-BContactField::RemoveParameter(const BString& property)
-{
-	// TODO use BObjectList sorting/binary search
-	// to improve performances
-	for (int i = 0; i < fParamList.CountItems(); i++) {
-		if (property.Compare(fParamList.ItemAt(i)->String()) == 0) {
-			fParamList.RemoveItemAt(i);
-			return B_OK;
-		}
-	}
-	return B_ERROR;
-}
-
-
-bool
 BContactField::IsFixedSize() const
 { 
 	return false;
@@ -196,12 +146,13 @@ BContactField::Flatten(BPositionIO* flatData) const
 		return B_BAD_VALUE;
 
 	// TODO ADD ENDIANESS CODE
-	// this is needed because we need to know
+
+	// NOTE this is needed because we need to know
 	// whitch derived class we need to instantiate
 	// in BContactField::UnflattenChildClass()
-	
-	// TODO check if all data was written
 	flatData->Write(&fType, sizeof(type_code));
+
+	// TODO check if all data was written
 
 	int32 count = fParamList.CountItems();
 	flatData->Write(&count, sizeof(count));
@@ -264,15 +215,7 @@ BContactField::Unflatten(type_code code, BPositionIO* flatData)
 status_t
 BContactField::CopyDataFrom(BContactField* field)
 {
-	fLabel.SetTo(field->fLabel);
-	fType = field->fType;
-	fUsage = field->fUsage;
-
-	for (int i = 0; i < field->fParamList.CountItems(); i++) {
-		const char* str = field->fParamList.ItemAt(i)->String();
-		fParamList.AddItem(new BString(str));
-	}
-	return B_OK;
+	return B_ERROR;
 }
 
 
@@ -497,17 +440,11 @@ BStringContactField::Value() const
 	return fValue;
 }
 
+
 // this method should take a BStringContactField
 status_t
 BStringContactField::CopyDataFrom(BContactField* field)
 {
-	BStringContactField* from = dynamic_cast<BStringContactField*>(field);
-	if (from != NULL) {
-		if (BContactField::CopyDataFrom(field) == B_OK) {
-			fValue.SetTo(from->fValue);
-			return B_OK;
-		}
-	}
 	return B_ERROR;
 }
 
@@ -680,24 +617,6 @@ BAddressContactField::Value() const
 status_t
 BAddressContactField::CopyDataFrom(BContactField* field)
 {
-	if (field->FieldType() == B_CONTACT_ADDRESS) {
-		BContactField::CopyDataFrom(field);
-		BAddressContactField* from
-			= dynamic_cast<BAddressContactField*>(field);
-
-		if (from != NULL) {
-			fStreet.SetTo(from->fStreet);
-			fPostalBox.SetTo(from->fPostalBox);
-			fNeighbor.SetTo(from->fNeighbor);
-			fCity.SetTo(from->fCity);
-			fRegion.SetTo(from->fRegion);
-			fPostalCode.SetTo(from->fPostalCode);
-			fCountry.SetTo(from->fCountry);
-			fWellFormed = from->fWellFormed;
-
-			return B_OK;
-		}
-	}
 	return B_ERROR;
 }
 
@@ -894,42 +813,8 @@ BAddressContactField::_PopValue(BString& str, BString& value)
 
 /** BPhotoContactField */
 
-BPhotoContactField::BPhotoContactField(BBitmap* bitmap)   
-	:
-	BContactField(B_CONTACT_PHOTO),
-	fBitmap(bitmap),
-	fUrl(),
-	fPhotoType(CONTACT_PHOTO_BITMAP),
-	fPictureType(0)
-{
-	_InitLabel();
-}
-
-/*
-BPhotoContactField::BPhotoContactField(const char* url)   
-	:
-	BContactField(B_CONTACT_PHOTO),
-	fPhotoType(CONTACT_PHOTO_URL)
-{
-	_InitLabel();
-}
-
-
-
-BPhotoContactField::BPhotoContactField(entry_ref* ref)   
-	:
-	BContactField(B_CONTACT_PHOTO),
-	fPhotoType(CONTACT_PHOTO_REF)
-{
-	_InitLabel();
-}
-
-*/
-
-BPhotoContactField::~BPhotoContactField()
-{	
-}
-
+// TODO add support for refs and urls photos, then
+// fix the following visitor, to allow fields compare
 
 struct BPhotoContactField::EqualityVisitor : public EqualityVisitorBase {
 
@@ -962,6 +847,32 @@ struct BPhotoContactField::EqualityVisitor : public EqualityVisitorBase {
 };
 
 
+BPhotoContactField::BPhotoContactField(BBitmap* bitmap)   
+	:
+	BContactField(B_CONTACT_PHOTO),
+	fBitmap(bitmap),
+	fUrl(),
+	fPhotoType(CONTACT_PHOTO_BITMAP),
+	fPictureType(0)
+{
+	_InitLabel();
+}
+
+/*
+BPhotoContactField::BPhotoContactField(const char* url)   
+	:
+	BContactField(B_CONTACT_PHOTO),
+	fPhotoType(CONTACT_PHOTO_URL)
+{
+	_InitLabel();
+}
+*/
+
+BPhotoContactField::~BPhotoContactField()
+{	
+}
+
+
 void
 BPhotoContactField::Accept(BContactFieldVisitor* v)
 { 
@@ -983,8 +894,7 @@ BPhotoContactField::Photo() const
 {
 	if (fBitmap)
 		return fBitmap;
-//	else
-//		return _BitmapFromRef();
+
 	return NULL;
 }
 
@@ -1011,7 +921,6 @@ BPhotoContactField::Value() const
 }
 
 
-// TODO choose a better username and add missing method
 uint32
 BPhotoContactField::PictureType() const
 {
@@ -1026,10 +935,23 @@ BPhotoContactField::SetPictureType(uint32 type)
 }
 
 
+const BString&
+BPhotoContactField::PictureMIME() const
+{
+	return fPictureMIME;
+}
+
+
+void
+BPhotoContactField::SetPictureMIME(const BString& mime)
+{
+	fPictureMIME.SetTo(mime);
+}
+
+
 status_t
 BPhotoContactField::CopyDataFrom(BContactField* field)
 {
-
 	return B_ERROR;
 }
 

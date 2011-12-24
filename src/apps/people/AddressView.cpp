@@ -121,11 +121,7 @@ AddressView::Value() const
 }
 
 /*
- * 
- * Increment fCount AFTER adding the items to the layout. 
- * Furthermore, instead of a member variable for this, just use layout->CountRows();
- * Also, use BLayoutBuilder::Grid::AddTextView(), it's prettier!
- * 
+ * use BLayoutBuilder::Grid::AddTextView(), it's prettier!
  */
 
 BTextControl*
@@ -133,12 +129,12 @@ AddressView::_AddControl(const char* label, const char* value)
 {
 	BTextControl* control = new BTextControl(label, value, NULL);
 	control->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
+
 	BGridLayout* layout = GridLayout();
+	int count = layout->CountRows();
 
-	layout->AddItem(control->CreateLabelLayoutItem(), 0, fCount);
-	layout->AddItem(control->CreateTextViewLayoutItem(), 1, fCount);
-
-	fCount += 1;
+	layout->AddItem(control->CreateLabelLayoutItem(), 0, count);
+	layout->AddItem(control->CreateTextViewLayoutItem(), 1, count);
 
 	return control;
 }
