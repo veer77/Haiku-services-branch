@@ -2,8 +2,8 @@
  * Copyright 2010 Dario Casalinuovo <your@email.address>
  * All rights reserved. Distributed under the terms of the MIT license.
  */
-#ifndef _PEOPLE_TRANSLATOR_H
-#define _PEOPLE_TRANSLATOR_H
+#ifndef _PERSON_TRANSLATOR_H
+#define _PERSON_TRANSLATOR_H
 
 #include <ContactDefs.h>
 #include <Translator.h>
@@ -11,11 +11,11 @@
 #include <TranslationDefs.h>
 
 #include "BaseTranslator.h"
-#include "PeopleView.h"
+#include "PersonView.h"
 #include "TranslatorSettings.h"
 #include "TranslatorWindow.h"
 
-#define PEOPLE_TRANSLATOR_VERSION B_TRANSLATION_MAKE_VERSION(0,1,0)
+#define PERSON_TRANSLATOR_VERSION B_TRANSLATION_MAKE_VERSION(0,1,0)
 #define IN_QUALITY 1
 #define IN_CAPABILITY 1
 #define OUT_QUALITY 1
@@ -39,9 +39,9 @@
 class BFile;
 class BContactField;
 
-class PeopleTranslator : public BaseTranslator {
+class PersonTranslator : public BaseTranslator {
 public:
-	PeopleTranslator();
+	PersonTranslator();
 	
 	virtual status_t Identify(BPositionIO* inSource,
 		const translation_format* inFormat, BMessage* ioExtension,
@@ -59,29 +59,29 @@ public:
 			status_t TranslateContact(BMessage* inSource, 
 				BMessage* ioExtension, BFile* outDestination);
 
-			status_t TranslatePeople(BPositionIO* inSource, 
+			status_t TranslatePerson(BPositionIO* inSource, 
 				BMessage* ioExtension, BPositionIO* outDestination);
 
 	virtual BView* 	NewConfigView(TranslatorSettings* settings);
 
 protected:
-	virtual 		~PeopleTranslator();
+	virtual 		~PersonTranslator();
 		// this is protected because the object is deleted by the
 		// Release() function instead of being deleted directly by
 		// the user
 		
 private:
-			status_t _IdentifyPeople(BPositionIO* inSource,
+			status_t _IdentifyPerson(BPositionIO* inSource,
 						translator_info* outInfo);
 
 			BFile*	 _PositionToFile(BPositionIO* destination);
 			status_t _AddField(BContactField* field, BMessage* msg);
 
 			status_t _InitializeAttributes(BFile* file);
-			status_t _CheckPeople(BPositionIO* people);
+			status_t _CheckPerson(BPositionIO* people);
 			status_t _AddPicture(BFile* file, BMessage* msg);
 
 		//	status_t _InitAttr();
 };
 
-#endif // #ifndef _People_TRANSLATOR_H
+#endif // #ifndef _Person_TRANSLATOR_H

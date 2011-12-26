@@ -7,18 +7,18 @@
  *		Axel Dörfler, axeld@pinc-software.de
  */
 
-/*! A view with information about the PeopleTranslator. */
+/*! A view with information about the PersonTranslator. */
 
 
-#include "PeopleView.h"
-#include "PeopleTranslator.h"
+#include "PersonView.h"
+#include "PersonTranslator.h"
 
 #include <StringView.h>
 
 #include <stdio.h>
 
 
-PeopleView::PeopleView(const BRect &frame, const char *name, uint32 resizeMode,
+PersonView::PersonView(const BRect &frame, const char *name, uint32 resizeMode,
 		uint32 flags, TranslatorSettings *settings)
 	:
 	BView(frame, name, resizeMode, flags)
@@ -33,7 +33,7 @@ PeopleView::PeopleView(const BRect &frame, const char *name, uint32 resizeMode,
 
 	BRect rect(10, 10, 200, 10 + height);
 	BStringView *stringView = new BStringView(rect, "title",
-		"People files translator");
+		"Person files translator");
 
 	stringView->SetFont(be_bold_font);
 	stringView->ResizeToPreferred();
@@ -45,9 +45,9 @@ PeopleView::PeopleView(const BRect &frame, const char *name, uint32 resizeMode,
 	char version[256];
 
 	snprintf(version, sizeof(version), "Version %d.%d.%d, %s",
-		int(PEOPLE_TRANSLATOR_VERSION),
-		int(PEOPLE_TRANSLATOR_VERSION),
-		int(PEOPLE_TRANSLATOR_VERSION),
+		int(PERSON_TRANSLATOR_VERSION),
+		int(PERSON_TRANSLATOR_VERSION),
+		int(PERSON_TRANSLATOR_VERSION),
 		__DATE__);
 
 	stringView = new BStringView(rect, "version", version);
@@ -72,7 +72,7 @@ PeopleView::PeopleView(const BRect &frame, const char *name, uint32 resizeMode,
 }
 
 
-PeopleView::~PeopleView()
+PersonView::~PersonView()
 {
 	fSettings->Release();
 }

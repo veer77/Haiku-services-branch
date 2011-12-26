@@ -1,4 +1,4 @@
-#include "PeopleTranslator.h"
+#include "PersonTranslator.h"
 
 #include <shared/AutoDeleter.h>
 #include <BitmapStream.h>
@@ -17,10 +17,10 @@
 #include <stdio.h>
 #include <syslog.h>
 
-#include "PeopleView.h"
+#include "PersonView.h"
 
-const char* kTranslatorName = "People Contacts Files";
-const char* kTranslatorInfo = "Translator for People files";
+const char* kTranslatorName = "Person Contacts Files";
+const char* kTranslatorInfo = "Translator for Person files";
 
 #define PEOPLE_MIME_TYPE "application/x-person"
 #define CONTACT_MIME_TYPE "application/x-hcontact"
@@ -40,7 +40,7 @@ static const translation_format sInputFormats[] = {
 		IN_QUALITY,
 		IN_CAPABILITY,
 		PEOPLE_MIME_TYPE,
-		"People Contact file"
+		"Person Contact file"
 	}
 };
 
@@ -60,7 +60,7 @@ static const translation_format sOutputFormats[] = {
 		OUT_QUALITY,
 		OUT_CAPABILITY,
 		PEOPLE_MIME_TYPE,
-		"People Contact file"
+		"Person Contact file"
 	}
 };
 
@@ -89,32 +89,32 @@ struct Attribute {
 //static const char* kCategoryAttribute = "META:group";
 
 struct Attribute sDefaultAttributes[] = {
-	{ B_PEOPLE_NAME, 120, B_TRANSLATE("Contact name") },
-	{ B_PEOPLE_NICKNAME, 120, B_TRANSLATE("Nickname") },
-	{ B_PEOPLE_COMPANY, 120, B_TRANSLATE("Company") },
-	{ B_PEOPLE_ADDRESS, 120, B_TRANSLATE("Address") },
-	{ B_PEOPLE_CITY, 90, B_TRANSLATE("City") },
-	{ B_PEOPLE_STATE, 50, B_TRANSLATE("State") },
-	{ B_PEOPLE_ZIP, 50, B_TRANSLATE("Zip") },
-	{ B_PEOPLE_COUNTRY, 120, B_TRANSLATE("Country") },
-	{ B_PEOPLE_HPHONE, 90, B_TRANSLATE("Home phone") },
-	{ B_PEOPLE_WPHONE, 90, B_TRANSLATE("Work phone") },
-	{ B_PEOPLE_FAX, 90, B_TRANSLATE("Fax") },
-	{ B_PEOPLE_EMAIL, 120, B_TRANSLATE("E-mail") },
-	{ B_PEOPLE_URL, 120, B_TRANSLATE("URL") },
-	{ B_PEOPLE_GROUP, 120, B_TRANSLATE("Group") },
+	{ B_PEOPLE_NAME, B_TRANSLATE("Contact name") },
+	{ B_PEOPLE_NICKNAME, B_TRANSLATE("Nickname") },
+	{ B_PEOPLE_COMPANY, B_TRANSLATE("Company") },
+	{ B_PEOPLE_ADDRESS, B_TRANSLATE("Address") },
+	{ B_PEOPLE_CITY, B_TRANSLATE("City") },
+	{ B_PEOPLE_STATE, B_TRANSLATE("State") },
+	{ B_PEOPLE_ZIP, B_TRANSLATE("Zip") },
+	{ B_PEOPLE_COUNTRY, B_TRANSLATE("Country") },
+	{ B_PEOPLE_HPHONE, B_TRANSLATE("Home phone") },
+	{ B_PEOPLE_WPHONE, B_TRANSLATE("Work phone") },
+	{ B_PEOPLE_FAX, B_TRANSLATE("Fax") },
+	{ B_PEOPLE_EMAIL, B_TRANSLATE("E-mail") },
+	{ B_PEOPLE_URL, B_TRANSLATE("URL") },
+	{ B_PEOPLE_GROUP, B_TRANSLATE("Group") },
 	{ NULL, 0, NULL }
 };
 */
 
-struct PeopleVisitor : public BContactFieldVisitor {
+struct PersonVisitor : public BContactFieldVisitor {
 public:
-					PeopleVisitor(BFile* destination)
+					PersonVisitor(BFile* destination)
 					:
 					fDest(destination)
 					{
 					}
-	virtual		 	~PeopleVisitor()
+	virtual		 	~PersonVisitor()
 					{
 					}
 
@@ -227,29 +227,29 @@ BTranslator *
 make_nth_translator(int32 n, image_id you, uint32 flags, ...)
 {
 	if (!n)
-		return new (std::nothrow) PeopleTranslator();
+		return new (std::nothrow) PersonTranslator();
 
 	return NULL;
 }
 
 
-PeopleTranslator::PeopleTranslator()
+PersonTranslator::PersonTranslator()
 	:
-	BaseTranslator(kTranslatorName, kTranslatorInfo, PEOPLE_TRANSLATOR_VERSION,
+	BaseTranslator(kTranslatorName, kTranslatorInfo, PERSON_TRANSLATOR_VERSION,
 		sInputFormats, kNumInputFormats, sOutputFormats, kNumOutputFormats,
-		"PeopleTranslatorSettings", sDefaultSettings, kNumDefaultSettings,
+		"PersonTranslatorSettings", sDefaultSettings, kNumDefaultSettings,
 		B_TRANSLATOR_CONTACT, B_PERSON_FORMAT)
 {
 }
 
 
-PeopleTranslator::~PeopleTranslator()
+PersonTranslator::~PersonTranslator()
 {
 }
 
 
 status_t
-PeopleTranslator::Identify(BPositionIO* inSource,
+PersonTranslator::Identify(BPositionIO* inSource,
 	const translation_format* inFormat, BMessage* ioExtension,
 	translator_info* outInfo, uint32 outType)
 {
@@ -269,14 +269,14 @@ PeopleTranslator::Identify(BPositionIO* inSource,
 		strcpy(outInfo->MIME, CONTACT_MIME_TYPE);
 		return B_OK;
  	} else if (outType == B_CONTACT_FORMAT)
- 		return _IdentifyPeople(inSource, outInfo);
+ 		return _IdentifyPerson(inSource, outInfo);
 
 	return B_NO_TRANSLATOR;
 }
 
 
 status_t
-PeopleTranslator::Translate(BPositionIO* inSource, const translator_info* info,
+PersonTranslator::Translate(BPositionIO* inSource, const translator_info* info,
 	BMessage* ioExtension, uint32 outType, BPositionIO* outDestination)
 {
 	if (!outType)
@@ -297,19 +297,19 @@ PeopleTranslator::Translate(BPositionIO* inSource, const translator_info* info,
 		else
 			return B_ERROR;
  	} else if (outType == B_CONTACT_FORMAT)
-		return TranslatePeople(inSource, ioExtension, outDestination);
+		return TranslatePerson(inSource, ioExtension, outDestination);
 
 	return B_NO_TRANSLATOR;
 }
 
 
 status_t
-PeopleTranslator::TranslateContact(BMessage* inSource, 
+PersonTranslator::TranslateContact(BMessage* inSource, 
 		BMessage* ioExtension, BFile* outDestination)
 {
 	int32 count;
 	type_code code = B_CONTACT_FIELD_TYPE;
-	PeopleVisitor visitor(outDestination);
+	PersonVisitor visitor(outDestination);
 
 	visitor.WriteType();
 
@@ -337,7 +337,7 @@ PeopleTranslator::TranslateContact(BMessage* inSource,
 
 
 status_t
-PeopleTranslator::TranslatePeople(BPositionIO* inSource, 
+PersonTranslator::TranslatePerson(BPositionIO* inSource, 
 		BMessage* ioExtension, BPositionIO* outDestination)
 {
 	BFile* file = _PositionToFile(inSource);
@@ -418,7 +418,7 @@ PeopleTranslator::TranslatePeople(BPositionIO* inSource,
 
 
 status_t
-PeopleTranslator::_IdentifyPeople(BPositionIO* inSource,
+PersonTranslator::_IdentifyPerson(BPositionIO* inSource,
 	translator_info* outInfo)
 {
 	BFile* file = _PositionToFile(inSource);
@@ -446,16 +446,16 @@ PeopleTranslator::_IdentifyPeople(BPositionIO* inSource,
 
 
 BView*
-PeopleTranslator::NewConfigView(TranslatorSettings *settings)
+PersonTranslator::NewConfigView(TranslatorSettings *settings)
 {
-	return new PeopleView(BRect(0, 0, 225, 175), 
-		"PeopleTranslator Settings", B_FOLLOW_ALL,
+	return new PersonView(BRect(0, 0, 225, 175), 
+		"PersonTranslator Settings", B_FOLLOW_ALL,
 		B_WILL_DRAW, settings);
 }
 
 
 BFile*
-PeopleTranslator::_PositionToFile(BPositionIO* destination)
+PersonTranslator::_PositionToFile(BPositionIO* destination)
 {
 	BFile* file = dynamic_cast<BFile*>(destination);
 	if (file != NULL && file->InitCheck() == B_OK)
@@ -466,7 +466,7 @@ PeopleTranslator::_PositionToFile(BPositionIO* destination)
 
 
 status_t
-PeopleTranslator::_AddField(BContactField* field, BMessage* msg)
+PersonTranslator::_AddField(BContactField* field, BMessage* msg)
 {
 	if (field != NULL) {
 		ssize_t size = field->FlattenedSize();
@@ -492,7 +492,7 @@ PeopleTranslator::_AddField(BContactField* field, BMessage* msg)
 
 
 status_t
-PeopleTranslator::_AddPicture(BFile* file, BMessage* msg)
+PersonTranslator::_AddPicture(BFile* file, BMessage* msg)
 {
 	off_t fileSize;
 	status_t status = file->GetSize(&fileSize);
@@ -521,7 +521,7 @@ PeopleTranslator::_AddPicture(BFile* file, BMessage* msg)
 			B_TRANSLATOR_BITMAP);
 	}
 	if (status != B_OK)
-		return B_ERROR;
+		return status;
 
 	BBitmap* picture = NULL;
 	if (stream.DetachBitmap(&picture) != B_OK
@@ -534,7 +534,7 @@ PeopleTranslator::_AddPicture(BFile* file, BMessage* msg)
 	//field->SetMIMEType(info.MIME);
 	field->SetPictureType(info.type);
 
-	_AddField(field, msg);
+	return _AddField(field, msg);
 }
 
 
@@ -543,7 +543,7 @@ PeopleTranslator::_AddPicture(BFile* file, BMessage* msg)
 // person mime type from the hard-coded default attributes.
 /*
 status_t
-PeopleTranslator::_InitAttr()
+PersonTranslator::_InitAttr()
 {
 	bool valid = false;
 	BMimeType mime(PEOPLE_MIMETYPE);

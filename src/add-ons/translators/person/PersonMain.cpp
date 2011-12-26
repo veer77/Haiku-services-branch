@@ -1,12 +1,12 @@
 #include <Application.h>
 
-#include "PeopleTranslator.h"
+#include "PersonTranslator.h"
 
 int main()
 {
-	BApplication app("application/x-vnd.Haiku-PeopleTranslator");
+	BApplication app("application/x-vnd.Haiku-PersonTranslator");
 	status_t result;
-	result = LaunchTranslatorWindow(new PeopleTranslator,
+	result = LaunchTranslatorWindow(new PersonTranslator,
 		"VCard Settings", BRect(0, 0, 225, 175));
 	if (result == B_OK) {
 		app.Run();
