@@ -56,7 +56,7 @@ BRawContact::_Init()
 		}
 	}
 
-	if (fDest == NULL && fFormat != B_PEOPLE_FORMAT) {
+	if (fDest == NULL && fFormat != B_PERSON_FORMAT) {
 		if (fFormat == B_CONTACT_ANY)
 			fFormat = B_CONTACT_FORMAT;
 		fDest = new BMallocIO();
@@ -125,7 +125,7 @@ BRawContact::_InitTranslator()
 bool
 BRawContact::_CheckDestination(BPositionIO* destination)
 {
-	if (fFormat != B_PEOPLE_FORMAT)
+	if (fFormat != B_PERSON_FORMAT)
 		return true;
 
 	// this is an exception
@@ -135,7 +135,7 @@ BRawContact::_CheckDestination(BPositionIO* destination)
 	// you will not be able to translate
 	// something using the people
 	// translator
-	if (fFormat == B_PEOPLE_FORMAT) {
+	if (fFormat == B_PERSON_FORMAT) {
 		if (destination == NULL)
 			return false;
 		BFile* file = dynamic_cast<BFile*>(destination);

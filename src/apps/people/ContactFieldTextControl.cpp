@@ -28,10 +28,13 @@ ContactFieldTextControl::ContactFieldTextControl(BContactField* field)
 	BTextControl(NULL, "", NULL),
 	fField(field)
 {
-	printf("field pointer %p\n", field);
-	SetLabel(field->Label());
-	SetText(field->Value());
+	printf("ContactFieldTextControl field pointer %p\n", field);
 
+	const char* label = 
+		BContactField::ExtendedLabel(field->FieldType(), field->Usage());
+
+	SetLabel(label);
+	SetText(field->Value());
 	SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
 }
 

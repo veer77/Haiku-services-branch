@@ -1,10 +1,9 @@
 /*
- * Copyright 2010 Your Name <your@email.address>
+ * Copyright 2011 Dario Casalinuovo
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 #include <ContactField.h>
-// it is only before the code
-// gets integrated into the tree
+
 #include <shared/AutoDeleter.h>
 #include <ContactDefs.h>
 #include <DataIO.h>
@@ -21,7 +20,11 @@ struct EqualityVisitorBase : public BContactFieldVisitor {
 	virtual void Visit(BAddressContactField* field) {}
 	virtual void Visit(BPhotoContactField* field) {}
 };
-/*
+
+
+// TODO Make Duplicate() and CopyDataFrom() methods working
+// using the following visitor
+
 struct CopyVisitor : public BContactFieldVisitor {
 
 	BContactField* fOwner;
@@ -34,22 +37,29 @@ struct CopyVisitor : public BContactFieldVisitor {
 
 	virtual void Visit(BStringContactField* field)
 	{
-		field->CopyDataFrom(fOwner);
+
 	}
 
 	virtual void Visit(BAddressContactField* field)
 	{
-		field->CopyDataFrom(fOwner);
+
+	}
+
+	virtual void Visit(BPhotoContactField* field)
+	{
+
 	}
 };
-*/
 
-BContactField::BContactField(type_code type)
+
+BContactField::BContactField(field_type type, bool autoLabel)
 	:
 	fType(type),
 	fUsage(-1),
 	fParamList(20, true)
 {
+	if (autoLabel)
+		fLabel = SimpleLabel(type);
 }
 
 
@@ -58,7 +68,7 @@ BContactField::~BContactField()
 }
 
 
-type_code
+field_type
 BContactField::FieldType() const
 {
 	// This store one of the types
@@ -80,6 +90,175 @@ void
 BContactField::SetUsage(int32 usage)
 {
 	fUsage = usage;
+}
+
+
+// This is basically a common way to get a generic label
+const char*
+BContactField::SimpleLabel(field_type type)
+{
+	BString label;
+	switch (type) {
+		case B_CONTACT_NAME:
+			label.SetTo("Name");
+		break;
+		case B_CONTACT_NICKNAME:
+			label.SetTo("Nickname");
+		break;
+		case B_CONTACT_EMAIL:
+			label.SetTo("Email");
+		break;
+		case B_CONTACT_NOTE:
+			label.SetTo("Note");
+		break;
+		case B_CONTACT_ORGANIZATION:
+			label.SetTo("Organization");
+		break;
+		case B_CONTACT_IM:
+			label.SetTo("IM");
+		break;
+		case B_CONTACT_URL:
+			label.SetTo("URL");
+		break;
+
+		case B_CONTACT_PHONE:
+			label.SetTo("Phone");
+		break;
+
+		case B_CONTACT_ADDRESS:
+			label.SetTo("Address");
+			break;
+		case B_CONTACT_PHOTO:
+			label.SetTo("Photo");
+			break;
+	}
+	return label.String();
+}
+
+
+// this is used to load a label that explains field usage
+const char*
+BContactField::ExtendedLabel(field_type type, int32 usage)
+{
+	BString label = SimpleLabel(type);
+
+	switch (usage) {
+		case CONTACT_DATA_HOME:
+			label.Prepend("Home ");
+		break;
+
+		case CONTACT_DATA_WORK:
+			label.Prepend("Work ");
+		break;
+
+		case CONTACT_DATA_CUSTOM:
+			label.Prepend("Custom ");
+		break;
+		case CONTACT_DATA_OTHER:
+			label.Prepend("Other ");
+		break;
+
+		case CONTACT_NAME_FAMILY:
+			label.SetTo("Family Name");
+		break;
+
+		case CONTACT_NAME_GIVEN:
+			label.SetTo("Given Name");		
+		break;
+
+		case CONTACT_NAME_MIDDLE:
+			label.SetTo("Middle Name");
+		break;
+
+		case CONTACT_NAME_SUFFIX:
+			label.SetTo("Name Suffix");
+		break;
+
+		case CONTACT_NICKNAME_DEFAULT:
+			label.SetTo("Preferred Nickname");
+		break;
+
+		case CONTACT_NICKNAME_MAIDEN:
+			label.SetTo("Maiden Nickname");
+		break;
+
+		case CONTACT_NICKNAME_SHORT_NAME:
+			label.SetTo("Short Name Nickname");
+		break;
+
+		case CONTACT_NICKNAME_INITIALS:
+			label.SetTo("Nickname Initials");
+		break;
+
+		case CONTACT_EMAIL_MOBILE:
+			label.SetTo("Mobile email");
+		break;
+
+		case CONTACT_PHONE_MOBILE:
+			label.SetTo("Mobile Phone");
+		break;
+
+		case CONTACT_PHONE_FAX_WORK:
+			label.SetTo("Work Fax");
+		break;
+
+		case CONTACT_PHONE_FAX_HOME:
+			label.SetTo("Home Fax");
+		break;
+
+		case CONTACT_PHONE_PAGER:
+			label.SetTo("Phone (pager)");
+		break;
+
+		case CONTACT_PHONE_CALLBACK:
+			label.SetTo("Phone (callback)");		
+		break;
+
+		case CONTACT_PHONE_CAR:
+			label.SetTo("Phone (car)");
+		break;
+
+		case CONTACT_PHONE_ORG_MAIN:
+			label.SetTo("Main Phone (org)");
+		break;
+
+		case CONTACT_PHONE_ISDN:
+			label.SetTo("Phone ISDN");
+		break;
+
+		case CONTACT_PHONE_MAIN:
+			label.SetTo("Main Phone");
+		break;
+
+		case CONTACT_PHONE_RADIO:
+			label.SetTo("Phone (radio)");
+		break;
+
+		case CONTACT_PHONE_TELEX:
+			label.SetTo("Phone (telex)");
+		break;
+
+		case CONTACT_PHONE_TTY_TDD:
+			label.SetTo("Phone (tty/tdd)");
+		break;
+
+		case CONTACT_PHONE_WORK_MOBILE:
+			label.SetTo("Work Mobile Phone");
+		break;
+
+		case CONTACT_PHONE_WORK_PAGER:
+			label.SetTo("Work Phone (pager)");
+		break;
+
+		case CONTACT_PHONE_ASSISTANT:
+			label.SetTo("Phone Assistant");
+		break;
+
+		case CONTACT_PHONE_MMS:
+			label.SetTo("MMS Phone");
+		break;
+	}
+	return label.String();
 }
 
 
@@ -338,7 +517,6 @@ BStringContactField::BStringContactField(type_code type, const BString& str)
 	BContactField(type),
 	fValue(str)
 {
-	_InitLabel();
 }
 
 
@@ -347,7 +525,6 @@ BStringContactField::BStringContactField(type_code type, const char* str)
 	BContactField(type),
 	fValue(str)
 {
-	_InitLabel();
 }
 
 
@@ -416,21 +593,6 @@ void
 BStringContactField::SetUsage(int32 usage)
 {
 	fUsage = usage;
-	// TODO support more usages here
-	switch (usage) {
-		case CONTACT_DATA_HOME:
-			fLabel.Prepend("Home ");
-		break;
-		case CONTACT_DATA_WORK:
-			fLabel.Prepend("Work ");
-		break;
-		
-		case CONTACT_PHONE_FAX_WORK:
-			fLabel.SetTo("Work Fax");
-		case CONTACT_PHONE_FAX_HOME:
-			fLabel.SetTo("Home Fax");
-		break;
-	}
 }
 
 
@@ -491,38 +653,6 @@ BStringContactField::Unflatten(type_code code,
 	return B_OK;
 }
 
-
-void
-BStringContactField::_InitLabel()
-{
-	switch (fType) {
-		case B_CONTACT_NAME:
-			SetLabel("Name");
-		break;
-		case B_CONTACT_NICKNAME:
-			SetLabel("Nickname");
-		break;
-		case B_CONTACT_EMAIL:
-			SetLabel("Email");
-		break;
-		case B_CONTACT_NOTE:
-			SetLabel("Note");
-		break;
-		case B_CONTACT_ORGANIZATION:
-			SetLabel("Organization");
-		break;
-		case B_CONTACT_IM:
-			SetLabel("IM");
-		break;
-		case B_CONTACT_URL:
-			SetLabel("URL");
-		break;
-		case B_CONTACT_PHONE:
-			SetLabel("Phone");
-		break;
-	}
-}
-
 /** BAddressContactField **/
 
 struct BAddressContactField::EqualityVisitor : public EqualityVisitorBase {
@@ -566,7 +696,6 @@ BAddressContactField::BAddressContactField(BString address, bool wellFormed)
 	fWellFormed(wellFormed)
 {
 	_SplitValue(address);
-	SetLabel("Address");
 }
 
 
@@ -855,7 +984,6 @@ BPhotoContactField::BPhotoContactField(BBitmap* bitmap)
 	fPhotoType(CONTACT_PHOTO_BITMAP),
 	fPictureType(0)
 {
-	_InitLabel();
 }
 
 /*
@@ -864,7 +992,7 @@ BPhotoContactField::BPhotoContactField(const char* url)
 	BContactField(B_CONTACT_PHOTO),
 	fPhotoType(CONTACT_PHOTO_URL)
 {
-	_InitLabel();
+
 }
 */
 
@@ -1031,11 +1159,4 @@ BPhotoContactField::Unflatten(type_code code,
 	fBitmap = new BBitmap(&msg);
 
 	return fBitmap->InitCheck();
-}
-
-
-void
-BPhotoContactField::_InitLabel()
-{
-	SetLabel("Photo");
 }

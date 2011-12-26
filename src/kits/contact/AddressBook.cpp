@@ -60,7 +60,7 @@ BAddressBook::AddContact(BContact* contact, const char* filename)
 		path.Append(filename);
 	}
 
-	BContact* dest = new BContact(new BRawContact(B_PEOPLE_FORMAT,
+	BContact* dest = new BContact(new BRawContact(B_PERSON_FORMAT,
 		new BFile(path.Path(), B_READ_WRITE)));
 
 	//ObjectDeleter<BContact> deleter(dest);
@@ -113,7 +113,7 @@ BAddressBook::AllContacts()
 
 		printf("contact %s", ref.name);
 		BContact* contact = new BContact(
-			new BRawContact(B_PEOPLE_FORMAT, file));
+			new BRawContact(B_PERSON_FORMAT, file));
 
 		if (contact->InitCheck() == B_OK)
 			fAddrList->AddItem(contact);

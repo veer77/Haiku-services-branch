@@ -276,7 +276,7 @@ PersonView::CreateFile(const entry_ref* ref)
 	// TODO At the moment People save the files into the People format,
 	// this should be changed to something that can support every
 	// translator
-	fContact->Append(new BRawContact(B_PEOPLE_FORMAT, new BFile(ref,
+	fContact->Append(new BRawContact(B_PERSON_FORMAT, new BFile(ref,
 		B_READ_WRITE | B_CREATE_FILE)));
 
 	Save();
@@ -341,7 +341,7 @@ void
 PersonView::UpdateData(BFile* file)
 {
 	fFile = file;
-	fContact->Append(new BRawContact(B_PEOPLE_FORMAT, file));
+	fContact->Append(new BRawContact(B_PERSON_FORMAT, file));
 }
 
 

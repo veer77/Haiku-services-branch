@@ -2,7 +2,6 @@
  * Copyright 2011 Haiku Inc.
  * All rights reserved. Distributed under the terms of the MIT license.
  */
-
 #ifndef _CONTACTFIELD_H_
 #define _CONTACTFIELD_H_
 
@@ -15,6 +14,7 @@
 
 #define CONTACT_FIELD_IDENT "contactfield"
 
+typedef type_code field_type;
 
 enum {
 	B_CONTACT_FIELD_TYPE = 'CNFT'
@@ -25,9 +25,11 @@ class BContactFieldVisitor;
 class BPhotoContactField;
 class BStringContactField;
 
+
 class BContactField : public virtual BFlattenable {
 public:
-							BContactField(type_code type);
+							BContactField(field_type type,
+								bool autoLabel = true);
 	virtual		 			~BContactField();
 
 	virtual void			SetValue(const BString& value) = 0;
@@ -48,7 +50,7 @@ public:
 			void			SetLabel(const BString& label);
 
 	virtual	bool			IsFixedSize() const;
-	virtual	type_code		TypeCode() const;
+	virtual	field_type		TypeCode() const;
 	virtual	bool			AllowsTypeCode(type_code code) const;
 	virtual	ssize_t			FlattenedSize() const;
 
@@ -58,9 +60,13 @@ public:
 								ssize_t size);
 			status_t		Unflatten(type_code code, BPositionIO* flatData);
 
+	// TODO these should use CopyVisitor
 	static	BContactField*	UnflattenChildClass(const void* data,
 								ssize_t size);
 	static	BContactField*	Duplicate(BContactField* from);
+
+	static	const char*		SimpleLabel(field_type code);
+	static	const char*		ExtendedLabel(field_type code, int32 usage);
 protected:
 			ssize_t			_AddStringToBuffer(BPositionIO* buffer,
 								const BString& str) const;
@@ -68,7 +74,7 @@ protected:
 								ssize_t len = -1);
 
 			BString			fLabel;
-			type_code 		fType;
+			field_type 		fType;
 			int32			fUsage;
 
 			BObjectList<BString> fParamList;
@@ -113,8 +119,6 @@ public:
 	virtual	status_t		Unflatten(type_code code, const void* buffer,
 								ssize_t size);
 protected:
-			void			_InitLabel();
-
 			struct			EqualityVisitor;
 			BString			fValue;
 };
@@ -201,8 +205,6 @@ public:
 			const BString&	PictureMIME() const;
 			void			SetPictureMIME(const BString& mime);
 protected:
-			void			_InitLabel();
-
 			struct 			EqualityVisitor;
 			BBitmap*		fBitmap;
 			BString			fUrl;
@@ -218,7 +220,10 @@ protected:
 This will be a special type of field
 that will provide a method to define
 custom contact fields presumably
-using a BMessage
+using a BMessage or any other type of
+internal representation, as preferred.
+
+This is not intended to be used directly.
 
 class BCustomContactField : public virtual BContactField {
 public:
@@ -238,6 +243,9 @@ public:
 	virtual	status_t		Flatten(void* buffer, ssize_t size) const;
 	virtual	status_t		Unflatten(type_code code, const void* buffer,
 								ssize_t size);
+
+	virtual	BString&		CustomLabel() = 0;
+
 private:
 			struct 			EqualityVisitor;
 };

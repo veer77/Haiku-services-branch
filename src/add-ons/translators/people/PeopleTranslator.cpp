@@ -35,7 +35,7 @@ static const translation_format sInputFormats[] = {
 		"Haiku binary contact"
 	},
 	{
-		B_PEOPLE_FORMAT ,
+		B_PERSON_FORMAT,
 		B_TRANSLATOR_CONTACT,
 		IN_QUALITY,
 		IN_CAPABILITY,
@@ -55,7 +55,7 @@ static const translation_format sOutputFormats[] = {
 		"Haiku binary contact"
 	},
 	{
-		B_PEOPLE_FORMAT ,
+		B_PERSON_FORMAT,
 		B_TRANSLATOR_CONTACT,
 		OUT_QUALITY,
 		OUT_CAPABILITY,
@@ -238,7 +238,7 @@ PeopleTranslator::PeopleTranslator()
 	BaseTranslator(kTranslatorName, kTranslatorInfo, PEOPLE_TRANSLATOR_VERSION,
 		sInputFormats, kNumInputFormats, sOutputFormats, kNumOutputFormats,
 		"PeopleTranslatorSettings", sDefaultSettings, kNumDefaultSettings,
-		B_TRANSLATOR_CONTACT, B_PEOPLE_FORMAT)
+		B_TRANSLATOR_CONTACT, B_PERSON_FORMAT)
 {
 }
 
@@ -256,11 +256,11 @@ PeopleTranslator::Identify(BPositionIO* inSource,
 	if (!outType)
 		outType = B_CONTACT_FORMAT;
 
-	if (outType != B_CONTACT_FORMAT && outType != B_PEOPLE_FORMAT)
+	if (outType != B_CONTACT_FORMAT && outType != B_PERSON_FORMAT)
 		return B_NO_TRANSLATOR;
 
 	BMessage msg;
- 	if (outType == B_PEOPLE_FORMAT && msg.Unflatten(inSource) == B_OK) {
+ 	if (outType == B_PERSON_FORMAT && msg.Unflatten(inSource) == B_OK) {
 		outInfo->type = B_CONTACT_FORMAT;
 		outInfo->group = B_TRANSLATOR_CONTACT;
 		outInfo->quality = IN_QUALITY;
@@ -282,12 +282,12 @@ PeopleTranslator::Translate(BPositionIO* inSource, const translator_info* info,
 	if (!outType)
 		outType = B_CONTACT_FORMAT;
 
-	if (outType != B_CONTACT_FORMAT && outType != B_PEOPLE_FORMAT)
+	if (outType != B_CONTACT_FORMAT && outType != B_PERSON_FORMAT)
 		return B_NO_TRANSLATOR;
 
 	// TODO add no translation
 	BMessage msg;
-	if (outType == B_PEOPLE_FORMAT && msg.Unflatten(inSource) == B_OK) {
+	if (outType == B_PERSON_FORMAT && msg.Unflatten(inSource) == B_OK) {
 		if (outDestination == NULL)
 			return false;
 
@@ -428,7 +428,7 @@ PeopleTranslator::_IdentifyPeople(BPositionIO* inSource,
 		if (info.InitCheck() == B_OK) {
 			info.GetType(type);
 			if (strcmp(type, PEOPLE_MIME_TYPE) == 0) {
-				outInfo->type = B_PEOPLE_FORMAT;
+				outInfo->type = B_PERSON_FORMAT;
 				outInfo->group = B_TRANSLATOR_CONTACT;
 				outInfo->quality = IN_QUALITY;
 				outInfo->capability = IN_CAPABILITY;
