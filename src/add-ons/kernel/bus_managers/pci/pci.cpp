@@ -94,7 +94,8 @@ pci_reserve_device(uchar virtualBus, uchar device, uchar function,
 	status_t status;
 	uint8 bus;
 	int domain;
-	TRACE(("pci_reserve_device(%d, %d, %d, %s)\n", virtualBus, device, function, driverName));
+	TRACE(("pci_reserve_device(%d, %d, %d, %s)\n", virtualBus, device, function,
+		driverName));
 
 	/*
 	 * we add 2 nodes to the PCI devices, one with constant attributes,
@@ -178,7 +179,8 @@ err1:
 	gDeviceManager->put_node(pci);
 err0:
 	gDeviceManager->put_node(root);
-	TRACE(("pci_reserve_device for driver %s failed: %s\n", driverName, strerror(status)));
+	TRACE(("pci_reserve_device for driver %s failed: %s\n", driverName,
+		strerror(status)));
 	return status;
 }
 
@@ -190,7 +192,8 @@ pci_unreserve_device(uchar virtualBus, uchar device, uchar function,
 	status_t status;
 	uint8 bus;
 	int domain;
-	TRACE(("pci_unreserve_device(%d, %d, %d, %s)\n", virtualBus, device, function, driverName));
+	TRACE(("pci_unreserve_device(%d, %d, %d, %s)\n", virtualBus, device,
+		function, driverName));
 
 	if (gPCI->ResolveVirtualBus(virtualBus, &domain, &bus) != B_OK)
 		return B_ERROR;
@@ -274,7 +277,8 @@ err1:
 	gDeviceManager->put_node(pci);
 err0:
 	gDeviceManager->put_node(root);
-	TRACE(("pci_unreserve_device for driver %s failed: %s\n", driverName, strerror(status)));
+	TRACE(("pci_unreserve_device for driver %s failed: %s\n", driverName,
+		strerror(status)));
 	return status;
 }
 
@@ -469,6 +473,7 @@ pci_init(void)
 
 	if (pci_controller_init() != B_OK) {
 		TRACE(("PCI: pci_controller_init failed\n"));
+		panic("PCI: pci_controller_init failed\n");
 		return B_ERROR;
 	}
 
@@ -830,6 +835,15 @@ PCI::_FixupDevices(int domain, uint8 bus)
 	FLOW("PCI: FixupDevices domain %u, bus %u\n", domain, bus);
 
 	int maxBusDevices = _GetDomainData(domain)->max_bus_devices;
+	static int recursed = 0;
+
+	if (recursed++ > 10) {
+		// guard against buggy chipsets
+		// XXX: is there any official limit ?
+		dprintf("PCI: FixupDevices: too many recursions (buggy chipset?)\n");
+		recursed--;
+		return;
+	}
 
 	for (int dev = 0; dev < maxBusDevices; dev++) {
 		uint16 vendorId = ReadConfig(domain, bus, dev, 0, PCI_vendor_id, 2);
@@ -857,9 +871,12 @@ PCI::_FixupDevices(int domain, uint8 bus)
 			int busBehindBridge = ReadConfig(domain, bus, dev, function,
 				PCI_secondary_bus, 1);
 
+			TRACE(("PCI: FixupDevices: checking bus %d behind %04x:%04x\n",
+				busBehindBridge, vendorId, deviceId));
 			_FixupDevices(domain, busBehindBridge);
 		}
 	}
+	recursed--;
 }
 
 
@@ -981,6 +998,15 @@ PCI::_DiscoverBus(PCIBus *bus)
 	FLOW("PCI: DiscoverBus, domain %u, bus %u\n", bus->domain, bus->bus);
 
 	int maxBusDevices = _GetDomainData(bus->domain)->max_bus_devices;
+	static int recursed = 0;
+
+	if (recursed++ > 10) {
+		// guard against buggy chipsets
+		// XXX: is there any official limit ?
+		dprintf("PCI: DiscoverBus: too many recursions (buggy chipset?)\n");
+		recursed--;
+		return;
+	}
 
 	for (int dev = 0; dev < maxBusDevices; dev++) {
 		uint16 vendorID = ReadConfig(bus->domain, bus->bus, dev, 0,
@@ -995,6 +1021,7 @@ PCI::_DiscoverBus(PCIBus *bus)
 
 	if (bus->next)
 		_DiscoverBus(bus->next);
+	recursed--;
 }
 
 
