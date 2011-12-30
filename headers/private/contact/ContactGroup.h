@@ -22,7 +22,7 @@ public:
 
 	//BContactList*	ContactsByQuery(BContactQuery* query);
 
-	//BMessage* 	AsMessage();
+	//BMessage* 		ToMessage();
 
 	const BContactRefList& AllContacts() const;
 	//const BContactRefList& ContactsByField(ContactFieldType type,

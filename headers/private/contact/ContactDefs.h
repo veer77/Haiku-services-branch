@@ -12,13 +12,13 @@ enum DefaultDefs {
 };
 
 enum ContactGroupDefs {
+	B_CONTACT_GROUP_NONE = 'BCGD',
 	B_CONTACT_GROUP_DEFAULT = 'BCGD'
 };
 
 enum ContactFieldType {
 	B_CONTACT_NAME 			= 'CFNN',
 	B_CONTACT_NICKNAME 		= 'CFNK',
-	B_CONTACT_PHOTO 		= 'CFNH',
 	B_CONTACT_ADDRESS 		= 'CFNA',
 	B_CONTACT_PHONE			= 'CFNP',
 	B_CONTACT_EMAIL			= 'CFNE',
@@ -26,10 +26,14 @@ enum ContactFieldType {
 	B_CONTACT_GEO			= 'CFNG',
 	B_CONTACT_NOTE			= 'CFNO',
 	B_CONTACT_ORGANIZATION  = 'CFNJ',
+	B_CONTACT_PHOTO 		= 'CFNH',
 	B_CONTACT_IM			= 'CFNI',
-	B_CONTACT_UID			= 'CFND',
-	B_CONTACT_GROUP			= 'CFNR',
-	B_CONTACT_PROTOCOLS 	= 'CFNL'
+	B_CONTACT_PROTOCOLS 	= 'CFNL',
+
+	B_CONTACT_UID			= 'CFND', // i think both should be hidden
+	B_CONTACT_GROUP			= 'CFNR', // to the programmer, i think
+	B_CONTACT_REV			= 'CFRV'  // the BContactRoster should handle 
+	// groups and contat ids, as well as revs
 };
 
 enum CommonFieldUsageTypes {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Dario Casalinuovo <your@email.address>
+ * Copyright 2011 Dario Casalinuovo
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 #include <Contact.h>
@@ -164,6 +164,20 @@ BContact::Commit()
 	status_t ret = fRawContact->Commit(&msg);	
 	printf("Translate %s\n", strerror(ret));
 	return ret;
+}
+
+
+int32
+BContact::ID()
+{
+	return fID;
+}
+
+
+int32
+BContact::GroupID()
+{
+	return fGroupID;
 }
 
 
@@ -371,6 +385,7 @@ BContact::_UnflattenFields(BMessage* msg)
 		return ret;
 
 	for (int i = 0; i < count; i++) {
+		printf("%d\n", i);
 		const void* data;
 		ssize_t size;
 

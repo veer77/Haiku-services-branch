@@ -25,10 +25,10 @@ public:
 	static BArchivable*		Instantiate(BMessage* data);
 
 			status_t		InitCheck() const;
-/*
-			int32			ID() { return fID; }
-			int32			GroupID() { return fGroupID; }
-*/
+
+			int32			ID();
+			int32			GroupID();
+
 			const BContactRef& ContactRef();
 
 			status_t		AddField(BContactField* field);
@@ -57,23 +57,26 @@ public:
 
 			status_t		Commit();
 			status_t		Reload();
-private:
+protected:
 	//		status_t 		SetInternalID(uint32 id);
 	//		status_t		AppendGroup(uint32 id);
 	//		status_t		AppendGroup(BContactGroup group);
 
+private:
 			status_t		_FlattenFields(BMessage* msg) const;
 			status_t		_UnflattenFields(BMessage* msg);
 			
 			BRawContact* 	fRawContact;
 			status_t		fInitCheck;
-			int32 			fID;
-			int32			fGroupID;
 
+			// The ContactRef is supposed
+			// to contain some essential data
+			// that identify the contacts, and make
+			// able to manage them without instantiating
+			// big and slow BContact objects.
 			const BContactRef fContactRef;
 
 			BContactFieldList fList;
-
 //friend class BContactRoster;
 };
 

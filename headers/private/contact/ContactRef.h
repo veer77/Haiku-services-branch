@@ -8,19 +8,22 @@
 #include <Flattenable.h>
 #include <ObjectList.h>
 
+// at the moment, i don't think that some physical
+// information about the contact is useful.
+// Just because it's not coherent with the design,
+// since a BContact is supposed to be an high level object.
+// Another story is how to load a BContact using a BContactRef.
 
 class BContactRef /*: public virtual BFlattenable*/ {
 public:
-				BContactRef();
-				BContactRef(uint32 id);
+				BContactRef(int32 id, bool autoFill = false);
 				~BContactRef();
 
 	const char*	name;
 	const char*	nickname;
-	const char* address;
 	const char* email;
-	uint32 		contactID;
-	uint32		groupID;
+	int32 		contactID;
+	int32		groupID;
 };
 
 typedef BObjectList<BContactRef> BContactRefList;
