@@ -12,7 +12,7 @@ typedef BObjectList<BContactGroup> BContactGroupList;
 
 class BContactGroup {
 public:
-					BContactGroup(uint32 groupID, bool custom = false);
+					BContactGroup(uint32 groupID = -1, bool custom = false);
 					~BContactGroup();
 
 	status_t		InitCheck();

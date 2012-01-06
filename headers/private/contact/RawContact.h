@@ -35,7 +35,8 @@ public:
 	int32			FinalFormat() const;
 
 	BPositionIO*	Destination() const;
-	status_t		SetDestination(BPositionIO* destination, bool del);
+	status_t		SetDestination(BPositionIO* destination,
+						bool autoDelete = true);
 private:
 	void			_Init();
 	void			_InitTranslator();

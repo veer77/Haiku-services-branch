@@ -1,27 +1,19 @@
 /*
- * Copyright 2011 Dario Casalinuovo <your@email.address>
+ * Copyright 2011 Dario Casalinuovo
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 #include <ContactRef.h>
 
-
-BContactRef::BContactRef()
+BContactRef::BContactRef(int32 id, bool autoFill)
 	:
-	contactID(0)
+	contactID(id),
+	groupID(-1)
 {
-
-}
-
-
-BContactRef::BContactRef(uint32 id)
-	:
-	contactID(id)
-{
-
+	//if (autoFill)
+	//	BContactRoster::RefForID(this, contactID);
 }
 
 
 BContactRef::~BContactRef()
 {
-
 }

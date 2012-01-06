@@ -16,7 +16,7 @@
 
 class BContactRef /*: public virtual BFlattenable*/ {
 public:
-				BContactRef(int32 id, bool autoFill = false);
+				BContactRef(int32 id = -1, bool autoFill = false);
 				~BContactRef();
 
 	const char*	name;
@@ -25,6 +25,8 @@ public:
 	int32 		contactID;
 	int32		groupID;
 };
+
+// TODO compositing instead of inheriting
 
 typedef BObjectList<BContactRef> BContactRefList;
 

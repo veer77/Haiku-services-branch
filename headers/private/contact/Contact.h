@@ -71,13 +71,15 @@ private:
 
 			// The ContactRef is supposed
 			// to contain some essential data
-			// that identify the contacts, and make
+			// that identify the contacts
+			// (not raw contacts), and make
 			// able to manage them without instantiating
 			// big and slow BContact objects.
-			const BContactRef fContactRef;
+			//const BContactRef fContactRef;
 
 			BContactFieldList fList;
-//friend class BContactRoster;
+
+			//friend class BContactRoster;
 };
 
 typedef BObjectList<BContact> BContactList;

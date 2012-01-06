@@ -7,6 +7,7 @@
 
 #include <Errors.h>
 
+
 enum DefaultDefs {
 	B_CONTACT_ANY = 'BCAN'
 };

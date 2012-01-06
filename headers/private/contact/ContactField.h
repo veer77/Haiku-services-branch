@@ -35,8 +35,6 @@ public:
 	virtual void			SetValue(const BString& value) = 0;
 	virtual const BString&	Value() const = 0;
 
-	virtual status_t		CopyDataFrom(BContactField* field);
-
 			int32			Usage() const;
 			void			SetUsage(int32 usage);
 
@@ -60,14 +58,15 @@ public:
 								ssize_t size);
 			status_t		Unflatten(type_code code, BPositionIO* flatData);
 
-	// TODO these should use CopyVisitor
-	static	BContactField*	UnflattenChildClass(const void* data,
+	virtual	status_t		CopyDataFrom(BContactField* field);
+	static  BContactField*	UnflattenChildClass(const void* data,
 								ssize_t size);
 	static	BContactField*	Duplicate(BContactField* from);
 
 	static	const char*		SimpleLabel(field_type code);
 	static	const char*		ExtendedLabel(field_type code, int32 usage);
 protected:
+
 			ssize_t			_AddStringToBuffer(BPositionIO* buffer,
 								const BString& str) const;
 			BString			_ReadStringFromBuffer(BPositionIO* buffer,
@@ -76,8 +75,6 @@ protected:
 			BString			fLabel;
 			field_type 		fType;
 			int32			fUsage;
-
-			BObjectList<BString> fParamList;
 };
 
 
@@ -112,16 +109,19 @@ public:
 
 			void			SetUsage(int32 usage);
 
-	virtual status_t		CopyDataFrom(BContactField* field);
-
 	virtual	ssize_t			FlattenedSize() const;
 	virtual	status_t		Flatten(void* buffer, ssize_t size) const;
 	virtual	status_t		Unflatten(type_code code, const void* buffer,
 								ssize_t size);
+
+	virtual status_t		CopyDataFrom(BContactField* field);
 protected:
 			struct			EqualityVisitor;
+			struct			CopyVisitor;
+private:
 			BString			fValue;
 };
+
 
 // TODO move code into a BAddress object
 class BAddressContactField : public BContactField {
@@ -135,7 +135,7 @@ public:
 
 			bool			IsWellFormed() const;
 
-	// this return a formatted address (see vcard)
+	// these accept/return a formatted address (see vcard)
 	virtual void			SetValue(const BString& value) ;
 	virtual const BString&	Value() const;
 
@@ -155,12 +155,12 @@ public:
 			void			SetPostalCode(const BString& postalCode);
 			void			SetCountry(const BString& country);
 
-	virtual status_t		CopyDataFrom(BContactField* field);
-
 	virtual	ssize_t			FlattenedSize() const;
 	virtual	status_t		Flatten(void* buffer, ssize_t size) const;
 	virtual	status_t		Unflatten(type_code code, const void* buffer,
 								ssize_t size);
+
+	virtual status_t		CopyDataFrom(BContactField* field);
 private:
 			bool			_SplitValue(const BString& str);
 			void			_PopValue(BString& str, BString& value);
@@ -176,6 +176,7 @@ private:
 
 	mutable BString			fValue;
 			struct 			EqualityVisitor;
+			struct			CopyVisitor;
 };
 
 
@@ -193,12 +194,12 @@ public:
 	virtual void			SetValue(const BString& value) ;
 	virtual const BString&	Value() const;
 
-	virtual status_t		CopyDataFrom(BContactField* field);
-
 	virtual	ssize_t			FlattenedSize() const;
 	virtual	status_t		Flatten(void* buffer, ssize_t size) const;
 	virtual	status_t		Unflatten(type_code code, const void* buffer,
 								ssize_t size);
+
+	virtual status_t		CopyDataFrom(BContactField* field);
 
 			uint32			PictureType() const;
 			void			SetPictureType(uint32 type);
@@ -206,10 +207,11 @@ public:
 			void			SetPictureMIME(const BString& mime);
 protected:
 			struct 			EqualityVisitor;
+			struct			CopyVisitor;
+private:
 			BBitmap*		fBitmap;
 			BString			fUrl;
 			int32			fPhotoType;
-
 			entry_ref* 		fEntry;
 			uint32			fPictureType;
 			BString			fPictureMIME;

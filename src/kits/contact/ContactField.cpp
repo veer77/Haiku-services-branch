@@ -12,6 +12,8 @@
 #include <assert.h>
 #include <stdio.h>
 
+// TODO add decent debug to whole kit
+
 struct EqualityVisitorBase : public BContactFieldVisitor {
 	EqualityVisitorBase() : result(false) {}
 	bool result;
@@ -21,42 +23,20 @@ struct EqualityVisitorBase : public BContactFieldVisitor {
 	virtual void Visit(BPhotoContactField* field) {}
 };
 
+struct CopyVisitorBase : public BContactFieldVisitor {
+	CopyVisitorBase() : error(B_ERROR) {}
+	status_t error;
 
-// TODO Make Duplicate() and CopyDataFrom() methods working
-// using the following visitor
-
-struct CopyVisitor : public BContactFieldVisitor {
-
-	BContactField* fOwner;
-
-	CopyVisitor(BContactField* owner)
-		:
-		fOwner(owner)
-		{
-		}
-
-	virtual void Visit(BStringContactField* field)
-	{
-
-	}
-
-	virtual void Visit(BAddressContactField* field)
-	{
-
-	}
-
-	virtual void Visit(BPhotoContactField* field)
-	{
-
-	}
+	virtual void Visit(BStringContactField* field) {}
+	virtual void Visit(BAddressContactField* field) {}
+	virtual void Visit(BPhotoContactField* field) {}
 };
 
 
 BContactField::BContactField(field_type type, bool autoLabel)
 	:
 	fType(type),
-	fUsage(-1),
-	fParamList(20, true)
+	fUsage(-1)
 {
 	if (autoLabel)
 		fLabel = SimpleLabel(type);
@@ -71,10 +51,6 @@ BContactField::~BContactField()
 field_type
 BContactField::FieldType() const
 {
-	// This store one of the types
-	// defined in ContactDefs.h
-	// and is different from the
-	// type used for the BFlattenable things.
 	return fType;
 }
 
@@ -303,16 +279,7 @@ BContactField::AllowsTypeCode(type_code code) const
 ssize_t
 BContactField::FlattenedSize() const
 {
-	// TODO cache this value
-	// for better performances
 	ssize_t size = sizeof(type_code);
-
-	int32 count = fParamList.CountItems();
-	size += sizeof(count);
-	size += sizeof(ssize_t) * count;
-
-	for (int i = 0; i < count; i++)
-		size += fParamList.ItemAt(i)->Length();
 
 	return size + sizeof(fUsage);
 }
@@ -330,14 +297,6 @@ BContactField::Flatten(BPositionIO* flatData) const
 	// whitch derived class we need to instantiate
 	// in BContactField::UnflattenChildClass()
 	flatData->Write(&fType, sizeof(type_code));
-
-	// TODO check if all data was written
-
-	int32 count = fParamList.CountItems();
-	flatData->Write(&count, sizeof(count));
-
-	for (int i = 0; i < count; i++)
-		_AddStringToBuffer(flatData, *fParamList.ItemAt(i));
 
 	flatData->Write(&fUsage, sizeof(fUsage));
 
@@ -377,14 +336,6 @@ BContactField::Unflatten(type_code code, BPositionIO* flatData)
 	// read the type of the field	
 	flatData->Read(&fType, sizeof(type_code));
 
-	int32 count;
-	flatData->Read(&count, sizeof(count));
-	for (int i = 0; i < count; i++) {
-		BString* str = new BString();
-		*str = _ReadStringFromBuffer(flatData);
-		fParamList.AddItem(str);
-	}
-
 	flatData->Read(&fUsage, sizeof(fUsage));
 
 	return B_OK;
@@ -394,7 +345,8 @@ BContactField::Unflatten(type_code code, BPositionIO* flatData)
 status_t
 BContactField::CopyDataFrom(BContactField* field)
 {
-	return B_ERROR;
+	//
+	return B_OK;
 }
 
 
@@ -533,6 +485,33 @@ BStringContactField::~BStringContactField()
 }
 
 
+struct BStringContactField::CopyVisitor : public CopyVisitorBase {
+
+	BStringContactField* fOwner;
+
+	CopyVisitor(BStringContactField* owner)
+		:
+		CopyVisitorBase(),
+		fOwner(owner)
+		{
+		}
+
+	virtual void Visit(BStringContactField* field)
+	{
+
+		error = B_OK;
+	}
+
+	virtual void Visit(BAddressContactField* field)
+	{
+	}
+
+	virtual void Visit(BPhotoContactField* field)
+	{
+	}
+};
+
+
 struct BStringContactField::EqualityVisitor : public EqualityVisitorBase {
 
 	BStringContactField* fOwner;
@@ -607,7 +586,9 @@ BStringContactField::Value() const
 status_t
 BStringContactField::CopyDataFrom(BContactField* field)
 {
-	return B_ERROR;
+	BStringContactField::CopyVisitor copier(this);
+	field->Accept(&copier);
+	return copier.error;
 }
 
 
@@ -655,6 +636,32 @@ BStringContactField::Unflatten(type_code code,
 
 /** BAddressContactField **/
 
+struct BAddressContactField::CopyVisitor : public CopyVisitorBase {
+
+	BAddressContactField* fOwner;
+
+	CopyVisitor(BAddressContactField* owner)
+		:
+		CopyVisitorBase(),
+		fOwner(owner)
+		{
+		}
+
+	virtual void Visit(BStringContactField* field)
+	{
+	}
+
+	virtual void Visit(BAddressContactField* field)
+	{
+		error = B_OK;
+	}
+
+	virtual void Visit(BPhotoContactField* field)
+	{
+	}
+};
+
+
 struct BAddressContactField::EqualityVisitor : public EqualityVisitorBase {
 
 	BAddressContactField* fOwner;
@@ -681,6 +688,7 @@ struct BAddressContactField::EqualityVisitor : public EqualityVisitorBase {
 	{
 	}
 };
+
 
 /*
 BAddressContactField::BAddressContactField(const BAddress& address)
@@ -733,7 +741,8 @@ BAddressContactField::Value() const
 	// this is returning the address
 	// as described in the vcard-21 spec
 
-	if (!fValue.IsEmpty()) return fValue;
+	if (!fValue.IsEmpty())
+		return fValue;
 
 	fValue << fPostalBox << ";" << fNeighbor << ";";
 	fValue << fStreet << ";" << fCity << ";" << fRegion;
@@ -746,7 +755,9 @@ BAddressContactField::Value() const
 status_t
 BAddressContactField::CopyDataFrom(BContactField* field)
 {
-	return B_ERROR;
+	BAddressContactField::CopyVisitor copier(this);
+	field->Accept(&copier);
+	return copier.error;
 }
 
 
@@ -884,9 +895,6 @@ BAddressContactField::Flatten(void* buffer, ssize_t size) const
 	if (ret != B_OK)
 		return ret;
 
-	// TODO maybe it's better to control the size
-	// of the data written
-
 	_AddStringToBuffer(&flatData, Value());
 
 	flatData.Write(&fWellFormed, sizeof(fWellFormed));
@@ -943,7 +951,33 @@ BAddressContactField::_PopValue(BString& str, BString& value)
 /** BPhotoContactField */
 
 // TODO add support for refs and urls photos, then
-// fix the following visitor, to allow fields compare
+// fix the visitors, to allow fields compare
+
+struct BPhotoContactField::CopyVisitor : public CopyVisitorBase {
+
+	BPhotoContactField* fOwner;
+
+	CopyVisitor(BPhotoContactField* owner)
+		:
+		CopyVisitorBase(),
+		fOwner(owner)
+		{
+		}
+
+	virtual void Visit(BStringContactField* field)
+	{
+	}
+
+	virtual void Visit(BAddressContactField* field)
+	{
+	}
+
+	virtual void Visit(BPhotoContactField* field)
+	{
+		error = B_OK;
+	}
+};
+
 
 struct BPhotoContactField::EqualityVisitor : public EqualityVisitorBase {
 
@@ -1031,7 +1065,6 @@ void
 BPhotoContactField::SetPhoto(BBitmap* photo)
 {
 	fBitmap = photo;
-	//_Clean();
 }
 
 
@@ -1080,7 +1113,9 @@ BPhotoContactField::SetPictureMIME(const BString& mime)
 status_t
 BPhotoContactField::CopyDataFrom(BContactField* field)
 {
-	return B_ERROR;
+	BPhotoContactField::CopyVisitor copier(this);
+	field->Accept(&copier);
+	return copier.error;
 }
 
 

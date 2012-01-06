@@ -10,23 +10,17 @@
 #include <stdio.h>
 #include <string.h>
 
-//TODO define error codes
 
 BContact::BContact(BRawContact* contact)
 	:
 	fInitCheck(B_OK),
 	fList(20, true)
 {
-	// fID = BContactRoster::GetFreeID();
-
-	//fList = new BObjectList<BContactField>(20, true);
-
 	if (contact == NULL) {
-		// We create a memory RawContact
+		// Create a memory RawContact
 		// because arg is NULL
 		fRawContact = new BRawContact(B_CONTACT_FORMAT);
 	} else {
-		// otherwise use the object passed
 		fRawContact = contact;
 	}
 
@@ -36,12 +30,21 @@ BContact::BContact(BRawContact* contact)
 			fRawContact->Read(&msg);
 
 			msg.PrintToStream();
-			_UnflattenFields(&msg);
 
+			_UnflattenFields(&msg);
 			return;
 		}
 	}
 
+	fInitCheck = B_ERROR;
+}
+
+
+BContact::BContact(BContactRef& contact)
+	:
+	fInitCheck(B_OK),
+	fList(20, true)
+{
 	fInitCheck = B_ERROR;
 }
 
@@ -51,7 +54,6 @@ BContact::BContact(BMessage* data)
 	fInitCheck(B_OK),
 	fList(20, true)
 {
-	//fList = new BObjectList<BContactField> (20, true);
 	BMessage msg;
 	fInitCheck = data->FindMessage("RawContact", &msg);
 
@@ -63,7 +65,6 @@ BContact::BContact(BMessage* data)
 
 BContact::~BContact()
 {
-	//delete fList;
 	delete fRawContact;
 }
 
@@ -143,11 +144,15 @@ BContact::Reload()
 		fList.MakeEmpty();
 	}
 	BMessage msg;
+	status_t ret = fRawContact->Read(&msg);
 
-	fRawContact->Read(&msg);
 	msg.PrintToStream();
-	_UnflattenFields(&msg);
-	return B_OK;
+
+	if (ret == B_OK) {
+		_UnflattenFields(&msg);
+		return B_OK;
+	}
+	return ret;
 }
 
 
@@ -161,8 +166,11 @@ BContact::Commit()
 	_FlattenFields(&msg);
 
 	msg.PrintToStream();
+
 	status_t ret = fRawContact->Commit(&msg);	
-	printf("Translate %s\n", strerror(ret));
+	if (ret != B_OK)
+		printf("Translate %s\n", strerror(ret));
+
 	return ret;
 }
 
@@ -170,14 +178,16 @@ BContact::Commit()
 int32
 BContact::ID()
 {
-	return fID;
+	return 0;
+	//return fID;
 }
 
 
 int32
 BContact::GroupID()
 {
-	return fGroupID;
+	return 0;
+	//return fGroupID;
 }
 
 
@@ -214,8 +224,6 @@ BContact::ReplaceField(BContactField* field)
 }
 
 
-// TODO each field can store it's owner
-// to speed things up
 bool
 BContact::HasField(BContactField* field)
 {

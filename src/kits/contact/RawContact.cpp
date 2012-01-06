@@ -40,14 +40,13 @@ BRawContact::BRawContact(uint32 finalFormat, BPositionIO* destination)
 BRawContact::~BRawContact()
 {
 	delete fDest;
-// TODO non dimenticare di pulire la memoria
 }
 
 
 void
 BRawContact::_Init()
 {
-	printf("init\n");
+	printf("BRawContact::_Init()\n");
 	if (fFormat == B_CONTACT_ANY && fDest != NULL) {
 		if (_FindFormat() == B_OK) {
 			return;
@@ -94,7 +93,7 @@ BRawContact::_InitTranslator()
 	// NOTA magari si potrebbe usare BContactRoster
 	// per questa funzione fornendo un metodo 
 	// che dato un formato restituisce l'id del translator
-	printf("init translator\n");
+	printf("BRawContact::InitTranslator\n");
 	fTranslatorID = 0;
 	int32 num_translators;
 	translator_id* translators;
@@ -108,7 +107,7 @@ BRawContact::_InitTranslator()
 			if (format[j].group == B_TRANSLATOR_CONTACT 
 				&& format[j].type == fFormat) {
 				fTranslatorID = translators[i];
-				printf("Got a suitable Translator %d %s\n",
+				printf("BRawContact: Got a suitable Translator %d %s\n",
 					(int)fTranslatorID, format[j].MIME);
 				break;
 			}
@@ -191,7 +190,7 @@ BRawContact::Read(BMessage* data)
 
 	if (data == NULL)
 		return B_BAD_VALUE;
-	printf("ok\n");
+
 	status_t ret;
 	BMallocIO flat;
 
