@@ -32,8 +32,9 @@ if $(HAIKU_ADD_ALTERNATIVE_GCC_LIBS) = 1
 #	CDRecord				- the command line CD writing tools
 #	Clockwerk				- native audio/video compositing
 #	CLucene					- indexed file search
-#	Curl					- a client that groks URLs
 #	CMake					- cross platform make
+#	Ctags					- exuberant ctags (source files indexing)
+#	Curl					- a client that groks URLs
 #	CVS						- the version control system
 #	Development				- more complete dev environment (including autotools)
 #	DevelopmentBase			- basic development environment (gcc, headers, libs,...)
@@ -277,8 +278,8 @@ if [ IsOptionalHaikuImagePackageAdded BeZillaBrowser ] {
 	} else {
 		if $(HAIKU_GCC_VERSION[1]) >= 4 {
 			InstallOptionalHaikuImagePackage
-				BeZillaBrowser-2.0.0.22pre-r1a2-x86-gcc4-2010-05-04.zip
-				: $(baseURL)/BeZillaBrowser-2.0.0.22pre-r1a2-x86-gcc4-2010-05-04.zip ;
+				BeZillaBrowser-2.0.0.22pre-x86-gcc4-2011-12-26.zip
+				: $(baseURL)/BeZillaBrowser-2.0.0.22pre-x86-gcc4-2011-12-26.zip ;
  		} else {
 			InstallOptionalHaikuImagePackage
 				BeZillaBrowser-2.0.0.22pre-r1a2-x86-gcc2-2010-05-02.zip
@@ -439,6 +440,26 @@ if [ IsOptionalHaikuImagePackageAdded CMake ] {
 }
 
 
+# Ctags
+if [ IsOptionalHaikuImagePackageAdded Ctags ] {
+	if $(TARGET_ARCH) != x86 {
+		Echo "No optional package Ctags available for $(TARGET_ARCH)" ;
+	} else {
+		if $(HAIKU_GCC_VERSION[1]) >= 4 {
+			InstallOptionalHaikuImagePackage
+				ctags-5.8-x86-gcc4-2012-01-23.zip
+				: $(baseURL)/ctags-5.8-x86-gcc4-2012-01-23.zip
+				: : true ;
+		} else {
+			InstallOptionalHaikuImagePackage
+				ctags-5.8-x86-gcc2-2010-05-24.zip
+				: $(baseURL)/ctags-5.8-x86-gcc2-2010-05-24.zip
+				: : true ;
+		}
+	}
+}
+
+
 # Curl
 if [ IsOptionalHaikuImagePackageAdded Curl ] {
 	if $(TARGET_ARCH) != x86 {
@@ -536,8 +557,8 @@ if [ IsOptionalHaikuImagePackageAdded DevelopmentBase ]
 
 	if $(HAIKU_GCC_VERSION[1]) = 4 || $(isHybridBuild) {
 		InstallOptionalHaikuImagePackage
-			gcc-4.5.3-x86-gcc4-2011-12-14.zip
-			: $(baseURL)/gcc-4.5.3-x86-gcc4-2011-12-14.zip ;
+			gcc-4.6.2-x86-gcc4-2012-01-21.zip
+			: $(baseURL)/gcc-4.6.2-x86-gcc4-2012-01-21.zip ;
 	}
 
 	if $(HAIKU_GCC_VERSION[1]) = 4 {
@@ -549,7 +570,7 @@ if [ IsOptionalHaikuImagePackageAdded DevelopmentBase ]
 		local libs = libstdc++.so libsupc++.so ;
 		for lib in $(libs) {
 			AddSymlinkToHaikuHybridImage
-				develop abi x86 gcc4 tools gcc-4.5.3-haiku-111214 lib
+				develop abi x86 gcc4 tools gcc-4.6.2-haiku-120121 lib
 				: /system/lib $(lib) : : true ;
 		}
 	}
@@ -1693,8 +1714,8 @@ if [ IsOptionalHaikuImagePackageAdded WebPositive ] {
 		Echo "No optional package WebPositive available for gcc2" ;
 	} else {
 		InstallOptionalHaikuImagePackage
-			WebPositive-gcc4-x86-r583-2011-12-17.zip
-			: $(baseURL)/WebPositive-gcc4-x86-r583-2011-12-17.zip ;
+			WebPositive-gcc4-x86-r583-2012-01-23a.zip
+			: $(baseURL)/WebPositive-gcc4-x86-r583-2012-01-23a.zip ;
 		AddSymlinkToHaikuImage home config settings deskbar Applications
 			: /boot/apps/WebPositive/WebPositive ;
 	}

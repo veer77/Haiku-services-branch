@@ -89,7 +89,7 @@ typedef struct
 static const Translation gTranslations[] =
 {
 	{ "ar",
-		"Khaled Berraoui (khallebal)\n"
+		"Khaled Berraoui - khallebal\n"
 	},
 	{ "be",
 		"Michael Bulash\n"
@@ -102,22 +102,6 @@ static const Translation gTranslations[] =
 		"Pavel Drotár\n"
 		"Matěj Kocián\n"
 	},
-	{ "nl",
-		"Floris Kint\n"
-		"Meanwhile\n"
-	},
-	{ "eo",
-		"Travis D. Reed (Dancxjo)\n"
-	},
-	{ "fi",
-		"Jorma Karvonen (Karvjorm)\n"
-		"Jaakko Leikas (Garjala)\n"
-	},
-	{ "fr",
-		"Jean-Loïc Charroud\n"
-		"Adrien Destugues (PulkoMandy)\n"
-		"Florent Revest\n"
-	},
 	{ "da",
 		"Brian Matzon\n"
 	},
@@ -126,9 +110,37 @@ static const Translation gTranslations[] =
 		"Mirko Israel\n"
 		"leszek\n"
 		"Christian Morgenroth\n"
-		"Joachim Seemer (Humdinger)\n"
+		"Joachim Seemer - Humdinger\n"
 		"Matthias Spreiter\n"
 		"svend\n"
+	},
+	{ "el",
+		"Γιάννης Κωνσταντινίδης (Giannis Konstantinidis) - giannisk\n"
+		"Βαγγέλης Μαμαλάκης (Vaggelis Mamalakis)\n"
+		"Άλεξ-Π. Νάτσιος (Alex-P. Natsios) - Drakevr\n"
+	},
+	{ "eo",
+		"Travis D. Reed - Dancxjo\n"
+	},
+	{ "es",
+		"Pedro Arregui\n"
+		"Zola Bridges\n"
+		"Nicolás C - CapitanPico\n"
+		"Oscar Carballal - oscarcp\n"
+		"Miguel Zúñiga González - miguel~1.mx\n"
+		"Luis Gustavo Lira\n"
+		"Victor Madariaga\n"
+		"César Ortiz Pantoja - ccortiz\n"
+	},
+	{ "fi",
+		"Jorma Karvonen - Karvjorm\n"
+		"Jaakko Leikas - Garjala\n"
+	},
+	{ "fr",
+		"Jean-Loïc Charroud\n"
+		"Adrien Destugues - PulkoMandy\n"
+		"Florent Revest\n"
+		"Harsh Vardhan\n"
 	},
 	{ "hi",
 		"Abhishek Arora\n"
@@ -141,8 +153,10 @@ static const Translation gTranslations[] =
 		"zvacet\n"
 	},
 	{ "hu",
-		"Zoltán Mizsei (miqlas)\n"
-		"Zoltán Szabó (Bird)\n"
+		"Kálmán Kéménczy\n"
+		"Zoltán Mizsei - miqlas\n"
+		"Bence Nagy\n"
+		"Zoltán Szabó - Bird\n"
 	},
 	{ "it",
 		"Andrea Bernardi\n"
@@ -156,7 +170,7 @@ static const Translation gTranslations[] =
 		"Satoshi Eguchi\n"
 		"Shota Fukumori\n"
 		"Hironori Ichimiya\n"
-		"Jorge G. Mare (Koki)\n"
+		"Jorge G. Mare - Koki\n"
 		"Takashi Murai\n"
 		"SHINTA\n"
 		"Hiroyuki Tsutsumi\n"
@@ -168,6 +182,10 @@ static const Translation gTranslations[] =
 		"Simonas Kazlauskas\n"
 		"Rimas Kudelis\n"
 	},
+	{ "nl",
+		"Floris Kint\n"
+		"Meanwhile\n"
+	},
 	{ "pl",
 		"Szymon Barczak\n"
 		"Grzegorz Dąbrowski\n"
@@ -176,9 +194,9 @@ static const Translation gTranslations[] =
 		"Artur Wyszyński\n"
 	},
 	{ "pt",
-		"Marcos Alves (Xeon3D)\n"
-		"Vasco Costa (gluon)\n"
-		"Michael Vinícius de Oliveira (michaelvo)\n"
+		"Marcos Alves - Xeon3D\n"
+		"Vasco Costa - gluon\n"
+		"Michael Vinícius de Oliveira - michaelvo\n"
 	},
 	{ "ro",
 		"Victor Carbune\n"
@@ -186,31 +204,21 @@ static const Translation gTranslations[] =
 		"Dragos Serban\n"
 	},
 	{ "ru",
-		"Tatyana Fursic (iceid)\n"
+		"Tatyana Fursic - iceid\n"
 		"StoroZ Gneva\n"
-		"Rodastahm Islamov (RISC)\n"
-		"Eugene Katashov (mrNoisy)\n"
-		"Reznikov Sergei (Diver)\n"
+		"Rodastahm Islamov - RISC\n"
+		"Eugene Katashov - mrNoisy\n"
+		"Reznikov Sergei - Diver\n"
 		"Michael Smirnov\n"
 		"Vladimir Vasilenko\n"
 	},
 	{ "sr",
 		"Nikola Miljković\n"
 	},
-	{ "es",
-		"Pedro Arregui\n"
-		"Zola Bridges\n"
-		"Nicolás C (CapitanPico)\n"
-		"Oscar Carballal (oscarcp)\n"
-		"Miguel Zúñiga González (miguel~1.mx)\n"
-		"Luis Gustavo Lira\n"
-		"Victor Madariaga\n"
-		"César Ortiz Pantoja (ccortiz)\n"
-	},
 	{ "sv",
 		"Patrik Gissberg\n"
 		"Johan Holmberg\n"
-		"Jimmy Olsson (phalax)\n"
+		"Jimmy Olsson - phalax\n"
 		"Jonas Sundström\n"
 		"Victor Widell\n"
 	},
@@ -218,11 +226,12 @@ static const Translation gTranslations[] =
 		"Aras Ergus\n"
 	},
 	{ "uk",
-		"Alex Rudyk (totish)\n"
+		"Mariya Pilipchuk\n"
+		"Alex Rudyk - totish\n"
 		"Oleg Varunok\n"
 	},
 	{ "zh",
-		"Pengfei Han (kurain)\n"
+		"Pengfei Han - kurain\n"
 	}
 };
 
@@ -1046,7 +1055,7 @@ AboutView::_CreateCreditsView()
 		"Gavin James\n"
 		"Urias McCullough\n"
 		"Niels Sascha Reedijk\n"
-		"Joachim Seemer (Humdinger)\n"
+		"Joachim Seemer - Humdinger\n"
 		"Jonathan Yoder\n"
 		"\n");
 
@@ -1078,7 +1087,7 @@ AboutView::_CreateCreditsView()
 		"Janito Ferreira Filho\n"
 		"Pier Luigi Fiorini\n"
 		"Marc Flerackers\n"
-		"Michele Frau (zuMi)\n"
+		"Michele Frau - zuMi\n"
 		"Deyan Genovski\n"
 		"Pete Goodeve\n"
 		"Lucian Adrian Grijincu\n"
@@ -1106,7 +1115,7 @@ AboutView::_CreateCreditsView()
 		"Brian Luft\n"
 		"Christof Lutteroth\n"
 		"Graham MacDonald\n"
-		"Jorge G. Mare (Koki)\n"
+		"Jorge G. Mare - Koki\n"
 		"Jan Matějek\n"
 		"Brian Matzon\n"
 		"Christopher ML Zumwalt May\n"
@@ -1121,12 +1130,14 @@ AboutView::_CreateCreditsView()
 		"Alan Murta\n"
 		"Raghuram Nagireddy\n"
 		"Kazuho Okui\n"
-		"Jeroen Oortwijn (idefix)\n"
+		"Jeroen Oortwijn - idefix\n"
 		"Pahtz\n"
 		"Michael Paine\n"
 		"Adrian Panasiuk\n"
+		"Aleksas Pantechovskis\n"
 		"Romain Picard\n"
 		"Francesco Piccinno\n"
+		"Peter Poláčik\n"
 		"David Powell\n"
 		"Jeremy Rand\n"
 		"Hartmut Reh\n"

@@ -1063,10 +1063,11 @@ BPoseView::InitDirentIterator(const entry_ref *ref)
 
 	ASSERT(!sourceModel.IsQuery());
 	ASSERT(sourceModel.Node());
-	ASSERT(dynamic_cast<BDirectory *>(sourceModel.Node()));
 
-	EntryListBase *result = new CachedDirectoryEntryList(
-		*dynamic_cast<BDirectory *>(sourceModel.Node()));
+	BDirectory *directory = dynamic_cast<BDirectory *>(sourceModel.Node());
+	ASSERT(directory);
+
+	EntryListBase *result = new CachedDirectoryEntryList(*directory);
 
 	if (result->Rewind() != B_OK) {
 		delete result;
@@ -8050,7 +8051,9 @@ BPoseView::OpenParent()
 		return;
 
 	BEntry root("/");
-	if (!TrackerSettings().ShowDisksIcon() && entry == root
+	if (!TrackerSettings().SingleWindowBrowse()
+		&& !TrackerSettings().ShowNavigator()
+		&& !TrackerSettings().ShowDisksIcon() && entry == root
 		&& (modifiers() & B_CONTROL_KEY) == 0)
 		return;
 
@@ -8071,7 +8074,13 @@ BPoseView::OpenParent()
 				sizeof (node_ref));
 	}
 
-	be_app->PostMessage(&message);
+
+	if (TrackerSettings().SingleWindowBrowse()) {
+		BMessage msg(kSwitchDirectory);
+		msg.AddRef("refs", &ref);
+		Window()->PostMessage(&msg);
+	} else
+		be_app->PostMessage(&message);
 }
 
 

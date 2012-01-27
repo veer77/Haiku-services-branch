@@ -108,24 +108,23 @@ if $(TARGET_ARCH) = ppc || $(TARGET_ARCH) = x86 {
 			: extracted-icu
 		] ;
 	}
+
+	# zip file and output directory
+	HAIKU_ICU_DEVEL_ZIP_FILE = [ DownloadFile $(HAIKU_ICU_DEVEL_PACKAGE)
+			: $(baseURL)/$(HAIKU_ICU_DEVEL_PACKAGE) ] ;
+	HAIKU_ICU_DEVEL_DIR = [ FDirName $(HAIKU_OPTIONAL_BUILD_PACKAGES_DIR)
+		$(HAIKU_ICU_DEVEL_PACKAGE:B) ] ;
+
+	# extract headers
+	HAIKU_ICU_HEADERS_DEPENDENCY = [ ExtractArchive $(HAIKU_ICU_DEVEL_DIR)
+		: develop/headers/3rdparty : $(HAIKU_ICU_DEVEL_ZIP_FILE)
+		: extracted-icu-devel ] ;
+
+	HAIKU_ICU_HEADERS
+		= [ FDirName $(HAIKU_ICU_DEVEL_DIR) develop headers 3rdparty ] ;
 } else  {
 	Echo "ICU not available for $(TARGET_ARCH)" ;
 }
-
-
-# zip file and output directory
-HAIKU_ICU_DEVEL_ZIP_FILE = [ DownloadFile $(HAIKU_ICU_DEVEL_PACKAGE)
-		: $(baseURL)/$(HAIKU_ICU_DEVEL_PACKAGE) ] ;
-HAIKU_ICU_DEVEL_DIR = [ FDirName $(HAIKU_OPTIONAL_BUILD_PACKAGES_DIR)
-	$(HAIKU_ICU_DEVEL_PACKAGE:B) ] ;
-
-# extract headers
-HAIKU_ICU_HEADERS_DEPENDENCY = [ ExtractArchive $(HAIKU_ICU_DEVEL_DIR)
-	: develop/headers/3rdparty : $(HAIKU_ICU_DEVEL_ZIP_FILE)
-	: extracted-icu-devel ] ;
-
-HAIKU_ICU_HEADERS
-	= [ FDirName $(HAIKU_ICU_DEVEL_DIR) develop headers 3rdparty ] ;
 
 
 # CLucene
@@ -168,6 +167,47 @@ if $(HAIKU_BUILD_FEATURE_CLUCENE) {
 		HAIKU_CLUCENE_HEADERS
 			= [ FDirName $(HAIKU_CLUCENE_DIR) common include ] ;
 	}
+}
+
+
+# Mesa
+local mesaBaseURL = http://haiku-files.org/files/optional-packages ;
+if $(TARGET_ARCH) = x86 {
+	local glslObject ;
+	local galliumObjects ;
+	local zipFile ;
+	if $(HAIKU_GCC_VERSION[1]) >= 4 {
+		HAIKU_MESA_FILE = mesa-8.0dev-x86-gcc4-2012-01-23.zip ;
+		#HAIKU_MESA_FILE = mesa-8.0devdbg-x86-gcc4-2012-01-23.zip ;
+		glslObject = lib.haiku/libglsl.a ;
+		galliumObjects = lib.haiku/libgallium.a ;
+	} else {
+		HAIKU_MESA_FILE = mesa-7.8.2-x86-gcc2-2012-01-17.zip ;
+	}
+
+	zipFile = [ DownloadFile $(HAIKU_MESA_FILE)
+		: $(mesaBaseURL)/$(HAIKU_MESA_FILE) ] ;
+
+	HAIKU_MESA_DIR = [ FDirName $(HAIKU_OPTIONAL_BUILD_PACKAGES_DIR)
+		$(HAIKU_MESA_FILE:B) ] ;
+
+	HAIKU_MESA_HEADERS_DEPENDENCY = [ ExtractArchive $(HAIKU_MESA_DIR)
+		: include/ : $(zipFile) : extracted-mesa ] ;
+
+	HAIKU_MESA_LIBS = [ ExtractArchive $(HAIKU_MESA_DIR)
+		:
+		lib.haiku/libglu.a
+		$(galliumObjects) 
+		lib.haiku/libglapi.a
+		$(glslObject)
+		lib.haiku/libmesa.a
+		: $(zipFile)
+		: extracted-mesa ] ;
+
+	HAIKU_MESA_HEADERS = [ FDirName $(HAIKU_MESA_DIR) include ] ;
+
+} else {
+	Echo "Mesa 3D rendering support not available on $(TARGET_ARCH)" ;
 }
 
 

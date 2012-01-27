@@ -1,4 +1,4 @@
-1	slovak	x-vnd.Be-MAIL	4254685853
+1	slovak	x-vnd.Be-MAIL	2284738205
 View	Mail		Zobraziť
 %d - Date	Mail		%d - Dátum
 Attach attributes:	Mail		Pripojiť atribúty:
@@ -40,7 +40,6 @@ Find	Mail		Nájsť
 Preferences…	Mail		Predvoľby…
 Undo	Mail		Vrátiť
 Date:	Mail		Dátum:
-Leave as New	Mail		Ponechať ako Nové
 An error occurred trying to open this signature.	Mail		Vyskytla sa chyba pri pokuse otvoriť podpis.
 No file attributes, just plain data	Mail		Žiadne atribúty súboru, iba čisté dáta
 Edit queries…	Mail		Upraviť požiadavky…
@@ -57,7 +56,6 @@ Hide	Mail		Skryť
 Forward without attachments	Mail		Preposlať bez príloh
 Previous	Mail		Predošlé
 Redo	Mail		Opakovať
-UTF-8	Mail	This string is used as a key to set default message compose encoding. It must be correct IANA name from http://cgit.haiku-os.org/haiku-tree/src/kits/textencoding/character_sets.cpp Translate it only if you want to change default message compose encoding for your locale. If you don't know what is it and why it may needs changing, just leave \"UTF-8\".	UTF-8
 Add enclosure…	Mail		Pridať prílohu…
 Mail	System name		Pošta
 Print…	Mail		Tlačiť…
