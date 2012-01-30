@@ -4,11 +4,12 @@ UsePrivateHeaders contact ;
 UsePrivateSystemHeaders ;
 
 SharedLibrary libcontact.so :
-	Contact.cpp
-	#ContactRef.cpp
-	RawContact.cpp
-	ContactField.cpp
 	AddressBook.cpp
+	Contact.cpp
+	ContactField.cpp
+	ContactGroup.cpp
+	ContactRef.cpp
+	RawContact.cpp
 
 	: be translation $(TARGET_LIBSTDC++)
 ;

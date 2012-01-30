@@ -13,10 +13,11 @@
 
 #include <stdio.h>
 
+// This class should be refactored
 
 BAddressBook::BAddressBook()
 	:
-	fAddrList(NULL)
+	BContactGroup(B_CONTACT_GROUP_ADDRESS_BOOK, true)
 {
 	fInitCheck = _FindDir();
 }
@@ -35,14 +36,24 @@ BAddressBook::~BAddressBook()
 status_t
 BAddressBook::InitCheck()
 {
-	return fInitCheck;
+	if (fInitCheck == B_OK)
+		return BContactGroup::InitCheck();
+	else
+		return fInitCheck;
+}
+
+
+BPath
+BAddressBook::GetPath()
+{
+	return fAddrBook;
 }
 
 
 status_t
-BAddressBook::AddContact(BContact* contact, const char* filename)
+BAddressBook::AddContact(BContactRef* contact)
 {
-	if (fInitCheck != B_OK)
+	/*if (fInitCheck != B_OK)
 		return fInitCheck;
 
 	BPath path = fAddrBook;
@@ -72,14 +83,14 @@ BAddressBook::AddContact(BContact* contact, const char* filename)
 	dest->Commit();
 
 	if (fAddrList)
-		fAddrList->AddItem(dest);
+		fAddrList->AddItem(dest);*/
 
 	return B_OK;
 }
 
 
 status_t
-BAddressBook::RemoveContact(BContact* contact)
+BAddressBook::RemoveContact(BContactRef* contact)
 {
 	if (fInitCheck != B_OK)
 		return fInitCheck;
@@ -88,10 +99,10 @@ BAddressBook::RemoveContact(BContact* contact)
 }
 
 
-BContactList*
+BContactRefList&
 BAddressBook::AllContacts()
 {
-	if (fInitCheck != B_OK)
+/*	if (fInitCheck != B_OK)
 		return NULL;
 
 	if (fAddrList != NULL)
@@ -117,15 +128,15 @@ BAddressBook::AllContacts()
 
 		if (contact->InitCheck() == B_OK)
 			fAddrList->AddItem(contact);
-	}
+	}*/
 	printf("addrl\n");
-	return fAddrList;
+	return fList;
 }
 
 
-BContactList*
+BContactRefList&
 BAddressBook::ContactsByField(type_code type)
-{
+{/*
 	if (fInitCheck != B_OK)
 		return NULL;
 
@@ -133,9 +144,9 @@ BAddressBook::ContactsByField(type_code type)
 		return NULL;
 
 	BContactList* list = AllContacts();
-
-	BContactList* ret = new BContactList();
-
+*/
+	BContactRefList* ret = new BContactRefList();
+/*
 	int count = list->CountItems();
 
 	for (int i = 0; i < count; i++) {
@@ -145,9 +156,9 @@ BAddressBook::ContactsByField(type_code type)
 			if (field->FieldType() == type)
 				ret->AddItem(contact);
 		}
-	}
+	}*/
 
-	return ret;
+	return *ret;
 }
 
 /*

@@ -484,10 +484,8 @@ PictureView::_BeginDrag(BPoint sourcePoint)
 	drag.AddString("be:clip_name", name.String());
 
 	BTranslatorRoster* roster = BTranslatorRoster::Default();
-	if (roster == NULL) {
-		delete bitmap;
+	if (roster == NULL)
 		return;
-	}
 
 	int32 infoCount;
 	translator_info* info;

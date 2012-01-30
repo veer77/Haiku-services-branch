@@ -13,8 +13,9 @@ enum DefaultDefs {
 };
 
 enum ContactGroupDefs {
-	B_CONTACT_GROUP_NONE = 'BCGD',
-	B_CONTACT_GROUP_DEFAULT = 'BCGD'
+	B_CONTACT_GROUP_NONE = 1,
+	B_CONTACT_GROUP_DEFAULT = 'BCGD',
+	B_CONTACT_GROUP_ADDRESS_BOOK = 'BCSG'
 };
 
 enum ContactFieldType {

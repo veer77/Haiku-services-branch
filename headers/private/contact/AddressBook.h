@@ -7,22 +7,25 @@
 
 #include <ContactDefs.h>
 #include <Contact.h>
+#include <ContactGroup.h>
 #include <Path.h>
 #include <SupportDefs.h>
 
-class BAddressBook {
+class BAddressBook : public BContactGroup {
 public:
 							BAddressBook();
 							~BAddressBook();
 			status_t		InitCheck();
 
-			status_t		AddContact(BContact* contact,
-				const char* name = NULL);
+			status_t		AddContact(BContactRef* contact);
+			status_t		RemoveContact(BContactRef* contact);
+			int32			CountContacts() const;
+			BContactRef*	ContactAt(int32 index) const;
 
-			status_t		RemoveContact(BContact* contact);
+			BContactRefList& AllContacts();
+			BContactRefList& ContactsByField(type_code type);
 
-			BContactList*	AllContacts();
-			BContactList*	ContactsByField(type_code type);
+			BPath			GetPath();
 
 //			BContactList*	ContactsByGroup(BContactGroup* group);
 //			BContactList*	ContactsByQuery(BContactQuery* query);
@@ -33,8 +36,6 @@ public:
 private:
 			status_t		_FindDir();
 			status_t		fInitCheck;
-
-			BContactList*	fAddrList;
 			BPath			fAddrBook;
 };
 

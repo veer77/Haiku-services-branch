@@ -15,6 +15,7 @@
 #define CONTACT_FIELD_IDENT "contactfield"
 
 typedef type_code field_type;
+typedef type_code field_usage;
 
 enum {
 	B_CONTACT_FIELD_TYPE = 'CNFT'
@@ -35,8 +36,8 @@ public:
 	virtual void			SetValue(const BString& value) = 0;
 	virtual const BString&	Value() const = 0;
 
-			int32			Usage() const;
-			void			SetUsage(int32 usage);
+			field_usage		Usage() const;
+			void			SetUsage(field_usage usage);
 
 	virtual void			Accept(BContactFieldVisitor* visitor) = 0;
 	virtual bool			IsEqual(BContactField* field) = 0;
@@ -66,7 +67,6 @@ public:
 	static	const char*		SimpleLabel(field_type code);
 	static	const char*		ExtendedLabel(field_type code, int32 usage);
 protected:
-
 			ssize_t			_AddStringToBuffer(BPositionIO* buffer,
 								const BString& str) const;
 			BString			_ReadStringFromBuffer(BPositionIO* buffer,
@@ -115,10 +115,10 @@ public:
 								ssize_t size);
 
 	virtual status_t		CopyDataFrom(BContactField* field);
-protected:
+private:
 			struct			EqualityVisitor;
 			struct			CopyVisitor;
-private:
+
 			BString			fValue;
 };
 
@@ -165,6 +165,9 @@ private:
 			bool			_SplitValue(const BString& str);
 			void			_PopValue(BString& str, BString& value);
 
+			struct 			EqualityVisitor;
+			struct			CopyVisitor;
+
 			BString			fStreet;
 			BString			fPostalBox;
 			BString			fNeighbor;
@@ -175,8 +178,6 @@ private:
 			bool			fWellFormed;
 
 	mutable BString			fValue;
-			struct 			EqualityVisitor;
-			struct			CopyVisitor;
 };
 
 
@@ -191,6 +192,7 @@ public:
 			BBitmap*		Photo() const;
 			void			SetPhoto(BBitmap* photo);
 
+	// dunno if the value is useful
 	virtual void			SetValue(const BString& value) ;
 	virtual const BString&	Value() const;
 
@@ -205,14 +207,20 @@ public:
 			void			SetPictureType(uint32 type);
 			const BString&	PictureMIME() const;
 			void			SetPictureMIME(const BString& mime);
-protected:
+private:
+			void			_CleanUp();
+
 			struct 			EqualityVisitor;
 			struct			CopyVisitor;
-private:
+
 			BBitmap*		fBitmap;
-			BString			fUrl;
-			int32			fPhotoType;
+			// NOTE low level things are really needed?
+			// i suspect not.
 			entry_ref* 		fEntry;
+			// url really needed?
+			BString			fUrl;
+
+			int32			fPhotoType;
 			uint32			fPictureType;
 			BString			fPictureMIME;
 };

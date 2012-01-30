@@ -55,7 +55,7 @@ BContactField::FieldType() const
 }
 
 
-int32
+field_usage
 BContactField::Usage() const
 {
 	return fUsage;
@@ -63,7 +63,7 @@ BContactField::Usage() const
 
 
 void
-BContactField::SetUsage(int32 usage)
+BContactField::SetUsage(field_usage usage)
 {
 	fUsage = usage;
 }
@@ -98,7 +98,7 @@ BContactField::SimpleLabel(field_type type)
 		break;
 
 		case B_CONTACT_PHONE:
-			label.SetTo("Phone");
+			label.SetTo("Phone/Fax");
 		break;
 
 		case B_CONTACT_ADDRESS:
@@ -498,7 +498,8 @@ struct BStringContactField::CopyVisitor : public CopyVisitorBase {
 
 	virtual void Visit(BStringContactField* field)
 	{
-
+		fOwner->SetUsage(field->Usage());
+		fOwner->SetValue(field->Value());
 		error = B_OK;
 	}
 
@@ -653,6 +654,8 @@ struct BAddressContactField::CopyVisitor : public CopyVisitorBase {
 
 	virtual void Visit(BAddressContactField* field)
 	{
+		fOwner->SetValue(field->Value());
+		fOwner->SetUsage(field->Usage());
 		error = B_OK;
 	}
 
@@ -1065,6 +1068,7 @@ void
 BPhotoContactField::SetPhoto(BBitmap* photo)
 {
 	fBitmap = photo;
+	_CleanUp();
 }
 
 
@@ -1194,4 +1198,10 @@ BPhotoContactField::Unflatten(type_code code,
 	fBitmap = new BBitmap(&msg);
 
 	return fBitmap->InitCheck();
+}
+
+
+void
+BPhotoContactField::_CleanUp()
+{
 }
