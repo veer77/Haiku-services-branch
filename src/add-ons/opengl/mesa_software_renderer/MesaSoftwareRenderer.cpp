@@ -46,7 +46,7 @@ extern "C" {
 #include "vbo/vbo.h"
 
 
-#define TRACE_SOFTGL
+//#define TRACE_SOFTGL
 #ifdef TRACE_SOFTGL
 #	define TRACE(x...) printf("MesaSoftwareRenderer: " x)
 #	define CALLED() printf("MesaSoftwareRenderer: %s\n", __PRETTY_FUNCTION__)
@@ -219,7 +219,7 @@ MesaSoftwareRenderer::MesaSoftwareRenderer(BGLView* view, ulong options,
 	fColorSpace = BScreen(GLView()->Window()).ColorSpace();
 
 	// We force single buffering for the time being
-	options &= !BGL_DOUBLE;
+	options &= ~BGL_DOUBLE;
 
 	const GLboolean rgbFlag = ((options & BGL_INDEX) == 0);
 	const GLboolean alphaFlag = ((options & BGL_ALPHA) == BGL_ALPHA);
@@ -285,22 +285,33 @@ MesaSoftwareRenderer::MesaSoftwareRenderer(BGLView* view, ulong options,
 	// create core framebuffer
 	fFrameBuffer = (struct msr_framebuffer*)calloc(1,
 		sizeof(*fFrameBuffer));
+	if (fFrameBuffer == NULL) {
+		ERROR("%s: Unable to calloc GL FrameBuffer!\n", __func__);
+		_mesa_destroy_visual(fVisual);
+		return;
+	}
 	_mesa_initialize_window_framebuffer(&fFrameBuffer->base, fVisual);
 
 	// Setup front render buffer
 	fFrontRenderBuffer = _NewRenderBuffer(true);
 	if (fFrontRenderBuffer == NULL) {
+		ERROR("%s: FrontRenderBuffer is requested but unallocated!\n",
+			__func__);
 		_mesa_destroy_visual(fVisual);
+		free(fFrameBuffer);
 		return;
 	}
 	_mesa_add_renderbuffer(&fFrameBuffer->base, BUFFER_FRONT_LEFT,
 		&fFrontRenderBuffer->base);
 
-	// Setup back render buffer (if needed)
+	// Setup back render buffer (if requested)
 	if (fVisual->doubleBufferMode) {
 		fBackRenderBuffer = _NewRenderBuffer(false);
 		if (fBackRenderBuffer == NULL) {
+			ERROR("%s: BackRenderBuffer is requested but unallocated!\n",
+				__func__);
 			_mesa_destroy_visual(fVisual);
+			free(fFrameBuffer);
 			return;
 		}
 		_mesa_add_renderbuffer(&fFrameBuffer->base, BUFFER_BACK_LEFT,
@@ -346,6 +357,7 @@ MesaSoftwareRenderer::~MesaSoftwareRenderer()
 	_mesa_destroy_context(fContext);
 
 	free(fInfo);
+	free(fFrameBuffer);
 
 	delete fBitmap;
 }
