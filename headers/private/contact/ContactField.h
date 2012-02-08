@@ -217,7 +217,7 @@ private:
 			// NOTE low level things are really needed?
 			// i suspect not.
 			entry_ref* 		fEntry;
-			// url really needed?
+
 			BString			fUrl;
 
 			int32			fPhotoType;

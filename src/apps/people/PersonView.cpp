@@ -117,8 +117,9 @@ PersonView::AddField(BContactField* field)
 
 	row = fControls.CountItems();
 
-	layout->AddItem(control->CreateLabelLayoutItem(), 1, row);
-	layout->AddItem(control->CreateTextViewLayoutItem(), 2, row);
+	//layout->AddItem(control->CreateLabelLayoutItem(), 1, row);
+	//layout->AddItem(control->CreateTextViewLayoutItem(), 2, row);
+	layout->AddView(control);
 }
 
 

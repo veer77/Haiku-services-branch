@@ -12,8 +12,10 @@
 
 #include "ContactFieldTextControl.h"
 
-#include <Font.h>
 #include <Catalog.h>
+#include <Font.h>
+#include <MenuField.h>
+#include <PopUpMenu.h>
 
 #include <stdio.h>
 #include <string.h>
@@ -25,17 +27,23 @@
 
 ContactFieldTextControl::ContactFieldTextControl(BContactField* field)
 	:
-	BTextControl(NULL, "", NULL),
+	BView(NULL, B_WILL_DRAW),
 	fField(field)
 {
 	printf("ContactFieldTextControl field pointer %p\n", field);
 
-	const char* label = 
-		BContactField::ExtendedLabel(field->FieldType(), field->Usage());
+	//const char* label = 
+	//	BContactField::ExtendedLabel(field->FieldType(), field->Usage());
 
-	SetLabel(label);
-	SetText(field->Value());
-	SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
+	//SetLabel(label);
+	fTextControl = new BTextControl(NULL, "", NULL);
+	fTextControl->SetText(field->Value());
+	fTextControl->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
+
+	BPopUpMenu* menu = new BPopUpMenu("test menu");
+	BMenuField* field = new BMenuField("Menu", menu,
+           B_WILL_DRAW);
+    AddChild(field);
 }
 
 
@@ -47,7 +55,7 @@ ContactFieldTextControl::~ContactFieldTextControl()
 bool
 ContactFieldTextControl::HasChanged()
 {
-	return fField->Value() != Text();
+	return fField->Value() != fTextControl->Text();
 }
 
 
@@ -55,14 +63,14 @@ void
 ContactFieldTextControl::Reload()
 {
 	if (HasChanged())
-		SetText(fField->Value());
+		fTextControl->SetText(fField->Value());
 }
 
 
 void
 ContactFieldTextControl::UpdateField()
 {
-	fField->SetValue(Text());
+	fField->SetValue(fTextControl->Text());
 }
 
 
@@ -70,4 +78,18 @@ BString
 ContactFieldTextControl::Value() const
 {
 	return fField->Value();
+}
+
+
+BContactField*
+ContactFieldTextControl::Field() const
+{
+	return fField;
+}
+
+
+BTextView*
+ContactFieldTextControl::TextView() const
+{
+	return fTextControl->TextView();
 }

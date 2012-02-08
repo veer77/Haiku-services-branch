@@ -17,7 +17,7 @@
 #include <String.h>
 #include <TextControl.h>
 
-class ContactFieldTextControl : public BTextControl {
+class ContactFieldTextControl : /*public BTextControl*/ public BView {
 public:
 					ContactFieldTextControl(BContactField* field);
 					~ContactFieldTextControl();
@@ -26,10 +26,13 @@ public:
 	void			Reload();
 	void			UpdateField();
 
+	BTextView*		TextView() const;
+
 	BString			Value() const;
 
-	BContactField*	Field() const { return fField; }
+	BContactField*	Field() const;
 private:
+	BTextControl*	fTextControl;
 	BContactField*	fField;
 };
 
