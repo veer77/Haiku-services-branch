@@ -2609,12 +2609,13 @@ void
 test_wcsftime(const char* locale, const wcsftime_data data[])
 {
 	setlocale(LC_TIME, locale);
+	setlocale(LC_CTYPE, locale);
 	printf("wcsftime for '%s'\n", locale);
 
 	time_t nowSecs = 1279391169;	// pure magic
 	tm* now = localtime(&nowSecs);
 	int problemCount = 0;
-	for(int i = 0; data[i].format != NULL; ++i) {
+	for (int i = 0; data[i].format != NULL; ++i) {
 		wchar_t buf[100];
 		wcsftime(buf, 100, data[i].format, now);
 		if (wcscmp(buf, data[i].result) != 0) {
@@ -2709,7 +2710,7 @@ test_wcsftime()
 	test_wcsftime("nl_NL", wcsftime_nl);
 
 	const wcsftime_data wcsftime_nb[] = {
-		{ L"%c", L"kl. 18:26:09 GMT lørdag 17. juli 2010" },
+		{ L"%c", L"kl. 18:26:09 GMT l\xF8rdag 17. juli 2010" },
 		{ L"%x", L"17. juli 2010" },
 		{ L"%X", L"18:26:09" },
 		{ L"%a", L"lør." },
@@ -3860,6 +3861,140 @@ test_wmemset()
 }
 
 
+// #pragma mark - sprintf ------------------------------------------------------
+
+
+struct sprintf_data {
+	const char* format;
+	const void* value;
+	const char* result;
+};
+
+
+void
+test_sprintf(const char* locale, const sprintf_data data[])
+{
+	setlocale(LC_ALL, locale);
+	printf("sprintf for '%s'\n", locale);
+
+	int problemCount = 0;
+	for (int i = 0; data[i].format != NULL; ++i) {
+		char buf[100];
+		if (strstr(data[i].format, "%ls") != NULL)
+			sprintf(buf, data[i].format, (wchar_t*)data[i].value);
+		else if (strstr(data[i].format, "%s") != NULL)
+			sprintf(buf, data[i].format, (char*)data[i].value);
+		if (strcmp(buf, data[i].result) != 0) {
+			printf("\tPROBLEM: sprintf(\"%s\") = \"%s\" (expected \"%s\")\n",
+				data[i].format, buf, data[i].result);
+			problemCount++;
+		}
+	}
+	if (problemCount)
+		printf("\t%d problem(s) found!\n", problemCount);
+	else
+		printf("\tall fine\n");
+}
+
+
+void
+test_sprintf()
+{
+	const sprintf_data sprintf_posix[] = {
+		{ "%s", (const void*)"test", "test" },
+		{ "%ls", (const void*)L"test", "test" },
+		{ NULL, NULL, NULL }
+	};
+	test_sprintf("POSIX", sprintf_posix);
+
+	const sprintf_data sprintf_de[] = {
+		{ "%s", "test", "test" },
+		{ "%ls", L"test", "test" },
+		{ "%s", "t\xC3\xA4st", "t\xC3\xA4st" },
+		{ "%ls", L"t\xE4st", "t\xC3\xA4st" },
+		{ NULL, NULL, NULL }
+	};
+	test_sprintf("de_DE.UTF-8", sprintf_de);
+
+	const sprintf_data sprintf_de_iso[] = {
+		{ "%s", "test", "test" },
+		{ "%ls", L"test", "test" },
+		{ "%s", "t\xC3\xA4st", "t\xC3\xA4st" },
+		{ "%s", "t\xE4st", "t\xE4st" },
+		{ "%ls", L"t\xE4st", "t\xE4st" },
+		{ NULL, NULL, NULL }
+	};
+	test_sprintf("de_DE.ISO8859-1", sprintf_de_iso);
+}
+
+
+// #pragma mark - swprintf ----------------------------------------------------
+
+
+struct swprintf_data {
+	const wchar_t* format;
+	const void* value;
+	const wchar_t* result;
+};
+
+
+void
+test_swprintf(const char* locale, const swprintf_data data[])
+{
+	setlocale(LC_ALL, locale);
+	printf("swprintf for '%s'\n", locale);
+
+	int problemCount = 0;
+	for (int i = 0; data[i].format != NULL; ++i) {
+		wchar_t buf[100];
+		if (wcsstr(data[i].format, L"%ls") != NULL)
+			swprintf(buf, 100, data[i].format, (wchar_t*)data[i].value);
+		else if (wcsstr(data[i].format, L"%s") != NULL)
+			swprintf(buf, 100, data[i].format, (char*)data[i].value);
+		if (wcscmp(buf, data[i].result) != 0) {
+			printf("\tPROBLEM: swprintf(\"%ls\") = \"%ls\" (expected \"%ls\")\n",
+				data[i].format, buf, data[i].result);
+			problemCount++;
+		}
+	}
+	if (problemCount)
+		printf("\t%d problem(s) found!\n", problemCount);
+	else
+		printf("\tall fine\n");
+}
+
+
+void
+test_swprintf()
+{
+	const swprintf_data swprintf_posix[] = {
+		{ L"%s", (const void*)"test", L"test" },
+		{ L"%ls", (const void*)L"test", L"test" },
+		{ NULL, NULL, NULL }
+	};
+	test_swprintf("POSIX", swprintf_posix);
+
+	const swprintf_data swprintf_de[] = {
+		{ L"%s", "test", L"test" },
+		{ L"%ls", L"test", L"test" },
+		{ L"%s", "t\xC3\xA4st", L"t\xE4st" },
+		{ L"%ls", L"t\xE4st", L"t\xE4st" },
+		{ NULL, NULL, NULL }
+	};
+	test_swprintf("de_DE.UTF-8", swprintf_de);
+
+	const swprintf_data swprintf_de_iso[] = {
+		{ L"%s", "test", L"test" },
+		{ L"%ls", L"test", L"test" },
+		{ L"%s", "t\xC3\xA4st", L"t\xC3\xA4st" },
+		{ L"%s", "t\xE4st", L"t\xE4st" },
+		{ L"%ls", L"t\xE4st", L"t\xE4st" },
+		{ NULL, NULL, NULL }
+	};
+	test_swprintf("de_DE.ISO8859-1", swprintf_de_iso);
+}
+
+
 // #pragma mark - main ---------------------------------------------------------
 
 
@@ -3873,6 +4008,11 @@ main(void)
 
 	test_collation();
 
+	test_sprintf();
+	test_swprintf();
+
+	test_wcsftime();
+
 	test_wcpcpy();
 	test_wcscasecmp();
 	test_wcscat();
@@ -3881,7 +4021,6 @@ main(void)
 	test_wcscpy();
 	test_wcscspn();
 	test_wcsdup();
-	test_wcsftime();
 #ifdef __HAIKU__
 	test_wcslcat();
 	test_wcslcpy();
