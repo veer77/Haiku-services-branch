@@ -25,6 +25,7 @@
 
 class AddressView;
 class ContactFieldTextControl;
+class BBox;
 class BFile;
 class BPopUpMenu;
 class PictureView;
@@ -37,7 +38,9 @@ enum {
 };
 
 
-class PersonView : public BGroupView {
+class ContactVisitor;
+
+class PersonView : public BGridView {
 public:
 								PersonView(const char* name,
 									BContact* contact, BFile* file);
@@ -45,7 +48,7 @@ public:
 
 	virtual	void				MakeFocus(bool focus = true);
 	virtual	void				MessageReceived(BMessage* message);
-//	virtual void				Draw(BRect updateRect);
+	virtual void				Draw(BRect updateRect);
 
 //			void				BuildGroupMenu();
 
@@ -77,9 +80,14 @@ private:
 			bool				fSaving;
 			BContact*			fContact;
 
-			BGridView*			fGridView;
+			//BGridView*			fGridView;
 			BPhotoContactField*	fPhotoField;
 			BFile*				fFile;
+
+			BGridView*			fInfoView;
+			BBox* 				fFieldsBox;
+
+	friend class ContactVisitor;
 };
 
 #endif // PERSON_VIEW_H

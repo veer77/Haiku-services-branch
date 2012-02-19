@@ -96,11 +96,9 @@ BContactField::SimpleLabel(field_type type)
 		case B_CONTACT_URL:
 			label.SetTo("URL");
 		break;
-
 		case B_CONTACT_PHONE:
 			label.SetTo("Phone/Fax");
 		break;
-
 		case B_CONTACT_ADDRESS:
 			label.SetTo("Address");
 			break;
@@ -114,7 +112,7 @@ BContactField::SimpleLabel(field_type type)
 
 // this is used to load a label that explains field usage
 const char*
-BContactField::ExtendedLabel(field_type type, int32 usage)
+BContactField::ExtendedLabel(field_type type, field_usage usage)
 {
 	BString label = SimpleLabel(type);
 
@@ -135,15 +133,15 @@ BContactField::ExtendedLabel(field_type type, int32 usage)
 		break;
 
 		case CONTACT_NAME_FAMILY:
-			label.SetTo("Family Name");
+			label.Prepend("Family ");
 		break;
 
 		case CONTACT_NAME_GIVEN:
-			label.SetTo("Given Name");		
+			label.Prepend("Given ");		
 		break;
 
 		case CONTACT_NAME_MIDDLE:
-			label.SetTo("Middle Name");
+			label.Prepend("Middle ");
 		break;
 
 		case CONTACT_NAME_SUFFIX:
@@ -531,9 +529,6 @@ struct BStringContactField::EqualityVisitor : public EqualityVisitorBase {
 
 		if (field->Value().Compare(fOwner->Value()) == 0)
 			result = true;
-		// compare params
-		// maybe BContactField can define
-		// a protected function
 	}
 
 	virtual void Visit(BAddressContactField* field)

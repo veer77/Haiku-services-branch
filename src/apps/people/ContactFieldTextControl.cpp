@@ -14,7 +14,9 @@
 
 #include <Catalog.h>
 #include <Font.h>
+#include <GroupView.h>
 #include <MenuField.h>
+#include <LayoutBuilder.h>
 #include <PopUpMenu.h>
 
 #include <stdio.h>
@@ -36,14 +38,19 @@ ContactFieldTextControl::ContactFieldTextControl(BContactField* field)
 	//	BContactField::ExtendedLabel(field->FieldType(), field->Usage());
 
 	//SetLabel(label);
+
 	fTextControl = new BTextControl(NULL, "", NULL);
 	fTextControl->SetText(field->Value());
 	fTextControl->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
 
-	BPopUpMenu* menu = new BPopUpMenu("test menu");
-	BMenuField* field = new BMenuField("Menu", menu,
+	BPopUpMenu* menu = new BPopUpMenu(BContactField::ExtendedLabel(field->FieldType(), field->Usage()));
+	BMenuField* field = new BMenuField("", menu,
            B_WILL_DRAW);
-    AddChild(field);
+
+	BLayoutBuilder::Group<>(this, B_HORIZONTAL)
+    .SetInsets(0)
+    .Add(field)
+    .Add(fTextControl);
 }
 
 

@@ -25,9 +25,9 @@ public:
 
 	const char*		Version();
 
-	void 			PropHandler(const CARD_Char *propName,
-						const CARD_Char **params);
-	void 			DataHandler(const CARD_Char *data, int len);
+	void 			PropHandler(const CARD_Char* propName,
+						const CARD_Char** params);
+	void 			DataHandler(const CARD_Char* data, int len);
 
 	int32			CountProperties();
 	BContactField*	PropertyAt(int32 i);

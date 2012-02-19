@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Your Name <your@email.address>
+ * Copyright 2011 Dario Casalinuovo
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 #include "VCardParser.h"
@@ -10,18 +10,18 @@
 
 
 // c++ bindings to the c API
-void HandleProp(void *userData,
-	const CARD_Char *propName, const CARD_Char **params)
+void HandleProp(void* userData,
+	const CARD_Char* propName, const CARD_Char** params)
 {
-	VCardParser* owner = (VCardParser*)userData;
+	VCardParser* owner = (VCardParser*) userData;
 	owner->PropHandler(propName, params);
 }
 
 
 void
-HandleData(void *userData, const CARD_Char *data, int len)
+HandleData(void* userData, const CARD_Char* data, int len)
 {
-	VCardParser* owner = (VCardParser*)userData;
+	VCardParser* owner = (VCardParser*) userData;
 	owner->DataHandler(data, len);
 }
 
@@ -107,7 +107,7 @@ VCardParser::Properties()
 
 
 void
-VCardParser::PropHandler(const CARD_Char *propName, const CARD_Char **params)
+VCardParser::PropHandler(const CARD_Char* propName, const CARD_Char** params)
 {
 	if (!fBegin && strcasecmp(propName, "BEGIN") == 0) {
 		fBegin = true;
@@ -138,7 +138,7 @@ VCardParser::PropHandler(const CARD_Char *propName, const CARD_Char **params)
 
 
 void
-VCardParser::DataHandler(const CARD_Char *data, int len)
+VCardParser::DataHandler(const CARD_Char* data, int len)
 {
 	if (fBegin && !fCheck) {
 		if (len > 0) {

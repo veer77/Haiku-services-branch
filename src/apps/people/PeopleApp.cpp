@@ -6,7 +6,7 @@
  *		Robert Polic
  *		Axel Dörfler, axeld@pinc-software.de
  *		Stephan Aßmus <superstippi@gmx.de>
- *		Casalinuovo Dario barrett666@gmail.com
+ *		Casalinuovo Dario
  *
  * Copyright 1999, Be Incorporated.   All Rights Reserved.
  * This file may be used under the terms of the Be Sample Code License.
@@ -47,8 +47,8 @@ TPeopleApp::TPeopleApp()
 {
 	B_TRANSLATE_MARK_SYSTEM_NAME("People");
 
-	fPosition.Set(6, TITLE_BAR_HEIGHT, 6 + WIND_WIDTH,
-		TITLE_BAR_HEIGHT + WIND_HEIGHT);
+	//fPosition.Set(12, TITLE_BAR_HEIGHT, 12 + WIND_WIDTH,
+	//	TITLE_BAR_HEIGHT + WIND_HEIGHT);
 	BPoint pos = fPosition.LeftTop();
 
 	BPath path;
@@ -60,8 +60,8 @@ TPeopleApp::TPeopleApp()
 		fPrefs = new BFile(&entry, B_READ_WRITE);
 		if (fPrefs->InitCheck() == B_NO_ERROR) {
 			fPrefs->Read(&pos, sizeof(BPoint));
-			if (BScreen(B_MAIN_SCREEN_ID).Frame().Contains(pos))
-				fPosition.OffsetTo(pos);
+			//if (BScreen(B_MAIN_SCREEN_ID).Frame().Contains(pos))
+			///	fPosition.OffsetTo(pos);
 		}
 	} else {
 		fPrefs = new BFile();
@@ -186,8 +186,8 @@ TPeopleApp::_NewWindow(const entry_ref* ref, BFile* file)
 		return NULL;
 	}
 
-	PersonWindow* window = new PersonWindow(fPosition,
-		B_TRANSLATE("New person"), ref, contact);
+	PersonWindow* window = new PersonWindow(BRect(50, 50, 300, 400),
+		B_TRANSLATE("New contact"), ref, contact);
 
 	window->Show();
 
@@ -195,12 +195,12 @@ TPeopleApp::_NewWindow(const entry_ref* ref, BFile* file)
 
 	// Offset the position for the next window which will be opened and
 	// reset it if it would open outside the screen bounds.
-	fPosition.OffsetBy(20, 20);
+	/*fPosition.OffsetBy(20, 20);
 	BScreen screen(window);
 	if (fPosition.bottom > screen.Frame().bottom)
 		fPosition.OffsetTo(fPosition.left, TITLE_BAR_HEIGHT);
 	if (fPosition.right > screen.Frame().right)
-		fPosition.OffsetTo(6, fPosition.top);
+		fPosition.OffsetTo(6, fPosition.top);*/
 
 	return window;
 }

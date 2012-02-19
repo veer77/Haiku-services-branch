@@ -60,12 +60,15 @@ public:
 			status_t		Unflatten(type_code code, BPositionIO* flatData);
 
 	virtual	status_t		CopyDataFrom(BContactField* field);
+	static	BContactField*	Duplicate(BContactField* from);
 	static  BContactField*	UnflattenChildClass(const void* data,
 								ssize_t size);
-	static	BContactField*	Duplicate(BContactField* from);
 
 	static	const char*		SimpleLabel(field_type code);
-	static	const char*		ExtendedLabel(field_type code, int32 usage);
+	static	const char*		ExtendedLabel(field_type code,
+								field_usage usage);
+
+	static  BObjectList<field_usage>& SupportedUsages(field_type code);
 protected:
 			ssize_t			_AddStringToBuffer(BPositionIO* buffer,
 								const BString& str) const;
@@ -93,10 +96,10 @@ typedef BObjectList<BContactField> BContactFieldList;
 
 class BStringContactField : public BContactField {
 public:
-							BStringContactField(type_code type,
+							BStringContactField(field_type type,
 								const BString& str);
 
-							BStringContactField(type_code type,
+							BStringContactField(field_type type,
 								const char* str = "");
 
 	virtual					~BStringContactField();
@@ -157,7 +160,7 @@ public:
 
 	virtual	ssize_t			FlattenedSize() const;
 	virtual	status_t		Flatten(void* buffer, ssize_t size) const;
-	virtual	status_t		Unflatten(type_code code, const void* buffer,
+	virtual	status_t		Unflatten(field_type code, const void* buffer,
 								ssize_t size);
 
 	virtual status_t		CopyDataFrom(BContactField* field);
@@ -214,10 +217,7 @@ private:
 			struct			CopyVisitor;
 
 			BBitmap*		fBitmap;
-			// NOTE low level things are really needed?
-			// i suspect not.
 			entry_ref* 		fEntry;
-
 			BString			fUrl;
 
 			int32			fPhotoType;

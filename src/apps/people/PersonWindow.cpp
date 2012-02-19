@@ -45,8 +45,8 @@
 PersonWindow::PersonWindow(BRect frame, const char* title,
 	const entry_ref* ref, BContact* contact)
 	:
-	BWindow(frame, title, B_TITLED_WINDOW, B_NOT_RESIZABLE | B_NOT_ZOOMABLE
-		| B_AUTO_UPDATE_SIZE_LIMITS),
+	BWindow(frame, title, B_TITLED_WINDOW, /*B_NOT_ZOOMABLE
+		| B_AUTO_UPDATE_SIZE_LIMITS*/B_WILL_DRAW),
 	fRef(NULL),
 	fPanel(NULL)
 {
@@ -56,7 +56,7 @@ PersonWindow::PersonWindow(BRect frame, const char* title,
 	BMenuBar* menuBar = new BMenuBar("");
 	menu = new BMenu(B_TRANSLATE("File"));
 	menu->AddItem(item = new BMenuItem(
-		B_TRANSLATE("New person" B_UTF8_ELLIPSIS),
+		B_TRANSLATE("New contact" B_UTF8_ELLIPSIS),
 		new BMessage(M_NEW), 'N'));
 	item->SetTarget(be_app);
 	menu->AddItem(new BMenuItem(B_TRANSLATE("Close"),
@@ -92,11 +92,15 @@ PersonWindow::PersonWindow(BRect frame, const char* title,
 	BMenuItem* selectAllItem = new BMenuItem(B_TRANSLATE("Select all"),
 		new BMessage(M_SELECT), 'A');
 	menu->AddItem(selectAllItem);
-	menu->AddSeparatorItem();
-	menu->AddItem(item = new BMenuItem(B_TRANSLATE("Configure attributes"),
-		new BMessage(M_CONFIGURE_ATTRIBUTES), 'F'));
-	item->SetTarget(be_app);
-	menuBar->AddItem(menu);
+
+	// TODO edit it when the mixed person/vcard format will be added
+	if (contact->RawContact().FinalFormat() == B_PERSON_FORMAT) {
+		menu->AddSeparatorItem();
+		menu->AddItem(item = new BMenuItem(B_TRANSLATE("Configure attributes"),
+			new BMessage(M_CONFIGURE_ATTRIBUTES), 'F'));
+		item->SetTarget(be_app);
+		menuBar->AddItem(menu);
+	}
 
 	if (ref != NULL) {
 		SetTitle(ref->name);
